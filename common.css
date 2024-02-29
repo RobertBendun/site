@@ -1,0 +1,148 @@
+:root {
+	/* Gruvbox! */
+	--background: #282828;
+	--text: #fbf1c7;
+	--link: #458588;
+	--link-visited: #d3869b;
+	--link-hover: #83a598;
+}
+body {
+	font-family: system-ui, sans-serif;
+	line-height: 1.6;
+	color: var(--text);
+	background-color: var(--background);
+	max-width: 1600px;
+	margin: 0 auto;
+
+	--hex-fill: #3c3836;
+	--hex-stroke: #282828;
+	background:
+		radial-gradient(circle farthest-side at 0% 50%,var(--hex-fill) 23.5%,transparent 0)21px 30px,
+		radial-gradient(circle farthest-side at 0% 50%,var(--hex-stroke) 24%,transparent 0)19px 30px,
+		linear-gradient(var(--hex-fill) 14%,transparent 0, transparent 85%,var(--hex-fill) 0)0 0,
+		linear-gradient(150deg,var(--hex-fill) 24%,var(--hex-stroke) 0,var(--hex-stroke) 26%,transparent 0,transparent 74%,var(--hex-stroke) 0,var(--hex-stroke) 76%,var(--hex-fill) 0)0 0,
+		linear-gradient(30deg,var(--hex-fill) 24%,var(--hex-stroke) 0,var(--hex-stroke) 26%,transparent 0,transparent 74%,var(--hex-stroke) 0,var(--hex-stroke) 76%,var(--hex-fill) 0)0 0,
+		linear-gradient(90deg,var(--hex-stroke) 2%,var(--hex-fill) 0,var(--hex-fill) 98%,var(--hex-stroke) 0%)0 0 var(--hex-fill);
+	background-size: 40px 60px;
+}
+body > * {
+	max-width: 70ch;
+	margin: 0 auto;
+}
+header {
+	text-align: center;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	padding: 1em;
+}
+header > a:link,
+header > a:visited {
+	color: var(--text) !important;
+	text-decoration: none;
+	font-size: 3em;
+	font-weight: 900;
+}
+
+header > a > h1 {
+	font-size: 1em;
+}
+
+header * {
+	margin: 0;
+	padding: 0;
+}
+header > div {
+	margin: 0 auto;
+}
+
+.glass {
+	box-sizing: border-box;
+	background-color: #28282888;
+	box-shadow: 0 0 1rem #282828;
+	position: relative;
+}
+
+#page {
+	padding: 1px 1em 1em 1em;
+	margin: 1em auto 1em auto;
+}
+
+a, a:link { color: var(--link); }
+a:visited { color: var(--link-visited); }
+a:hover { color: var(--link-hover); }
+a[href^="http"]:where(:not([href*="bendun.cc/"]))::after{ content: "︎↗" }
+
+nav.roots ul {
+	list-style-type: none;
+	display: flex;
+	gap: 1em;
+	justify-content: center;
+}
+
+nav.roots a {
+	font-size: 1.2em;
+}
+
+nav.prompt {
+	width: 100%;
+	padding: 0.5em;
+	margin-top: 1.5em;
+	font-family: monospace;
+	font-size: 1.4em;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+nav.prompt ul {
+	display: flex;
+	list-style-type: none;
+}
+
+nav.prompt div::before {
+	content: "$ ";
+}
+
+nav.prompt div {
+	font-family: monospace;
+	display: block;
+	min-width: 10ch;
+	text-align: left;
+	flex-grow: 99999;
+}
+
+.hover-scramble {
+	font-family: monospace;
+	font-variant: small-caps;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.glass:hover::before {
+		opacity: 1;
+	}
+	.glass::before {
+		border-radius: inherit;
+		content: "";
+		height: 100%;
+		left: 0px;
+		opacity: 0;
+		position: absolute;
+		top: 0px;
+		transition: opacity 500ms;
+		width: 100%;
+		background: radial-gradient(
+			800px circle at var(--mouse-x) var(--mouse-y),
+			rgba(255, 255, 255, 0.15),
+			transparent 40%
+		);
+		z-index: -1;
+	}
+}
+
+*::selection {
+	background-color: #458588;
+}
+
+figure img {
+	width: 100%;
+}

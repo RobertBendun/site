@@ -1,0 +1,100 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+img {
+	width: 100%;
+}
+
+figure {
+	max-width: 40ch;
+}
+
+/* by https://codepen.io/alvaromontoro/pen/VwVNQxg */
+figure, header {
+  --c: 50px;
+  --p: 30px;
+  --d: 10px;
+  background: red;
+  padding: var(--p);
+  background:
+    radial-gradient(farthest-side at 0 0, #000, #0000) 0 0 / var(--c) var(--c),
+    radial-gradient(farthest-side at 100% 100%, #000, #0000) 100% 100% / var(--c) var(--c),
+    linear-gradient(#fff 0 0) 50% 50% / calc(100% - var(--p)) calc(100% - var(--p)),
+    linear-gradient(#0000, #000 25% 75%, #0000) 50% 50% / calc(100% - var(--p)) calc(100% - var(--d)),
+    linear-gradient(90deg, #0000, #000 25% 75%, #0000) 50% 50% / calc(100% - var(--d)) calc(100% - var(--p)),
+    radial-gradient(farthest-side at 0 100%, #00000018, #0000) calc(100% - var(--d) * 0.5) calc(var(--d) * 0.5) / var(--d) var(--d),
+    radial-gradient(farthest-side at 100% 0, #00000018, #0000) calc(var(--d) * 0.5) calc(100% - var(--d) * 0.5) / var(--d) var(--d)
+    ;
+  background-repeat: no-repeat;
+  clip-path: polygon(0 var(--c), var(--c) 0, 100% 0, 100% calc(100% - var(--c)), calc(100% - var(--c)) 100%, 0 100%);
+}
+
+body {
+	--hex-fill: #d79921;
+	--hex-stroke: #b57614;
+	background:
+		radial-gradient(circle farthest-side at 0% 50%,var(--hex-fill) 23.5%,transparent 0)21px 30px,
+		radial-gradient(circle farthest-side at 0% 50%,var(--hex-stroke) 24%,transparent 0)19px 30px,
+		linear-gradient(var(--hex-fill) 14%,transparent 0, transparent 85%,var(--hex-fill) 0)0 0,
+		linear-gradient(150deg,var(--hex-fill) 24%,var(--hex-stroke) 0,var(--hex-stroke) 26%,transparent 0,transparent 74%,var(--hex-stroke) 0,var(--hex-stroke) 76%,var(--hex-fill) 0)0 0,
+		linear-gradient(30deg,var(--hex-fill) 24%,var(--hex-stroke) 0,var(--hex-stroke) 26%,transparent 0,transparent 74%,var(--hex-stroke) 0,var(--hex-stroke) 76%,var(--hex-fill) 0)0 0,
+		linear-gradient(90deg,var(--hex-stroke) 2%,var(--hex-fill) 0,var(--hex-fill) 98%,var(--hex-stroke) 0%)0 0 var(--hex-fill);
+	background-size: 40px 60px;
+	font-family: system-ui, sans-serif;
+}
+
+main {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-content: center;
+}
+
+header {
+	max-width: 45ch;
+	text-align: center;
+	font-size: 2em;
+	line-height: 1.6;
+	margin: auto;
+	margin-top: 10px;
+}
+
+header h1 {
+	font-weight: 300;
+	margin: 0;
+	font-size: 2em;
+}
+
+a, a:link, a:visited {
+	font-weight: 300;
+	text-decoration: none;
+	color: #076678;
+}
+figcaption a::after { content: "︎↗" }
+</style>
+	</head>
+	<body>
+		<header>
+			<h1>Friends from the hive!</h1>
+			<a href="/">go back to Diana's site</a>
+		</header>
+		<main>
+			<figure>
+				<a href="https://www.instagram.com/annabeth_book/">
+					<img src="annabeth_book.jpg" alt="annabeth_book profile picture">
+				</a>
+				<figcaption><a href="https://www.instagram.com/annabeth_book/">@annabeth_book</a> on Instagram</figcaption>
+			</figure>
+
+			<figure>
+				<a href="https://www.instagram.com/winwool/">
+					<img src="winiwoll.jpg" alt="winiwoll profile picture">
+				</a>
+				<figcaption><a href="https://www.instagram.com/winiwoll">@winiwoll</a> on Instagram</figcaption>
+			</figure>
+		</main>
+	</body>
+</html>
