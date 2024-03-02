@@ -40,6 +40,7 @@ cd "$(dirname "$(realpath $0)")"
 		<h1>All my characters!</h1>
 		<p>
 			This are all of my characters listed by the time that I got them.
+			Currently I have $(sed '/^\s*$/d' characters.csv | wc -l) characters.
 			You can find more information about some of the builds on my <a href="https://akasha.cv/profile/739467452">akasha profile</a>.
 		</p>
 		<p>
