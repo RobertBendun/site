@@ -16,7 +16,7 @@ cd "$(dirname "$(realpath $0)")"
 </head>
 <body>
 		<header>
-			<a href="/" class="hover-scramble" data-text="Diana Chaotic Lab">Diana Chaotic Lab</a>
+			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
 			<p>created by hand with love</p>
 			<nav class="roots">
 				<ul>
