@@ -47,7 +47,15 @@ cd "$(dirname "$(realpath $0)")"
 			This page was generated from the <a href="characters.csv">CSV file</a> containing all my characters
 			using <a href="build_characters_page.sh">this shell script</a>.
 		</p>
-	<table style="width: 100%">
+	<table style="width: 100%; border-collapse: collapse">
+		<!-- This doesn't work with glass effect:
+			<tr style="position: sticky; top: 0; background-color: #fe8019">
+		-->
+		<tr>
+			<th></th>
+			<th>Character</th>
+			<th>Arrival date</th>
+		</tr>
 END
 
 function avatar() {
@@ -75,9 +83,9 @@ while IFS="," read -r name date
 do
 	>>characters.html cat <<END
 		<tr>
-			<td><img width=70 height=70 src="$(avatar "$name")" alt="Avatar of $name"></td>
+			<td style="text-align: center"><img width=70 height=70 src="$(avatar "$name")" alt="Avatar of $name"></td>
 			<th>$name</th>
-			<td>$date</td>
+			<td style="text-align: center">$date</td>
 		</tr>
 END
 done < <(sort -k2 -t',' characters.csv -r)
