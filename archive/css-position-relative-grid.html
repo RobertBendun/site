@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Nested elements onto grid using relative position | Diana's Lab</title>
+
+		<script src="/scramble.js"></script>
+		<script src="/glass-light.js"></script>
+		<script src="/prompt.js"></script>
+		<link rel="stylesheet" href="/common.css" />
+		<link rel="stylesheet" href="/tiers.css" />
+
+<style>
+.example {
+	background-color: #282828;
+	padding: 10px;
+	border: 1px dotted white;
+}
+.footnote {
+	--primary: #458588;
+	--secondary: #83a598;
+	border: 3px solid var(--primary);
+	background-color: var(--secondary);
+}
+.footnote::before {
+	content: "Info";
+	display: block;
+	background-color: var(--primary);
+	text-transform: uppercase;
+}
+
+#example-after .grid {
+	display: grid;
+	grid-template-columns: [main-start] 1fr [main-end side-start] 1fr [side-end];
+	grid-template-rows: [main-start side-start] 1fr [main-end side-end];
+	position: relative;
+	gap: 5px;
+}
+
+#example-after p:not(.footnote) {
+	grid-area: main;
+}
+
+#example-after .footnote {
+	position: absolute;
+	top: 0;
+	left: 0;
+	grid-area: side;
+}
+
+</style>
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+			<p>created by hand with love</p>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<!-- <li><a href="/workshop">Workshop</a></li> -->
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+			<nav class="prompt glass">
+				<ul>
+					<li>/</li>
+					<li><a href="/archive/">archive</a></li>
+					<li>/</li>
+					<li><a href="/archive/css-position-relative-grid.html">css-position-relative-grid</a></li>
+				</ul>
+				<div contenteditable></div>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>Nested elements onto grid using relative position</h1>
+<p><time>2024-03-03</time></p>
+<p>This tip is from the amazing <a href="https://www.kevinpowell.co/">Kevin Powell</a> YouTube channel.
+In short: using <code>position: relative</code> on grid you can move nested elements onto it by changing their <code>position: absolute</code> and marking their location with <code>grid-area</code> (or it <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-area#constituent_properties">consituent properties</a>).
+</p>
+<ul>
+	<li><a href="https://www.youtube.com/watch?v=fs_5R8V4JCI">Video</a> when he uses this technique to reproduce layout</li>
+	<li><a href="https://codepen.io/kevinpowell/pen/eYoOwgv">Codepen</a> with final code</li>
+</ul>
+		<h2>Short summary</h2>
+		<p>
+			In case the video / codepen dies, here is how it works.
+			We want to transform this layout to have the info box on the side, but still keep it between text blocks for mobile and screen readers.
+		</p>
+		<div class="example" id="example-before">
+			<div class="grid">
+				<div class="text">
+					<p>This is the main text, while you reading me you can think about something nice like strawberries or bees.</p>
+					<p class="footnote">
+						If you don't know what the bee is, it is a magnificent creature first created for the game Minecraft in 2019.
+						The idea of increasing wheat grow with bees what so inspiring for scientiest that it was recreated in the real life.
+					</p>
+					<p>Speeking of bees, have you heard about the great movie <a href="/cinema/journal-2024-02.html#the-beekeeper">The Beekeeper</a>?
+					It utilizes the myth of might makes right and only bad actors in good system to create cult like behaviour of Beekeepers - the sustainers of Hevenly Principles of the America Democracy.
+					</p>
+				</div>
+			</div>
+		</div>
+<pre style="white-space: pre-wrap"><code>&lt;div class="grid"&gt;
+  &lt;div class="text"&gt;
+    &lt;p&gt;
+      This is the main text, while you reading me you can think about something nice like strawberries or bees.
+    &lt;/p&gt;
+    &lt;p class="footnote"&gt;
+      If you don't know what the bee is, it is a magnificent creature first created for the game Minecraft in 2019.
+      The idea of increasing wheat grow with bees what so inspiring for scientiest that it was recreated in the real life.
+    &lt;/p&gt;
+    &lt;p&gt;
+    Speeking of bees, have you heard about the great movie &lt;a href="/cinema/journal-2024-02.html#the-beekeeper"&gt;The Beekeeper&lt;/a&gt;?
+    It utilizes the myth of might makes right and only bad actors in good system to create cult like behaviour of Beekeepers - the sustainers of Hevenly Principles of the America Democracy.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+		<p>We can change it to desired effect</p>
+		<div class="example" id="example-after">
+			<div class="grid">
+				<div class="text">
+					<p>This is the main text, while you reading me you can think about something nice like strawberries or bees.</p>
+					<p class="footnote">
+						If you don't know what the bee is, it is a magnificent creature first created for the game Minecraft in 2019.
+						The idea of increasing wheat grow with bees what so inspiring for scientiest that it was recreated in the real life.
+					</p>
+					<p>Speeking of bees, have you heard about the great movie <a href="/cinema/journal-2024-02.html#the-beekeeper">The Beekeeper</a>?
+					It utilizes the myth of might makes right and only bad actors in good system to create cult like behaviour of Beekeepers - the sustainers of Hevenly Principles of the America Democracy.
+					</p>
+				</div>
+			</div>
+		</div>
+		<p>using this CSS:</p>
+<pre style="white-space: pre-wrap"><code>.grid {
+  display: grid;
+  grid-template-columns: [main-start] 1fr [main-end side-start] 1fr [side-end];
+  grid-template-rows: [main-start side-start] 1fr [main-end side-end];
+  position: relative;
+  gap: 5px;
+}
+
+p:not(.footnote) {
+  grid-area: main;
+}
+
+.footnote {
+  position: absolute;
+  top: 0;
+  left: 0;
+  grid-area: side;
+}</code></pre>
+	</main>
+	</body>
+</html>
