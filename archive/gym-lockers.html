@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Finding locker at the gym in O(1) | Diana's Lab</title>
+
+		<script src="/scramble.js"></script>
+		<script src="/glass-light.js"></script>
+		<script src="/prompt.js"></script>
+		<link rel="stylesheet" href="/common.css" />
+<style>
+table {
+	border-collapse: collapse;
+	margin: 0 auto;
+	text-align: center;
+}
+th,td {
+	border: 1px solid;
+	padding: 0.25em;
+}
+
+td.true  {  width: 3ch; background-color: #98971a }
+td.false {  width: 3ch; background-color: #cc241d }
+
+details {
+	border: 1px solid;
+	padding: 0.5em;
+}
+</style>
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+			<p>created by hand with love</p>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<!-- <li><a href="/workshop">Workshop</a></li> -->
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+			<nav class="prompt glass">
+				<ul>
+					<li>/</li>
+					<li><a href="/archive/">archive</a></li>
+					<li>/</li>
+					<li><a href="/archive/gym-lockers.html">gym-lockers</a></li>
+				</ul>
+				<div contenteditable></div>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>Finding locker at the gym in O(1)</h1>
+			<p><time>2024-03-09</time></p>
+			<p>After taking a break for a year or so, I have recently started going to the gym!</p>
+			<details>
+				<summary>(not so) Fun fact</summary>
+				<p>The first time I get to the gym was when in the rented flat our heat was cut out
+			due to some issue with the pipes in the building.
+			We didn't have both warm water and heating in the middle of the winter, so even cold showers were out of the option.
+			That's why going to the gym for the shower was quite a good option and since I was already there I could do some excercise.</p>
+			</details>
+
+			<p>To my unfortunate suprise the new gym that I have picked was quite busy, especially in hours that were suitable to me.
+			My old method of <strong>picking lockers using powers of two (and powers of two minus one)</strong> resulted in situation where all my preffered locker numbers were already taken.
+			</p>
+
+			<p>I have to came up with a new plan.
+			Powers were out of the game, since they are quite sparse in the range of the lockers - from 1 to 230.
+			The same goes for <a href="https://www.youtube.com/watch?v=cjx23aMeBkQ">Fibonacci/Lucas numbers</a>.
+			Then the moment of wisdom came to me - <em>prime numbers</em>!
+			Compered to the previous method using powers this was major increase of available lockers.
+			But how to quickly determine if the number is prime?</p>
+
+			<h2>Looking for primes in the wild</h2>
+			<p>I love math but hate and can't count.
+			Even adding two digit number in my head I must do step by step, often out loud.
+			So if I wanted to only use primes my method of prime testing must be suitable for my one brain cell.
+			For the first 3 times at the gym I just looked at the number and used <em>vibes</em> to judge primality
+			and then checked on <a href="https://oeis.org/">OEIS</a> during excercise if I was right.</p>
+
+			<p>Last time I wasn't vibing with the number so I started to do some quick checks based on primary school divisibilty tests for 2, 3, 5
+			and making sure that it didn't came up in multiplication table.
+			Note that since we are checking for the primality, we only have to check divisibilty by primes.
+			Later that day I wondered how good those method were in the given lockers range (up to 230).
+			</p>
+
+			<p>Since this is quite mathy subject I created Haskell file and started writing some checks.
+			You can find <a href="gym-lockers.hs">full code here</a>.</p>
+
+			<h2>Primality tests that even I can do in my head</h2>
+			<p>My main battery of tests is:</p>
+			<ul>
+				<li>If ends with 0, 2, 4, 5, 6, 8 (divisibilty by 2 and 5)</li>
+				<li>or the sum of it's digits is divisible by 3</li>
+				<li>or is a two digit number with equal digits (divisibilty by 11)</li>
+				<li>or is the square (max 13^2)</li>
+			</ul>
+			<p>then this number is not a prime. Others <em>probably</em> are.</p>
+
+			<table style="width: min(100%, 50ch); text-align: center">
+				<caption>Number of lockers available using given method</caption>
+				<tr>
+					<th>Method</th>
+					<th>Count</th>
+				</tr>
+				<tr>
+					<td>Powers of two (and one less)</td>
+					<td>14</td>
+				</tr>
+				<tr>
+					<td>Real primes</td>
+					<td>50</td>
+				</tr>
+				<tr>
+					<td>Looking like primes</td>
+					<td>60</td>
+				</tr>
+			</table>
+
+			<p>More then 3 times available lockers!
+			But with a caveat: I may pick a locker that looks prime but isn't - and have this shame on me for the rest of my life.
+			To prevent this I generated list of the fake primes and their prime factors.
+
+<table>
+	<tr>
+		<th rowspan=2>Number</th>
+		<th colspan=8>Divisbile by</th>
+	</tr>
+	<tr>
+			<th>7</th><th>11</th><th>13</th><th>17</th><th>19</th><th>23</th><th>29</th><th>31</th>
+	</tr>
+	<tr><td>91</td><td class="true">T</td><td class="false">F</td><td class="true">T</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="false">F</td>
+</tr><tr>
+<td>119</td><td class="true">T</td><td class="false">F</td><td class="false">F</td><td class="true">T</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="false">F</td>
+</tr><tr>
+<td>133</td><td class="true">T</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="true">T</td><td class="false">F</td><td class="false">F</td><td class="false">F</td>
+</tr><tr>
+<td>143</td><td class="false">F</td><td class="true">T</td><td class="true">T</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="false">F</td>
+</tr><tr>
+<td>161</td><td class="true">T</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="true">T</td><td class="false">F</td><td class="false">F</td>
+</tr><tr>
+<td>187</td><td class="false">F</td><td class="true">T</td><td class="false">F</td><td class="true">T</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="false">F</td>
+</tr><tr>
+<td>203</td><td class="true">T</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="true">T</td><td class="false">F</td>
+</tr><tr>
+<td>209</td><td class="false">F</td><td class="true">T</td><td class="false">F</td><td class="false">F</td><td class="true">T</td><td class="false">F</td><td class="false">F</td><td class="false">F</td>
+</tr><tr>
+<td>217</td><td class="true">T</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="true">T</td>
+</tr><tr>
+<td>221</td><td class="false">F</td><td class="false">F</td><td class="true">T</td><td class="true">T</td><td class="false">F</td><td class="false">F</td><td class="false">F</td><td class="false">F</td></tr>
+</table>
+<p>I really would benefit from divisibilty by 7 test or better multiplication skills (by 11 especially).
+</p>
+
+<details>
+	<summary>Confusion matrix and performance metrics</summary>
+<p>I was curious how this seems from the methods used by AI folk.
+Let's start with classic, <a href="https://en.wikipedia.org/wiki/Confusion_matrix">confusion matrix</a>:
+</p>
+
+<table>
+	<tr>
+		<td colspan=2 rowspan=2></td>
+		<th colspan=2>Predicted</th>
+	</tr>
+	<tr>
+		<th>Positive</th>
+		<th>Negative</th>
+	</tr>
+	<tr>
+		<th rowspan=2 style="width: 1.1em; height: 7ch; padding-right: 0.75em"><div style="writing-mode: vertical-lr; transform: rotate(180deg)">Actual</div></th>
+		<th>Positive</th>
+		<td>50</td>
+		<td>0</td>
+	</tr>
+	<tr>
+		<th>Negative</th>
+		<td>10</td>
+		<td>170</td>
+	</tr>
+</table>
+
+<p>which gives:</p>
+
+<ul>
+	<li>accuraccy: 0.96</li>
+	<li>precision: 0.83</li>
+	<li>recall: 1.00 (this one was obvious)</li>
+</ul>
+
+<p>Unfortunatelly this is where my education in AI dev ends.</p>
+</details>
+
+<h2>Divisibilty by 7 sucks</h2>
+<p>I think that learning to calculate divisibilty by 7 in head is harder then remembering extended multiplication table.
+But I still want to try it to excercise not only my body but also my mind at the gym.
+Unfortunatelly the rule is complex:
+</p>
+<blockquote cite="https://en.wikipedia.org/wiki/Divisibility_rule#Divisibility_by_7">
+	<p>subtract twice the last digit from the number formed by the remaining digits. Continue to do this until a number is obtained for which it is known whether it is divisible by 7.</p>
+	<footer>— <cite><a href="https://en.wikipedia.org/wiki/Divisibility_rule#Divisibility_by_7">Wikipedia</a></cite></footer>
+</blockquote>
+
+<p>So for now I would stay with the tests suitable for my braincell and try to remember when it doesn't work.
+I will try to compute divisibilty by 7, but I often go to the gym after whole day at the university with no brain power left.</p>
+
+<h2>Conclusion</h2>
+<p>Let's pretend that this post has nice structure.
+What have we learned?
+That divisibilty rules from primary school are suprisingly effective for primality test, that's for sure.
+See ya!</p>
+		</main>
+	</body>
+</html>
