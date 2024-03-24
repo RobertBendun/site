@@ -9,6 +9,10 @@
 		<script src="/glass-light.js"></script>
 		<script src="/prompt.js"></script>
 		<link rel="stylesheet" href="/common.css" />
+		<style>
+			.keyword { color: #cc241d; }
+			.function { color: #d79921; }
+		</style>
 	</head>
 	<body>
 		<header>
@@ -64,19 +68,19 @@
 
 			<h3>Loading data</h3>
 			DuckDB can load CSV and TSV files directly, even when they are commpressed or via the URL:
-<pre style="white-space: pre-wrap"><code>CREATE TABLE ratings AS FROM './ratings.csv';
-CREATE TABLE title_episodes AS
-  FROM read_csv('https://datasets.imdbws.com/title.episode.tsv.gz', header=true, nullstr="\N");
-CREATE TABLE title_basics AS
-  FROM read_csv('https://datasets.imdbws.com/title.basics.tsv.gz', header=true, nullstr="\N", quote=NULL);</code></pre>
+<pre style="white-space: pre-wrap"><code><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> ratings <span class="keyword">AS</span> <span class="keyword">FROM</span> './ratings.csv';
+<span class="keyword">CREATE</span> <span class="keyword">TABLE</span> title_episodes <span class="keyword">AS</span>
+  <span class="keyword">FROM</span> read_csv('https://datasets.imdbws.com/title.episode.tsv.gz', header=true, nullstr="\N");
+<span class="keyword">CREATE</span> <span class="keyword">TABLE</span> title_basics <span class="keyword">AS</span>
+  <span class="keyword">FROM</span> read_csv('https://datasets.imdbws.com/title.basics.tsv.gz', header=true, nullstr="\N", quote=NULL);</code></pre>
 
-			With <code>FROM title_basics;</code> you can quickly inspect the loaded data.
+			With <code><span class="keyword">FROM</span> title_basics;</code> you can quickly inspect the loaded data.
 
 			<h3>Watched series</h3>
 			<p>Next I need to find the watch series. To do this I find all series that I have rated episodes and join with rated series:</p>
-<pre style="white-space: pre-wrap"><code>SELECT DISTINCT parentTconst
-FROM ratings JOIN title_episodes ON ratings.Const = title_episodes.tconst
-UNION SELECT Const FROM ratings;</code></pre>
+<pre style="white-space: pre-wrap"><code><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> parentTconst
+<span class="keyword">FROM</span> ratings <span class="keyword">JOIN</span> title_episodes <span class="keyword">ON</span> ratings.Const = title_episodes.tconst
+<span class="keyword">UNION</span> <span class="keyword">SELECT</span> Const <span class="keyword">FROM</span> ratings;</code></pre>
 
 			<p>The unnesesary movies on the list don't matter since we later will use this list in the series only context</p>
 
@@ -84,31 +88,31 @@ UNION SELECT Const FROM ratings;</code></pre>
 			<p>We will search through all pairs of (series, episode) and group by series summing up the runtime of each episode.
 			The runtime and series name are in `title_basics` table so we need to join it with episode information.</p>
 
-<pre style="white-space: pre-wrap"><code>SELECT
-  ANY_VALUE(bp.primaryTitle) AS "Title",
-  to_minutes(CAST(SUM(IFNULL(be.runtimeMinutes, 0)) AS BIGINT)) AS "Runtime"
-FROM title_episodes te
-  LEFT JOIN  title_basics be ON be.tconst = te.tconst
-  INNER JOIN title_basics bp ON bp.tconst = te.parentTconst
-GROUP BY te.parentTconst;</code></pre>
+<pre style="white-space: pre-wrap"><code><span class="keyword">SELECT</span>
+  <span class="function">ANY_VALUE</span>(bp.primaryTitle) <span class="keyword">AS</span> "Title",
+  <span class="function">to_minutes</span>(<span class="function">CAST</span>(<span class="function">SUM</span>(<span class="function">IFNULL</span>(be.runtimeMinutes, 0)) <span class="keyword">AS</span> BIGINT)) <span class="keyword">AS</span> "Runtime"
+<span class="keyword">FROM</span> title_episodes te
+  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span>  title_basics be <span class="keyword">ON</span> be.tconst = te.tconst
+  <span class="keyword">INNER</span> <span class="keyword">JOIN</span> title_basics bp <span class="keyword">ON</span> bp.tconst = te.parentTconst
+<span class="keyword">GROUP</span> <span class="keyword">BY</span> te.parentTconst;</code></pre>
 
-<p>One nice thing that is DuckDB specific in script above is usage of <code>to_minutes</code> which will convert runtime in minutes as integers to actual minutes.
+<p>One nice thing that is DuckDB specific in script above is usage of <code><span class="function">to_minutes</span></code> which will convert runtime in minutes as integers to actual minutes.
 This allows DuckDB to display this data after nicely.</p>
 
 			<h3>Runtime of series I may have watched</h3>
 			<p>To get final effect we need to just filter the runtime per series with the list of series:</p>
-<pre style="white-space: pre-wrap"><code>SELECT
-  ANY_VALUE(bp.primaryTitle) AS "Title",
-  to_minutes(CAST(SUM(IFNULL(be.runtimeMinutes, 0)) AS BIGINT)) AS "Runtime"
-FROM title_episodes te
-  LEFT JOIN  title_basics be ON be.tconst = te.tconst
-  INNER JOIN title_basics bp ON bp.tconst = te.parentTconst
-WHERE te.parentTconst IN (
-  SELECT DISTINCT parentTconst
-  FROM ratings JOIN title_episodes ON ratings.Const = title_episodes.tconst
-  UNION SELECT Const FROM ratings)
-GROUP BY te.parentTconst
-ORDER BY "Runtime" DESC;</code></pre>
+<pre style="white-space: pre-wrap"><code><span class="keyword">SELECT</span>
+  <span class="function">ANY_VALUE</span>(bp.primaryTitle) <span class="keyword">AS</span> "Title",
+  <span class="function">to_minutes</span>(<span class="function">CAST</span>(<span class="function">SUM</span>(<span class="function">IFNULL</span>(be.runtimeMinutes, 0)) <span class="keyword">AS</span> BIGINT)) <span class="keyword">AS</span> "Runtime"
+<span class="keyword">FROM</span> title_episodes te
+  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span>  title_basics be <span class="keyword">ON</span> be.tconst = te.tconst
+  <span class="keyword">INNER</span> <span class="keyword">JOIN</span> title_basics bp <span class="keyword">ON</span> bp.tconst = te.parentTconst
+<span class="keyword">WHERE</span> te.parentTconst <span class="keyword">IN</span> (
+  <span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> parentTconst
+  <span class="keyword">FROM</span> ratings <span class="keyword">JOIN</span> title_episodes <span class="keyword">ON</span> ratings.Const = title_episodes.tconst
+  <span class="keyword">UNION</span> <span class="keyword">SELECT</span> Const <span class="keyword">FROM</span> ratings)
+<span class="keyword">GROUP</span> <span class="keyword">BY</span> te.parentTconst
+<span class="keyword">ORDER</span> <span class="keyword">BY</span> "Runtime" <span class="keyword">DESC</span>;</code></pre>
 
 <p>which returns this nice table:</p>
 
@@ -148,6 +152,12 @@ This is very nice UX compared to Python and especially my previous attempts to d
 
 <p>One missing part for me is some basic data visualization, that are easy to do in Python.
 I can always call DuckDB from python but that looses this nice REPL hacking expirience.</p>
+
+<!-- Meta after thoughts: I don't know if I like syntax highlighting in posts.
+	From the visual standpoint it really nicely breaks monotony of white text.
+	But from the UX of writing, the code snippets essentialy became read only,
+	and if I want to make major modifications I have to copy the source, modify it and recolour it,
+	job that cannot be done in place which sucks. -->
 		</main>
 	</body>
 </html>
