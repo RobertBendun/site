@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Fun with IMDb using DuckDB | Diana's Lab</title>
+
+		<script src="/scramble.js"></script>
+		<script src="/glass-light.js"></script>
+		<script src="/prompt.js"></script>
+		<link rel="stylesheet" href="/common.css" />
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+			<p>created by hand with love</p>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<!-- <li><a href="/workshop">Workshop</a></li> -->
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+			<nav class="prompt glass">
+				<ul>
+					<li>/</li>
+					<li><a href="/archive/">archive</a></li>
+					<li>/</li>
+					<li><a href="/archive/fun-with-imdb-using-duckdb.html">fun-with-imdb-using-duckdb</a></li>
+				</ul>
+				<div contenteditable></div>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>Fun with IMDb using DuckDB</h1>
+			<p>Written <time>2024-03-24</time>, a 5 minute read</p>
+
+			<p>For the past few years I have been <a href="https://github.com/RobertBendun/imdb">developing a script</a> to look at my ratings at IMDb.
+			It can summarize them, search trought them, aggragate and display into nice charts.
+			Essentialy functionality of MS Access but without the stinky GUI and hackable by Python magic.</p>
+
+			<p>Interest grew, and data based only on ratings export wasn't enough for me.
+			The biggest project outside of the main script was <a href="https://github.com/RobertBendun/imdb-series-ratings">charting the distribution of ratings per season</a>, giving me nice source for which seasons to avoid.</p>
+
+			<figure>
+				<img src="community.png" alt="Plot of ratings of Community tv show">
+				<figcaption style="text-align: center">Community ratings with very visible <a href="https://en.wikipedia.org/wiki/Community_(season_4)">gas leak year (season 4)</a>.</figcaption>
+			</figure>
+
+			<p>Doing this sort of data analysis using Python was always a little bit awkward for me - I'm not a data science person and Pandas or numpy are not my strong suit,
+			especially since I always enjoyed SQL and Pythonic solutions were always lacking to what I was doing in just SQL.</p>
+
+			<h2>DuckDB enters the chat</h2>
+
+			<p><a href="https://duckdb.org/">DuckDB</a> is tinkering friendly reimagination of SQLite, beeing small and without need to deploy.
+			It expands traditional SQL with tools that are useful for quick data manipulation, that is perfect for exploring the IMDb database.</p>
+
+			<h2>Retriving runtime of series I had watched</h2>
+
+			<p>I will be using <code>ratings.csv</code>, from IMDb export in "Your ratings" page with their non-commercial datasets.
+			Launch <code>duckdb filename</code>, where <code>filename</code> is a name of the database that DuckDB will use to store intermidiate data.
+			It is not nessesary if you have lots of RAM, but unfortunatelly thats not my situation.</p>
+
+			<h3>Loading data</h3>
+			DuckDB can load CSV and TSV files directly, even when they are commpressed or via the URL:
+<pre style="white-space: pre-wrap"><code>CREATE TABLE ratings AS FROM './ratings.csv';
+CREATE TABLE title_episodes AS
+  FROM read_csv('https://datasets.imdbws.com/title.episode.tsv.gz', header=true, nullstr="\N");
+CREATE TABLE title_basics AS
+  FROM read_csv('https://datasets.imdbws.com/title.basics.tsv.gz', header=true, nullstr="\N", quote=NULL);</code></pre>
+
+			With <code>FROM title_basics;</code> you can quickly inspect the loaded data.
+
+			<h3>Watched series</h3>
+			<p>Next I need to find the watch series. To do this I find all series that I have rated episodes and join with rated series:</p>
+<pre style="white-space: pre-wrap"><code>SELECT DISTINCT parentTconst
+FROM ratings JOIN title_episodes ON ratings.Const = title_episodes.tconst
+UNION SELECT Const FROM ratings;</code></pre>
+
+			<p>The unnesesary movies on the list don't matter since we later will use this list in the series only context</p>
+
+			<h3>Finding runtime of series on IMDb</h3>
+			<p>We will search through all pairs of (series, episode) and group by series summing up the runtime of each episode.
+			The runtime and series name are in `title_basics` table so we need to join it with episode information.</p>
+
+<pre style="white-space: pre-wrap"><code>SELECT
+  ANY_VALUE(bp.primaryTitle) AS "Title",
+  to_minutes(CAST(SUM(IFNULL(be.runtimeMinutes, 0)) AS BIGINT)) AS "Runtime"
+FROM title_episodes te
+  LEFT JOIN  title_basics be ON be.tconst = te.tconst
+  INNER JOIN title_basics bp ON bp.tconst = te.parentTconst
+GROUP BY te.parentTconst;</code></pre>
+
+<p>One nice thing that is DuckDB specific in script above is usage of <code>to_minutes</code> which will convert runtime in minutes as integers to actual minutes.
+This allows DuckDB to display this data after nicely.</p>
+
+			<h3>Runtime of series I may have watched</h3>
+			<p>To get final effect we need to just filter the runtime per series with the list of series:</p>
+<pre style="white-space: pre-wrap"><code>SELECT
+  ANY_VALUE(bp.primaryTitle) AS "Title",
+  to_minutes(CAST(SUM(IFNULL(be.runtimeMinutes, 0)) AS BIGINT)) AS "Runtime"
+FROM title_episodes te
+  LEFT JOIN  title_basics be ON be.tconst = te.tconst
+  INNER JOIN title_basics bp ON bp.tconst = te.parentTconst
+WHERE te.parentTconst IN (
+  SELECT DISTINCT parentTconst
+  FROM ratings JOIN title_episodes ON ratings.Const = title_episodes.tconst
+  UNION SELECT Const FROM ratings)
+GROUP BY te.parentTconst
+ORDER BY "Runtime" DESC;</code></pre>
+
+<p>which returns this nice table:</p>
+
+<pre style="white-space: pre-wrap"><code>┌─────────────────────────────────────────┬───────────┐
+│                  Title                  │  Runtime  │
+│                 varchar                 │ interval  │
+├─────────────────────────────────────────┼───────────┤
+│ Supernatural                            │ 245:17:00 │
+│ Doctor Who                              │ 143:51:00 │
+│ Arrow                                   │ 120:13:00 │
+│ Last Week Tonight with John Oliver      │ 115:41:00 │
+│ The Flash                               │ 112:37:00 │
+│ Glee                                    │ 99:06:00  │
+│ Suits                                   │ 97:59:00  │
+│ Riverdale                               │ 96:11:00  │
+│ Teen Titans Go!                         │ 94:33:00  │
+│ Supergirl                               │ 88:28:00  │
+│ DC's Legends of Tomorrow                │ 76:47:00  │
+│ The Office                              │ 75:32:00  │
+│ Lucifer                                 │ 73:11:00  │
+│ Gotham                                  │ 72:15:00  │
+│ Brooklyn Nine-Nine                      │ 55:45:00  │
+│ Archer                                  │ 53:05:00  │
+│ Dynasty                                 │ 51:54:00  │
+│ The Grand Tour                          │ 51:32:00  │
+│ Parks and Recreation                    │ 45:12:00  │
+│ Community                               │ 41:15:00  │
+│    ·                                    │    ·      │
+│    ·                                    │    ·      │
+│    ·                                    │    ·      │</code></pre>
+
+<h2>Closing thougts</h2>
+
+<p>I have been very pleased with DuckDB.
+I can do all sorts of IMDb data manipulation that comes to my head without leaving REPL of DuckDB.
+This is very nice UX compared to Python and especially my previous attempts to do something this quick in C++ or Rust.</p>
+
+<p>One missing part for me is some basic data visualization, that are easy to do in Python.
+I can always call DuckDB from python but that looses this nice REPL hacking expirience.</p>
+		</main>
+	</body>
+</html>
