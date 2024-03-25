@@ -2,12 +2,8 @@ table {
 	width: 100%;
 	color: black;
 	border-collapse: collapse;
-	--border-radius: 1em;
 }
 
-
-tr:first-child th { border-radius: var(--border-radius) 0 0 0; }
-tr:last-child th  { border-radius: 0 0 0 var(--border-radius); }
 
 th {
 	width: 100px;
@@ -39,3 +35,9 @@ table img {
 table img:hover {
 	filter: brightness(110%);
 }
+
+tr:nth-child(1) th { background-color: #b16286; }
+tr:nth-child(2) th { background-color: #fb4934; }
+tr:nth-child(3) th { background-color: #fe8019; }
+tr:nth-child(4) th { background-color: #fabd2f; }
+tr:nth-child(5) th { background-color: #928374; }
