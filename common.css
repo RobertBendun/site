@@ -11,9 +11,13 @@ body {
 	line-height: 1.6;
 	color: var(--text);
 	background-color: var(--background);
-	max-width: 1600px;
+	/* max-width: 1600px; */
 	margin: 0 auto;
 
+	background-color: #1d2021;
+}
+
+.hex-bg {
 	--hex-fill: #3c3836;
 	--hex-stroke: #282828;
 	background:
@@ -25,8 +29,9 @@ body {
 		linear-gradient(90deg,var(--hex-stroke) 2%,var(--hex-fill) 0,var(--hex-fill) 98%,var(--hex-stroke) 0%)0 0 var(--hex-fill);
 	background-size: 40px 60px;
 }
+
 body > * {
-	max-width: 70ch;
+	/* max-width: 70ch; */
 	margin: 0 auto;
 }
 header {
@@ -61,6 +66,11 @@ header > div {
 	background-color: #28282888;
 	box-shadow: 0 0 1rem #282828;
 	position: relative;
+}
+
+#page, .prompt {
+	max-width: 70ch;
+	box-sizing: border-box;
 }
 
 #page {
