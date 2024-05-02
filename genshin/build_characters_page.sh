@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# TODO: Maybe add record of pity? Some old data could be loaded from Paimon.moe
+# This would also require maybe a format change - since we are getting optional information
+# csv is less suitable for the job and maybe JSON + jq would be better
+
 # Ensure that we are in the same directory as the script
 cd "$(dirname "$(realpath $0)")"
 
