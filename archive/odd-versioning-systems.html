@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Odd versioning systems | Diana's Lab</title>
+		<meta property="og:title"          content="Odd versioning systems" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+
+		<script src="/scramble.js"></script>
+		<script src="/glass-light.js"></script>
+		<link rel="stylesheet" href="/common.css" />
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+			<p>created by hand with love</p>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<!-- <li><a href="/workshop">Workshop</a></li> -->
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>Odd versioning systems</h1>
+			<p>Written <time>2024-05-06</time>, a 3 minute read</p>
+
+			<p>Recently, I started to have personal project that are used by not only me (!) so I had to choose and commit to using
+			some kind of versioning scheme.
+			The obvious choice, <a href="https://semver.org/">semantic versioning</a> was picked by this task lead me to looking into the history of versioning schemes.
+			I would like to highlight some of the weirder ones.</p>
+
+			<h2 id="knuth">Knuth Versioning (1982)</h2>
+
+			<p>The original weird versioning system comes from one of the legends, <a href="https://en.wikipedia.org/wiki/Donald_Knuth">Donald Knuth</a>.
+			What you would do when you develop one of the foundational systems and strongly belive that <em>future compatibility</em> is more important then new features?
+			Introducing versioning of TeX typesetting system, which from version 3 froze time and only allow bugfixes.
+			Since we reached the design goal, now we only sort out how well we approach it - similar to how by creating new approximations we are closer to <a href="">π</a>.
+
+			<p>That's why TeX utilizes approximations of π as version numbers, with the π itself beeing set as version number when we made the final change.</p>
+
+			<p>I love this approach and with that more projects would adopt this more artistic way of expressing the final version and our approach to it.
+			The only issue that I would see is worse accesibility - comparing long string of π approximations digits is way harder then other versioning schemes.
+			</p>
+
+			<p>One interesting effect of frozen projects is how the improvements are developed.
+			TeX instead of beeing one monolith that defines how to do things right with few weird semi-compatible unofficial implementions, is a root of rich ecosystem that allows users to choose their preferences or develop their own solutions.
+			Forks don't need to always chase the main project and can focus on their developement.</p>
+
+			<h2>Negative numbers (1995)</h2>
+
+			<p>Short side note from coherent narrative of freezable versioning systems.
+			How would you define that the version is not ready for public use?
+			Projects like <a href="https://ziglang.org/">Zig</a> have this problem, where despite the calls to not use it in production and versioning scheme suggesting that nothing is stable and ready, it is already used in major projects, like new JavaScript runtime <a href="https://bun.sh/">Bun</a>.</p>
+
+			<p>SmartEiffel provides the answer, with version numbers beeing initiality negative, to emphesise the development stage of the implementation.</p>
+
+
+			<p>You can find source code of SmartEiffel <a href="https://web.archive.org/web/20110827065709/https://gforge.inria.fr/frs/?group_id=184">here</a>.
+
+			<h2>Kelvin Versioning (2010)</h2>
+
+			<p>Kelvin Versioning is a bold move to create software that lasts small and well defined.
+			It is more of an artistic approach, aiming to help find the true golden gem for given software
+			by limiting how much we can bloat.</p>
+
+			<p>It SHOULD NOT be used for non-artistic purposes, since it <em>by design</em> prevents security updates.</p>
+
+			<p>How does it work?
+			Releases are described by single integer, denoting the temperature of the system.
+			Temperature can only drop down and stops at absolute zero.
+			Temperature of a component must be warmer then all of it's dependencies or they both need to be at absolute zero.
+			When temperature of dependencies declines, the component temperature must also decline.</p>
+
+			<p>I must say, I'm really excited to use Kelvin Versioning sometime.
+			All of my projects are in the state of <em>might pick up sometime</em>
+			and defining one to have clear limit is exciting.
+			Exploring the recursive nature of dependencies versioning is however, a little bit tricky to implement -
+			I would need to develop whole ecosystem for that.
+			One project in the backlog that comes to mind is defining Turing Machine programming language (idea from <a href="https://github.com/tsoding/tula/">Tsoding's Tula</a>), and defining simple stack based forth-like language for it.</p>
+
+			<p>Comparison beteween <a href="#knuth">Knuth Versioning</a> and Kelvin is interesting: Knuth provides a method to push security updates, but lack the completness of Kelvin, with recursion definition of dependencies version requirements.</p>
+
+			<p>Find more:</p>
+			<ul>
+				<li><a href="https://moronlab.blogspot.com/2010/01/urbit-functional-programming-from.html">Urbit: functional programming from scratch</a></li>
+				<li><a href="https://jtobin.io/kelvin-versioning">Kelvin Versioning - Jared Tobin</a></li>
+			</ul>
+		</main>
+	</body>
+</html>
