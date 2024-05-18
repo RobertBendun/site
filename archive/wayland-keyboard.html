@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>How to disable builtin keyboard in Wayland | Diana's Lab</title>
+		<meta property="og:title"          content="How to disable builtin keyboard in Wayland" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+
+		<script src="/scramble.js"></script>
+		<script src="/glass-light.js"></script>
+		<link rel="stylesheet" href="/common.css" />
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+			<p>created by hand with love</p>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<!-- <li><a href="/workshop">Workshop</a></li> -->
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>How to disable builtin keyboard in Wayland</h1>
+			<p>Written <time>2024-05-18</time>, a less then a minute read</p>
+
+			<p>Few days ago, the keyboard in my Thinkpad x270 died.
+			After dissasembly and through cleaning it sadly didn't come back to life.
+			The next day, it was worse then dead - it was in a need of exorcits.
+			It was entering 6s into all my terminals and text inputs. So I needed to learn
+			how to disable keyboard in Wayland.</p>
+
+			<p>First, find what is the identifier of the keyboard.
+			You can see all devices with:</p>
+
+			<pre><code>libinput list-devices</code></pre>
+
+			<details>
+				<summary>Output for my keyboard</summary>
+			<pre><code>Device:           AT Translated Set 2 keyboard
+Kernel:           /dev/input/event4
+Group:            8
+Seat:             seat0, default
+Capabilities:     keyboard
+Tap-to-click:     n/a
+Tap-and-drag:     n/a
+Tap drag lock:    n/a
+Left-handed:      n/a
+Nat.scrolling:    n/a
+Middle emulation: n/a
+Calibration:      n/a
+Scroll methods:   none
+Click methods:    none
+Disable-w-typing: n/a
+Disable-w-trackpointing: n/a
+Accel profiles:   n/a
+Rotation:         0.0</code></pre>
+			</details>
+
+			<p>In the <code>Kernel</code> field is a path for the event file, that you should pass to the next command:</p>
+
+			<pre><code>udevadm info -a -p /sys/class/input/event#</code></pre>
+
+			<p>Copy attributes that are unique for this device and enter it to a file:
+			<code>sudoedit /etc/udev/rules.d/99-ignore-thinkpad-keyboard.rules</code> with content based on the previous command:</p>
+
+
+			<p><code>KERNEL=="event*", SUBSYSTEM=="input", ATTRS{name}=="AT Translated Set 2 keyboard", ENV{LIBINPUT_IGNORE_DEVICE}="1"</code></p>
+
+			<p>And reboot! Enjoy your new keyboardless life!</p>
+
+		</main>
+	</body>
+</html>
