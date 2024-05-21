@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Python turtles | Diana's Lab</title>
+		<meta property="og:title"          content="Python turtles" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+
+		<script src="/scramble.js"></script>
+		<script src="/glass-light.js"></script>
+		<link rel="stylesheet" href="/common.css" />
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+			<p>created by hand with love</p>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<!-- <li><a href="/workshop">Workshop</a></li> -->
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>Python turtles</h1>
+			<p>Written <time>2024-05-21</time>, a 2 minute read</p>
+
+			<p>While I'm always scared of graphics standardization attempts in C++, Python has turtle graphics library for over 26 years!</p>
+
+<pre><code>$ git clone https://github.com/python/cpython
+$ cd cpython
+$ git log --diff-filter=A -- Lib/turtle.py
+commit b241b67b8954b0679377af00d668e3dc92f4c858
+Author: Guido van Rossum &lt;guido@python.org&gt;
+Date:   Fri Dec 4 16:42:46 1998 +0000
+
+    Turtle graphics</code></pre>
+
+<p>This was the time of 1.5 release which is so old that it even contains instructions on how to build Python for <a href="https://en.wikipedia.org/wiki/BeOS">BeOS</a>, the system that today is sadly forgotten (see <a href="https://www.haiku-os.org/">Haiku</a>).</p>
+
+<p>As mention in release notes of 1.5.2:</p>
+
+<blockquote>
+	<p>turtle.py is a new module for simple turtle graphics.  I'm still
+working on it; let me know if you use this to teach Python to children
+or other novices without prior programming experience.</p>
+</blockquote>
+
+<p><code>Lib/turtle.py</code> was affected by 70 commits, with major improvements in 2.6 release.
+Let's see some pics!</p>
+
+<img style="max-width: 100%" src="turtle-hexagons.png" alt="Hexagons created using turtle code above">
+<details>
+	<summary>Code</summary>
+<pre><code>from turtle import *
+
+D, N = 100, 6
+
+def hexagon():
+    for i in range(N):
+        forward(D)
+        left(360 / N)
+
+pencolor('#fbf1c7')
+hexagon(); right(2 * 360 / N)
+hexagon(); right(2 * 360 / N)
+hexagon()
+
+getscreen().getcanvas().postscript(file='turtle.eps')</pre></code>
+
+<p>Then <code>convert turtle.{eps,png}</code>
+</details>
+
+<img style="max-width: 100%" src="turtle-hexagon2.png" alt="Hexagons overlapping forming a circle">
+
+<details>
+	<summary>Code</summary>
+<pre><code>from turtle import *
+from math import sqrt
+
+w, h = screensize()
+
+D = min(w, h)
+N = 6
+
+speed('fastest')
+
+pencolor('#fbf1c7')
+penup()
+backward(sqrt(3) / 4 * D)
+right(90)
+forward(sqrt(3) / 2 * D)
+left(90)
+pendown()
+
+for i in range(180):
+    forward(D)
+    left(360 / N + 1.0)
+
+getscreen().getcanvas().postscript(file='turtle.eps')</code></pre>
+</details>
+
+<p>Soo, then I got distracted by <a href="https://antwerp.hogg.io/?configuration=6%2Fm30%2Fr%28h1%29">this amazing tool</a> and some new notation that I haven't seen before.
+Check it out or wait for a next part of this post sometime in a future.</p>
+
+<h3>That's it!</h3>
+<p>Well this is more a microblogging or small note then a post.
+To say something interesting, this really motivates me to move from blog
+to a <a href="https://maggieappleton.com/garden-history">digital garden</a>.
+The reverse chronological order of posts really doesn't suit this entry - a better one would be a page collecting various Python quirks, with this as a subpage.
+For now I stick with the current infrastructure, to get habit of writing going and not do distract myself with writing yet another generator or throwing yet another site reconstruction.
+</p><p>
+Since we are in a topic of gardening - in <a href="https://en.wikipedia.org/wiki/Permaculture">permaculture</a> terms I'm in a state of observing and interacting.
+I want to really get a feeling for this writing form and information layout and then start applying thoughtful changes.</p>
+</p>
+	</main>
+	</body>
+</html>

@@ -117,6 +117,7 @@ HTML = """<!DOCTYPE html>
 """
 
 POSTS = sorted([
+    Post(date="2024-05-21", path="python-turtles.html", name="Python turtles"),
     Post(date="2024-05-18", path="wayland-keyboard.html", name="How to disable builtin keyboard in Wayland"),
     Post(date="2024-05-06", path="odd-versioning-systems.html", name="Odd versioning systems"),
     Post(date="2024-04-17", path="arlecchino-backstory-thoughts.html", name="Arlecchino backstory thoughts"),
