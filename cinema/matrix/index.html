@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Matrix rerun celebration | Diana's Lab</title>
+<style>
+html {
+	color-scheme: dark;
+	--background: #0d0208;
+	--dark: #003b00;
+	--mid: #008f11;
+	--light: #00ff41;
+	writing-mode: vertical-lr;
+	text-orientation: upright;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: var(--background);
+	color: var(--mid);
+	font-family: monospace;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	min-width: 100vw;
+	min-height: 100vh;
+	margin: 0;
+	flex-direction: column;
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+time {
+	text-align: right;
+	margin-bottom: 1rem;
+}
+
+time.animated {
+	animation: pulse-color 300ms forwards;
+}
+
+@keyframes pulse-color {
+	0%, 100% { color: var(--mid); }
+	70% { color: var(--light); }
+}
+
+#falling {
+	z-index: -1;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	font-feature-settings: "hwid" 1;
+}
+
+#falling div {
+	font-size: 1rem;
+	position: absolute;
+	animation: fall 1s forwards;
+	pointer-events: none;
+
+	span {
+		animation: fall-first 1s forwards;
+	}
+}
+
+
+@keyframes fall {
+	0% { top: -1ch; color: var(--dark); }
+	60% { color: var(--mid); }
+	100% { top: 110vh; color: var(--light); }
+}
+
+@keyframes fall-first {
+	0% { color: var(--mid); }
+	30% { color: var(--light); }
+	50% { text-shadow: white; }
+}
+
+h1.fire {
+	text-shadow: var(--light) 0 2px;
+}
+
+a:link, a:visited, a:hover {
+	text-decoration: none;
+	color: var(--mid);
+}
+
+</style>
+	</head>
+	<body>
+		<div id="falling">
+		</div>
+
+		<a target="_blank" href="https://multikino.pl/filmy/matrix">2024|06|24</a>
+		<h1>The Matrix</h1>
+		<div style="display: grid; grid-template-columns: repeat(2, 1fr); background: #0000008f; box-shadow: 0 0 10px black">
+			<time id="seconds">0</time><div>seconds</div>
+			<time id="minutes">0</time><div>minutes</div>
+			<time id="hours">0</time><div>hours</div>
+			<time id="days">0</time><div>days</div>
+		</div>
+
+<script>
+let falling = document.getElementById('falling');
+let h1 = document.querySelector('h1');
+
+let state = false;
+function blink() {
+	if (state) {
+		if (Math.random() < 0.05) {
+			h1.classList.remove('fire');
+			state = false;
+		}
+	} else {
+		if (Math.random() < 0.33) {
+			h1.classList.add('fire');
+			state = true;
+		}
+	}
+	requestAnimationFrame(blink);
+}
+requestAnimationFrame(blink);
+
+function symbol() {
+	let from = 0xFF61;
+	let to = 0xFF9F;
+	let symbol = String.fromCharCode(Math.floor(Math.random() * (to - from) + from));
+	return symbol;
+}
+
+setInterval(() => {
+	let x = Math.floor(Math.random() * 100);
+
+	let div = document.createElement('div');
+
+	let length = Math.floor(Math.random() * 7);
+
+	let s = "";
+	while (length--) {
+		s += symbol();
+	}
+	s += `<span>${symbol()}</span>`;
+
+	div.innerHTML = s;
+	div.style.left = `${x}%`;
+	div.addEventListener('animationend', () => {
+		falling.removeChild(div);
+	});
+	falling.appendChild(div);
+}, 5);
+
+
+let days = document.getElementById('days');
+let hours = document.getElementById('hours');
+let minutes = document.getElementById('minutes');
+let seconds = document.getElementById('seconds');
+update(false);
+
+for (let el of [days, hours, minutes, seconds]) {
+	let me = el;
+	el.addEventListener('animationend', () => {
+		me.classList.remove('animated');
+	});
+}
+
+
+function update(animate = true) {
+	const matrix = Object.freeze(new Date(2024, 5, 24, 20, 0));
+	const diff = matrix - new Date();
+
+	if (diff < 0) {
+		for (let el of [days, hours, minutes, seconds]) {
+			el.innerText = 0;
+		}
+		return;
+	}
+
+	let t = 0;
+
+	function modify(el, val) {
+		if (el.innerText != val) {
+			el.innerText = val;
+			if (animate)
+				el.classList.add('animated');
+		}
+	}
+
+
+	modify(days, Math.floor(diff / 8.64e+7));
+	modify(hours, Math.floor(diff / 3.6e+6));
+	modify(minutes, Math.floor(diff / 60000));
+	modify(seconds, Math.floor(diff / 1000));
+
+	setTimeout(update, 1000);
+}
+
+</script>
+	</body>
+</html>
+
