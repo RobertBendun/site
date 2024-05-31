@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 import collections
+import dataclasses
 
 
 def main():
@@ -12,7 +13,7 @@ def main():
 def entries():
     for post in POSTS:
         date = post.date.strftime('%Y-%m-%d')
-        yield f'<li id="{date}"><time>{date}</time> &ndash; <a href="{post.path}">{post.name}</a></li>'
+        yield f'<li id="{date}"><time>{date}</time> &ndash; <a href="{post.path}">{post.name}</a>{" #" + post.tag.name if post.tag else ""}</li>'
 
 
 def statistics():
@@ -44,11 +45,17 @@ def statistics():
         yield '</div>'
         yield '</div>'
 
+@dataclasses.dataclass
+class Tag:
+    name: str
+    description: str
+
 class Post:
-    def __init__(self, name: str, path: str, date: str):
+    def __init__(self, name: str, path: str, date: str, tag: Tag|None = None):
         self.name = name
         self.path = path
         self.date = datetime.strptime(date, '%Y-%m-%d')
+        self.tag = tag
 
 
     def __lt__(self, other: 'Post'):
@@ -92,13 +99,6 @@ HTML = """<!DOCTYPE html>
 					<li><a href="https://github.com/RobertBendun">Github</a></li>
 				</ul>
 			</nav>
-			<nav class="prompt glass">
-				<ul>
-					<li>/</li>
-					<li><a href="/archive/">archive</a></li>
-				</ul>
-				<div contenteditable></div>
-			</nav>
 		</header>
 		<main id="page" class="glass">
 			<h1>The Archive</h1>
@@ -116,18 +116,25 @@ HTML = """<!DOCTYPE html>
 </html>
 """
 
+class Tags:
+    Genshin = Tag(name = "genshin", description="Notes from adventures in Genshin Impact, popular gacha game")
+    Linux = Tag(name="linux", description="Things that come up with administration of my Linux laptops")
+    WebsiteUpdate = Tag(name="site", description="Changelog for my website")
+
+
 POSTS = sorted([
+    Post(date="2024-05-31", path="pyro-enjoyer.html", name="I guess I main Pyro now?!", tag=Tags.Genshin),
     Post(date="2024-05-21", path="python-turtles.html", name="Python turtles"),
-    Post(date="2024-05-18", path="wayland-keyboard.html", name="How to disable builtin keyboard in Wayland"),
+    Post(date="2024-05-18", path="wayland-keyboard.html", name="How to disable builtin keyboard in Wayland", tag=Tags.Linux),
     Post(date="2024-05-06", path="odd-versioning-systems.html", name="Odd versioning systems"),
-    Post(date="2024-04-17", path="arlecchino-backstory-thoughts.html", name="Arlecchino backstory thoughts"),
-    Post(date="2024-04-17", path="i-want-to-just-spend-time-with-them.html", name="I just want to spend time with them"),
+    Post(date="2024-04-17", path="arlecchino-backstory-thoughts.html", name="Arlecchino backstory thoughts", tag=Tags.Genshin),
+    Post(date="2024-04-17", path="i-want-to-just-spend-time-with-them.html", name="I just want to spend time with them", tag=Tags.Genshin),
     Post(date="2024-04-14", path="16-by-19-is-an-antipattern.html", name="16:9 is an antipattern"),
     Post(date="2024-03-24", path="fun-with-imdb-using-duckdb.html", name="Fun with IMDb using DuckDB"),
     Post(date="2024-03-09", path="gym-lockers.html", name="Finding locker at the gym in O(1)"),
     Post(date="2024-03-03", path="css-position-relative-grid.html", name="Nested elements onto grid using relative position"),
-    Post(date="2024-02-26", path="new-version-announcement-post.html", name="Website Update!"),
-    Post(date="2024-02-25", path="exploration-lore-abyss-and-lantern-rite.html", name="Exploration, Lore, Spiral Abyss and Lantern Rite"),
+    Post(date="2024-02-26", path="new-version-announcement-post.html", name="Website Update!", tag=Tags.WebsiteUpdate),
+    Post(date="2024-02-25", path="exploration-lore-abyss-and-lantern-rite.html", name="Exploration, Lore, Spiral Abyss and Lantern Rite", tag=Tags.Genshin),
 ])
 
 if __name__ == "__main__":
