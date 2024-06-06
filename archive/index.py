@@ -123,7 +123,7 @@ class Tags:
 
 
 POSTS = sorted([
-    Post(date="2024-06-06", path="libvirt-vm-scaling.html", name="Scaling libvirt Linux VMs"),
+    Post(date="2024-06-06", path="libvirt-vm-scaling.html", name="Scaling libvirt Linux VMs", tag=Tags.Linux),
     Post(date="2024-05-31", path="pyro-enjoyer.html", name="I guess I main Pyro now?!", tag=Tags.Genshin),
     Post(date="2024-05-21", path="python-turtles.html", name="Python turtles"),
     Post(date="2024-05-18", path="wayland-keyboard.html", name="How to disable builtin keyboard in Wayland", tag=Tags.Linux),
