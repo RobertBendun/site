@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Scaling libvirt Linux VMs | Diana's Lab</title>
+		<meta property="og:title"          content="Scaling libvirt Linux VMs" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+
+		<script src="/scramble.js"></script>
+		<script src="/glass-light.js"></script>
+		<link rel="stylesheet" href="/common.css" />
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+			<p>created by hand with love</p>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<!-- <li><a href="/workshop">Workshop</a></li> -->
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+<h1>Scaling libvirt Linux VMs</h1>
+<p>Written <time>2024-06-06</time>, a 2 minute read</p>
+
+<p>While doing assignments and projects for university, I had to use several virtual machines at one time.
+Learning how to setup VPNs or testing distributed networking protocols (my <a href="https://github.com/RobertBendun/harmonia">Harmonia</a> project) makes requirement for several copies of one VM quite common actually.
+What I didn't expect was that I spend over an hour on this, shooting myself in a foot a few times.</p>
+
+<p>Why to do it and not just go trough installation several times?
+It's not Windows, they install quite fast.
+<em>To save disk space</em>.
+By scaling using shared immutable backing disk image you don't duplicate data and keep majority of disk usage in one place.
+Maybe immutable distros have nice interactions with that, need to investigate further.
+</p>
+
+<p>This all could be automated with <a href="https://www.ansible.com/how-ansible-works/">Ansible</a> btw.
+Or maybe there are already existing solutions.</p>
+
+<h2>Actual guide</h2>
+
+<em>Warning: this instruction requires some libvirt knowledge and is mostly a remainder for me.
+	I should clean it up.
+	If you don't know virtualization with libvirt well, then you should probably go with normal setup of several installations for several machines.</em>
+
+<ol>
+	<li>Get path to vm disk: <code>virsh dumpxml vm_name</code></li>
+	<li>Go to the directory specified in disk XML, switch to root</li>
+	<li>Create n drives from 1 to n, where n is the scaling factor of your choosing: <code>qemu-img create -f qcow2 -b ubuntu.qcow2 -F qcow2 ubuntu_1.qcow2</code></li>
+	<li><code>virsh edit vm_name</code>, switch name to vm_name_1, remove uuid, remove all mac adresses, switch to backing file:
+
+<pre style="white-space: pre-wrap"><code>&lt;disk type=&apos;file&apos; device=&apos;disk&apos;&gt;
+  &lt;driver name=&apos;qemu&apos; type=&apos;qcow2&apos; discard=&apos;unmap&apos;/&gt;
+  &lt;source file=&apos;/var/lib/libvirt/images/ubuntu_1.qcow2&apos; index=&apos;1&apos;/&gt;
+  &lt;backingStore type=&apos;file&apos; index=&apos;2&apos;&gt;
+    &lt;format type=&apos;qcow2&apos;/&gt;
+    &lt;source file=&apos;/var/lib/libvirt/images/ubuntu.qcow2&apos;/&gt;
+    &lt;backingStore/&gt;
+  &lt;/backingStore&gt;
+  &lt;target dev=&apos;vda&apos; bus=&apos;virtio&apos;/&gt;
+  &lt;alias name=&apos;virtio-disk0&apos;/&gt;
+  &lt;address type=&apos;pci&apos; domain=&apos;0x0000&apos; bus=&apos;0x04&apos; slot=&apos;0x00&apos; function=&apos;0x0&apos;/&gt;
+&lt;/disk&gt;</code></pre></li>
+<!--
+<disk type='file' device='disk'>
+	<driver name='qemu' type='qcow2' discard='unmap'/>
+	<source file='/var/lib/libvirt/images/ubuntu_1.qcow2' index='1'/>
+	<backingStore type='file' index='2'>
+		<format type='qcow2'/>
+		<source file='/var/lib/libvirt/images/ubuntu.qcow2'/>
+		<backingStore/>
+	</backingStore>
+	<target dev='vda' bus='virtio'/>
+	<alias name='virtio-disk0'/>
+	<address type='pci' domain='0x0000' bus='0x04' slot='0x00' function='0x0'/>
+</disk>
+-->
+	</li>
+	<li>use vm_name_1 to create next ones, by removing uuid, macs and changing name to vm_name_n and disk to the one created for this nth vm</li>
+	<li>remove old vm_name</li>
+	<li>inside new vms:
+		<ul>
+			<li>change hostnames (important if you are using avahi to connect to them like me)</li>
+			<li>change <a href="https://unix.stackexchange.com/questions/402999/is-it-ok-to-change-etc-machine-id">machine id</a></li>
+		</ul>
+	</li>
+</ol>
+	</main>
+	</body>
+</html>
