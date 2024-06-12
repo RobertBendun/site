@@ -120,9 +120,11 @@ class Tags:
     Genshin = Tag(name = "genshin", description="Notes from adventures in Genshin Impact, popular gacha game")
     Linux = Tag(name="linux", description="Things that come up with administration of my Linux laptops")
     WebsiteUpdate = Tag(name="site", description="Changelog for my website")
+    CSS = Tag(name="css", description="Articles about CSS")
 
 
 POSTS = sorted([
+    Post(date='2024-06-12', path="view-transitions.html", name="Cross-document view transitions are here!", tag=Tags.CSS),
     Post(date="2024-06-06", path="libvirt-vm-scaling.html", name="Scaling libvirt Linux VMs", tag=Tags.Linux),
     Post(date="2024-05-31", path="pyro-enjoyer.html", name="I guess I main Pyro now?!", tag=Tags.Genshin),
     Post(date="2024-05-21", path="python-turtles.html", name="Python turtles"),
@@ -133,7 +135,7 @@ POSTS = sorted([
     Post(date="2024-04-14", path="16-by-19-is-an-antipattern.html", name="16:9 is an antipattern"),
     Post(date="2024-03-24", path="fun-with-imdb-using-duckdb.html", name="Fun with IMDb using DuckDB"),
     Post(date="2024-03-09", path="gym-lockers.html", name="Finding locker at the gym in O(1)"),
-    Post(date="2024-03-03", path="css-position-relative-grid.html", name="Nested elements onto grid using relative position"),
+    Post(date="2024-03-03", path="css-position-relative-grid.html", name="Nested elements onto grid using relative position", tag=Tags.CSS),
     Post(date="2024-02-26", path="new-version-announcement-post.html", name="Website Update!", tag=Tags.WebsiteUpdate),
     Post(date="2024-02-25", path="exploration-lore-abyss-and-lantern-rite.html", name="Exploration, Lore, Spiral Abyss and Lantern Rite", tag=Tags.Genshin),
 ])

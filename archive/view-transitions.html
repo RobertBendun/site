@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Cross-document view transitions are here! | Diana's Lab</title>
+		<meta property="og:title"          content="Cross-document view transitions are here!" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+
+		<script src="/scramble.js"></script>
+		<script src="/glass-light.js"></script>
+		<link rel="stylesheet" href="/common.css" />
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+			<p>created by hand with love</p>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<!-- <li><a href="/workshop">Workshop</a></li> -->
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+<h1>Cross-document view transitions are here!</h1>
+<p>Written <time>2024-06-12</time>, a 1 minute read</p>
+
+<p>Cross-document view transition just landed in the <a href="https://developer.chrome.com/blog/new-in-chrome-126/#cross-document-transitions">newest Chromium release (126)</a>.
+This is one of the best features that happened to static pages in a while in Web Platform.
+Feature seems simple: browser looks at difference between current page and previous page and animates transition between them if both of them opt in with this code in your CSS:</p>
+<pre><code>@view-transition {
+  navigation: auto;
+}</code></pre>
+
+<p>I'm really excited, the web lack support for making website's as flashy as SPAs or JavaScript heavy ones in general, making the classic model of HTML+CSS feel outdated for the common user.
+Latest trend of features like dialog element gives me hope for well supported future.</p>
+	</main>
+	</body>
+</html>

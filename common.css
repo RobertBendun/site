@@ -1,3 +1,7 @@
+@view-transition {
+  navigation: auto;
+}
+
 :root {
 	/* Gruvbox! */
 	--background: #282828;
