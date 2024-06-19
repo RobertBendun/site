@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>On Output | Diana's Lab</title>
+		<meta property="og:title"          content="On Output" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+
+		<script src="/scramble.js"></script>
+		<script src="/glass-light.js"></script>
+		<link rel="stylesheet" href="/common.css" />
+<style>
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+th, td {
+	border: 1px solid;
+	padding: 1ex;
+}
+</style>
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+			<p>created by hand with love</p>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<!-- <li><a href="/workshop">Workshop</a></li> -->
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+<h1>On Output</h1>
+<p>Written <time>2024-06-19</time>, a 4 minute read</p>
+
+<p>Rule of thumb: your application should <em>always</em> support main 4 forms of output,
+differentiated by form and receiver. Nice defaults are:</p>
+
+<table>
+	<tr><td style="border: none"></td><th>Unstructured</th><th>Structured</th></tr>
+	<tr>
+		<th>Human</th>
+		<td>Colorful text output</td>
+		<td>HTML</td>
+	</tr>
+	<tr>
+		<th>Computer</th>
+		<td>Plain text output</td>
+		<td>JSON</td>
+	</tr>
+</table>
+
+<p>Unstructured computer output is nice for compostability with both classic Unix programs or modern AI algorithms.
+For example, generator for this blog (which currently don't exist, it's all hand written HTML) could output space delimited words for word counting, reading time estimation or training AI model to write posts for me.</p>
+
+<p>Unstructured human output simplifies including already written text inside documents.
+Copying text from plain text file into LaTeX document is way simpler then from compiled PDF.</p>
+
+<p>Structured human output is great for universal cross platform documentation, providing readable documents or graphical interfaces for end users.</p>
+
+<p>Structured computer output is a great convention for cross program integrations.
+Instead of writing parsers for each programming language that you want to use or worrying oneself with integrating existing libraries into your build system.</p>
+
+<p>Let's look at some examples that I have come across recently!</p>
+
+<h2>Document parsers</h2>
+
+<p>I love AsciiDoctor as an input format but the AsciiDoctor as a software has terrible options of output.
+Either you get pre-styled HTML or you supply CSS on your own.
+Pretty much nothing more that is useful.
+
+<figure>
+	<img src="asciidoctor.png" alt="Screenshot of this article written in AsciiDoctor">
+	<figcaption>AsciiDoctor has really nice looking default, that is great for homework reports or documentation.</figcaption>
+</figure>
+
+<p>While AsciiDoctor is great for documentation generation, support for using it for general HTML output is not that great.
+It sheres this problem with other simple document formats (like Markdown), which are designed for mostly one use and specific output format.</p>
+
+<blockquote>
+	<p>A good markup language describes an abstract hierarchical structure of the document, and lets a separate program to adapt that structure to the desired output.</p>
+	<cite><a href="https://matklad.github.io/2022/10/28/elements-of-a-great-markup-language.html">"Elements Of a Great Markup Language"</a> by matklad</cite>
+</blockquote>
+
+<p>HTML output only fulfills one of the desired roles, a human structured format.
+However, from a things like personal websites or blogs we desire sometimes more.
+That's when JSON could come in (or AsciiDoctor as just a parser in nice programming language that supports tree structures like OCaml or Rust).</p>
+
+
+<p>Most of the document formats have this issue, with some being especially bad like WYSIWYG document formats used by office suites.
+They are notoriously uncomposable, driving me mad everytime I need to use them.
+Whatever transformation you want to do, you cannot do it, unless you first transport the text to simpler document format (like plain text file), do transformations there and bring text back.</p>
+
+<h2>Compilers</h2>
+
+<p>What drives me to the Rust the most is the toolchain.
+From the input Rust text files, you can generate plethora of binaries and libraries as one would expect from compiler.
+However, Rust goes one step further with great error messages with console and integrated documentation generation tool that is used as the default documentation environment in the ecosystem.</p>
+
+<figure>
+	<img src="cargo-docs.png" alt="Documentation generated with cargo">
+	<figcaption>Example of documentation, generated only with <code>cargo doc</code>, which constructs documentation from comments in the source files.</figcaption>
+</figure>
+
+<p>Despite supporting all kinds of outputs, it lacks one important one - composable JSON output from Rust parsers.
+Primary use can be code generation, as done in <a href="https://verdagon.dev/blog/exploring-seamless-rust-interop-part-2">Crossing the Impossible FFI Boundary, and My Gradual Descent Into Madness</a>.
+</p>
+
+<p>Lesson is simple: if your application has some representation of data, it should have the ability to output it.
+Rust gives nice structured output for humans in form of generated documentation but lacks the same output for computers (but is in progress!).</p>
+
+<p>For great work on friendly compilers, see <a href="https://elm-lang.org/news/compilers-as-assistants">Compilers as Assistents</a> from creator of Elm programming language.</a>
+
+<h2>In Terminal</h2>
+
+<p>Great example of application that has good support for output is <code>systemctl</code>.
+I was pleasantly surprised how useful it is, depending on your needs.
+The <code>--output</code> parameter supports over 15 types of output, most notably various text formats for text human consumption, JSON or even binary exports for backups.
+Gold standard.</p>
+
+<h3>Example</h3>
+
+<p>Suppose I want to check if <code>libvirt</code> is running.
+I check for anything, taht starts with libvirt.
+In the output mode meant for end user reading on terminal, systemd highlights the best match.
+If we would like to consume it with <code>jq</code> or in Python, we can switch output mode to JSON.
+There even is one to make greping simpler.</p>
+
+<figure>
+	<img src="systemd-output.png" alt="Image of using systemd default and json output modes">
+	<figcaption>Using image here to show nice <em>colors</em></figcaption>
+</figure>
+
+
+<h2>Conclusion</h2>
+
+<p>Be considerate of how you can support your users as broadly as possible.
+You never know how your application may be used.
+If you have the data, share it.
+If you share it, make sure that both computers and humans can use it.</p>
+
+	</main>
+	</body>
+</html>
