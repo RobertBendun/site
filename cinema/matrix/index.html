@@ -103,6 +103,7 @@ a:link, a:visited, a:hover {
 		<a target="_blank" href="https://multikino.pl/filmy/matrix">2024|06|24</a>
 		<h1>The Matrix</h1>
 		<div style="display: grid; grid-template-columns: repeat(2, 1fr); background: #0000008f; box-shadow: 0 0 10px black">
+			<time id="m">0</time><div>matrixes</div>
 			<time id="seconds">0</time><div>seconds</div>
 			<time id="minutes">0</time><div>minutes</div>
 			<time id="hours">0</time><div>hours</div>
@@ -163,9 +164,10 @@ let days = document.getElementById('days');
 let hours = document.getElementById('hours');
 let minutes = document.getElementById('minutes');
 let seconds = document.getElementById('seconds');
+let matrixes = document.getElementById('m');
 update(false);
 
-for (let el of [days, hours, minutes, seconds]) {
+for (let el of [days, hours, minutes, seconds, matrixes]) {
 	let me = el;
 	el.addEventListener('animationend', () => {
 		me.classList.remove('animated');
@@ -199,6 +201,7 @@ function update(animate = true) {
 	modify(hours, Math.floor(diff / 3.6e+6));
 	modify(minutes, Math.floor(diff / 60000));
 	modify(seconds, Math.floor(diff / 1000));
+	modify(matrixes, (diff / 60000 / (2 * 60 + 16)).toFixed(3));
 
 	setTimeout(update, 1000);
 }
