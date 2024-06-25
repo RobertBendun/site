@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Matrix rerun celebration | Diana's Lab</title>
+		<title>Matrix screening celebration | Diana's Lab</title>
 <style>
 html {
 	color-scheme: dark;
@@ -177,16 +177,7 @@ for (let el of [days, hours, minutes, seconds, matrixes]) {
 
 function update(animate = true) {
 	const matrix = Object.freeze(new Date(2024, 5, 24, 20, 0));
-	const diff = matrix - new Date();
-
-	if (diff < 0) {
-		for (let el of [days, hours, minutes, seconds]) {
-			el.innerText = 0;
-		}
-		return;
-	}
-
-	let t = 0;
+	const diff = Math.abs(matrix - new Date());
 
 	function modify(el, val) {
 		if (el.innerText != val) {
