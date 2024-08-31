@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trouble with Dates | Diana's Lab</title>
+    <meta property="og:title"          content="Trouble with Dates" />
+    <meta property="og:type"           content="article" />
+    <meta property="og:article:author" content="Diana Bendun" />
+
+    <script src="/scramble.js"></script>
+    <script src="/glass-light.js"></script>
+    <link rel="stylesheet" href="/common.css" />
+  </head>
+  <body>
+    <header>
+      <a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+      <p>created by hand with love</p>
+      <nav class="roots">
+        <ul>
+          <li><a href="/archive">Archive</a></li>
+          <li><a href="/cinema">Cinema</a></li>
+          <li><a href="https://github.com/RobertBendun">Github</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main id="page" class="glass">
+      <h1>Trouble with Dates</h1>
+      <p>Written <time>2024-08-31</time>, a 2 minute read</p>
+
+      <p>I'm a long term fan of <a href="https://gwern.net">Gwern Branwen website</a>.
+      Not only their website has marvelous design, the content delivers too.
+      One of the latest updates is an <a href="https://gwern.net/subscript#date-ranges">introduction of date range subscripts</a>.
+      This feature appends to dates a subscript that denotes how many years ago given date was.
+      For detailed justification see fragment linked above but the gist of idea is the trouble that human brain seems to have with absolute units in relative contexts, like how long given date was.
+      The mind seems to mix up things based on our particular experience with time, thus making absolute dates very unintuitive unit.</p>
+
+      <p>The page were I have a lot of dates is <a href="/cinema">my diary/review page for movies and series</a>.
+      I mark each one with release year to differentiate similar titles and give quick sense of time context.
+      Which makes this a perfect candidate for adding <em>how many years ago</em> subscripts.</p>
+
+      <h2>Implementation</h2>
+
+      <p>Three interesting challenges rise here:</p>
+
+      <ol>
+        <li>From what point we show those subscripts?
+          If the current year is <time>2024</time>, <time>2020</time> seems quite natural for something that happened 4 years ago. Or does it?
+          While calculation is quite simple, my brain doesn't do it and instead tells me that this number <em>feels</em> recently;</li>
+        <li>I want this site to be multilingual - does the script needs to check page language?
+          How many languages my implementation supports;</li>
+        <li>How to recognize dates from other numbers.</li>
+      </ol>
+
+      <p>While the first one is just based on vibes and testing, the second one is easily solvable.
+      From <time>2020</time> all major browsers support <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat"><code>Intl.RelativeTimeFormat</code></a>, an API for creating this little strings:
+<pre><code>&gt; new Intl.RelativeTimeFormat('en').format(-3, 'year')
+"3 years ago"
+&gt; new Intl.RelativeTimeFormat('de').format(-3, 'year')
+"vor 3 Jahren"
+&gt; new Intl.RelativeTimeFormat('pl').format(-3, 'year')
+"3 lata temu"</code></pre>
+
+<p>Which allows for showing this in localized form easily.</p>
+
+<p>As for third point, I carefully choose which numbers get the subscript on the page.
+In case of my <a href="/cinema">media diary/reviews page</a> the solution is to only modify in the specific part of title of each review.
+That way, even movies with dates in titles don't get modified.
+Another solution (done here) is to put dates in <code>&lt;time&gt;</code> element (which is a nice thing to do anyway) and let JavaScript recognize them that way.
+Since I'm a fan of format, the dates will follow the shape that we can check with this regex <code>/^([12]\d{3})(?:-[01]\d(?:-\d\d)?)?$/</code> (aka either yyyy or yyyy-mm or yyyy-mm-dd).</p>
+
+<p>Some kind of deduplication mechanism should be nice.
+Readers will remember from the first time they read this date how long ago it was in the same article or on the same page.
+For more scattered content, like page consisting of separate posts it is not needed.</p>
+
+<p>Below is the actual code that is used on this site (by making script tag visible):</p>
+    <script style="display: block; white-space: pre; font-family: monospace">let intl_fmt = null;
+if ('RelativeTimeFormat' in Intl) {
+  const language = navigator.languages
+    ? navigator.languages[0]
+    : (navigator.language || navigator.userLanguage);
+  intl_fmt = new Intl.RelativeTimeFormat(language, { short: true });
+}
+
+const current_year = new Date().getFullYear();
+let seen = new Set();
+
+for (const time of document.querySelectorAll('time')) {
+  const iso_date = /^([12]\d{3})(?:-[01]\d(?:-\d\d)?)?$/;
+  const matched = iso_date.exec(time.innerText);
+  if (matched) {
+    const d = current_year - parseInt(matched[1]);
+    if (d > 3 && seen.has(d)) {
+      seen.add(d);
+      const ya_title = intl_fmt != null
+        ? intl_fmt.format(-d, 'year')
+        : `${d} years ago`;
+
+      time.innerHTML = `${matched[0]}
+        <sub style="font-size: 0.8em">
+          <abbr title="${ya_title}">${d}ya</abbr>
+        </sub>`;
+    }
+  }
+}
+    </script>
+    </main>
+  </body>
+</html>

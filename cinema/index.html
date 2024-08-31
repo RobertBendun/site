@@ -526,7 +526,7 @@ Pixar don't be shy and utilize the Disney umbrella for good.</p>
 				</section>
 
 				<section id="rookie-s01">
-					<h3>The Rookie season 1</h3>
+					<h3>The Rookie season 1 (2018-2019)</h3>
 
 					<p>This one is interesting.
 It's fresh to see a premise that promises to deliver more grounded, everyday cop life.
@@ -1340,6 +1340,39 @@ Movies like this gives me urge to explore the landscape of cinema now and before
 			</section>
 			</main>
 		</div>
+		<script>
+			let intl_fmt = null;
+			if ('RelativeTimeFormat' in Intl) {
+				const language = navigator.languages
+					? navigator.languages[0]
+					: (navigator.language || navigator.userLanguage);
+				intl_fmt = new Intl.RelativeTimeFormat(language, { short: true });
+			}
+
+			const current_year = new Date().getFullYear();
+
+			for (const h3 of document.querySelectorAll('h3')) {
+				const paren = h3.innerHTML.lastIndexOf('(');
+				if (paren < 0) {
+					continue;
+				}
+				const title = h3.innerHTML.substring(0, paren);
+				const date_suffix = h3.innerHTML.substring(paren).replace(/[12][0-9]{3}/g, (date) => {
+					date = parseInt(date);
+					const d = current_year - date;
+					const at_least_six_years_ago = d >= 6;
+					const with_different_tens_digit = Math.floor(date / 10) % 10 != Math.floor(current_year / 10) % 10 && d > 2;
+					const ya_title = intl_fmt != null
+						? intl_fmt.format(-d, 'year')
+						: `${d} years ago`;
+
+					return at_least_six_years_ago || with_different_tens_digit
+						? `${date}<sub style="font-size: 0.6em"><abbr title="${ya_title}">${d}ya</abbr></sub>`
+						: date;
+				});
+				h3.innerHTML = `${title} ${date_suffix}`;
+			}
+		</script>
 	</body>
 </html>
 

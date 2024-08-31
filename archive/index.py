@@ -124,6 +124,7 @@ class Tags:
 
 
 POSTS = sorted([
+    Post(date="2024-08-31", path="years-ago.html", name="Trouble with Dates"),
     Post(date="2024-08-26", path="phoneless.html", name="Phoneless"),
     Post(date="2024-08-18", path="horror.html", name="Horror"),
     Post(date="2024-06-19", path="output.html", name="On Output"),
