@@ -67,7 +67,7 @@
 In case of my <a href="/cinema">media diary/reviews page</a> the solution is to only modify in the specific part of title of each review.
 That way, even movies with dates in titles don't get modified.
 Another solution (done here) is to put dates in <code>&lt;time&gt;</code> element (which is a nice thing to do anyway) and let JavaScript recognize them that way.
-Since I'm a fan of format, the dates will follow the shape that we can check with this regex <code>/^([12]\d{3})(?:-[01]\d(?:-\d\d)?)?$/</code> (aka either yyyy or yyyy-mm or yyyy-mm-dd).</p>
+Since I'm a fan of <a href="https://datatracker.ietf.org/doc/html/rfc3339">RFC 3339</a>, the dates will follow the shape that we can check with this regex <code>/^([12]\d{3})(?:-[01]\d(?:-\d\d)?)?$/</code> (aka either yyyy or yyyy-mm or yyyy-mm-dd).</p>
 
 <p>Some kind of deduplication mechanism should be nice.
 Readers will remember from the first time they read this date how long ago it was in the same article or on the same page.
