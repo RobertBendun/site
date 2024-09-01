@@ -85,6 +85,14 @@ HTML = """<!DOCTYPE html>
             aspect-ratio: 1;
             border: 1px solid #fbf1c744;
         }}
+@media only screen and (max-width: 70ch) {{
+	main ul,
+	main li {{
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}}
+}}
         </style>
 	</head>
 	<body>

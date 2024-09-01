@@ -12,6 +12,7 @@ match($0, /aside.*id="([^"]+)"/, a)  {
 /<li>/ {
 	if (count_mode) {
 		count += 1
+		total += 1
 	}
 }
 
@@ -20,4 +21,8 @@ match($0, /aside.*id="([^"]+)"/, a)  {
 		print date ": " count
 		count_mode = 0
 	}
+}
+
+END {
+	print "  Total: " total
 }
