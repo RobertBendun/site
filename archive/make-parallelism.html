@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Parallelism with Makefiles | Diana's Lab</title>
+		<meta property="og:title"          content="Horror" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+
+		<script src="/scramble.js"></script>
+		<script src="/glass-light.js"></script>
+		<link rel="stylesheet" href="/common.css" />
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+			<p>created by hand with love</p>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>Parallelism with Makefiles</h1>
+			<p>Written <time>2024-09-05</time>, a 4 minute read</p>
+
+			<p>Makefiles are a great source of easy parallelism.
+			Their model of tree of dependencies is great for some lightweight data analysis.
+			In this simple pipeline you output and input TSV files or define special converters from dedicated formats to TSV files.
+			This allows for easy integration with a variety of Unix style command line tools for very rapid developement.
+			And since you are doing this in Makefile and not in commandline directly it is somewhat reproducible!</p>
+
+			<p>Then you can easily enable parallelism by passing <code>-j</code> flag to the step that you want to make parallel,
+			passing the number of parallel processes that should run.
+			For IO heavy operations this number could be greater then number of CPUs for better performance.</p>
+
+			<p>Note that one can use RAM disk approach to avoid unnesesary disk usage - Makefile steps compose via intermidiate files and for some tasks there could be a lot of disk IO that not only impacts performance but litters in one's directories and wastes drive lifetime.</p>
+
+			<h2>My case: extracting and composing GTFS files</h2>
+
+			<p>Few months ago I created a short Rust program to extract data from <a href="https://www.ztm.poznan.pl/pl/dla-deweloperow/gtfsFiles">publicly available GTFS data</a>, shared kindly by ZTM Poznań.
+			At the moment of writing this post, there are 471 zip files that contain the record of public transport routes, departures and stops from 2020 to 2024.
+			I was interested in finding the longest and the shortest routes, especially tram ones.
+			To do this, I needed to parse all of the GTFS data, create ranking by total trip time that are unique by line and route.
+			I quickly created the solution for the one GTFS file in Rust, using <a href="https://github.com/rust-transit/gtfs-structure">gtfs-structure</a> crate.
+			I started to think how to do this concurrently, including downloading all of the required GTFS zips from ZTM Poznań site.</p>
+
+			<p>To make things easy I decided to use Makefile - I didn't have to learn any kind of Rust library for HTTP requests or parallelisation!
+			The code can be found <a href="https://github.com/RobertBendun/poznan-gtfs-data-experiments/blob/main/Makefile">here</a>.</p>
+
+			<p>The main trick is to dynamically define list of dependencies based on the list of all GTFS files, which can be found on ZTM Poznań website.
+
+<pre><code>ZTM_POZNAN=$(addprefix ztm.poznan.pl/,\
+	$(shell grep -oE '2[0-9]{7}_2[0-9]{7}.zip' $(ZTM_POZNAN_HTML)))
+
+mkdata: $(addsuffix .tsv,$(ZTM_POZNAN))
+
+show: mkdata
+  @sort ztm.poznan.pl/*.tsv | sort -rn | uniq
+
+.PHONY: mkdata show</code></pre>
+
+<p><code>mkdata</code> target has a dynamic list of dependencies that is created by extracting filenames using regular expression from the ZTM Poznań site and adding prefixes and suffixes to match other targets that convert GTFS zips to TSV tables (the Rust part).
+Then using target <code>show</code> the data is joined into one rating with additional deduplication, just to be sure.
+My typical invocation of this Makefile would be: <code>make -j8 mkdata</code> (prepare data with 8 parallel processes) and then <code>make show | less</code> (create table and put it into less for ergonomic read).</p>
+
+		<h2>My favourite part of NLP course at university</h2>
+
+		<p>I signed for Natural Language Processing course since it was a closest one to my real interest, programming languages.
+		And we have a class on language data processing using Unix tools.
+		At the moment that I attended I already had a few years with daily driving Linux and living in a terminal so it was mostly a fun affirmation on the utility of Unix philosophy.
+		This quick and messy style of creating a simple and compostable solutions is what I miss every time that I leave my bubble and aim to restore in the contexts that I am thrown into.
+		Even my editor of choice, <a href="https://neovim.io/">neovim</a> integrates well with this type of programs.</p>
+
+		<p>This new (for me) type of easy parallelism will change the way that I do data analysis.
+		Previously I would write crappy Go programs due to it's builtin support for (sadly) unstructured concurrency.
+		Shell and Makefiles giving support for structured concurrency is honestly just a better model for easy to reason about parallelism.
+		It sometimes seems like we all try to reinvent the wheel when great, simple and universal base is already here.</p>
+		</main>
+	</body>
+</html>
