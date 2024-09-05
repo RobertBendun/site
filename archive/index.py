@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 import collections
 import dataclasses
+import textwrap
 
 
 def main():
@@ -13,7 +14,12 @@ def main():
 def entries():
     for post in POSTS:
         date = post.date.strftime('%Y-%m-%d')
-        yield f'<li id="{date}"><time>{date}</time> &ndash; <a href="{post.path}">{post.name}</a>{" #" + post.tag.name if post.tag else ""}</li>'
+        yield textwrap.dedent(f"""<li id="{date}">
+                <div>
+                    <time>{date}</time>
+                    <div><a href="{post.path}">{post.name}</a>{" #" + post.tag.name if post.tag else ""}</div>
+                </div>
+            </li>""")
 
 
 def statistics():
@@ -84,6 +90,11 @@ HTML = """<!DOCTYPE html>
             width: 1ch;
             aspect-ratio: 1;
             border: 1px solid #fbf1c744;
+        }}
+        main li > div {{
+            display: flex;
+            text-wrap: balance;
+            gap: 1ex;
         }}
 @media only screen and (max-width: 70ch) {{
 	main ul,

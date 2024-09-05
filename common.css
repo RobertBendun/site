@@ -21,6 +21,10 @@ body {
 	background-color: #1d2021;
 }
 
+h1, h2 {
+	text-wrap: balance;
+}
+
 .hex-bg {
 	--hex-fill: #3c3836;
 	--hex-stroke: #282828;
