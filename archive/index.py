@@ -3,7 +3,7 @@ from datetime import datetime
 import collections
 import dataclasses
 import textwrap
-
+import functools
 
 def main():
     print(HTML.format(
@@ -16,7 +16,7 @@ def entries():
         date = post.date.strftime('%Y-%m-%d')
         yield textwrap.dedent(f"""<li id="{date}">
                 <div>
-                    <time>{date}</time>
+                    <time datetime="{post.date.isoformat()}">{date}</time>
                     <div><a href="{post.path}">{post.name}</a>{" #" + post.tag.name if post.tag else ""}</div>
                 </div>
             </li>""")
@@ -57,11 +57,18 @@ class Tag:
     description: str
 
 class Post:
-    def __init__(self, name: str, path: str, date: str, tag: Tag|None = None):
+    def __init__(self, name: str, path: str, tag: Tag|None = None):
         self.name = name
         self.path = path
-        self.date = datetime.strptime(date, '%Y-%m-%d')
         self.tag = tag
+
+    @property
+    @functools.cache
+    def date(self) -> datetime:
+        with open(self.path, 'r') as file:
+            html = file.read()
+        return datetime.fromisoformat(re.search(r'<time datetime="([0-9:T+-]+)">[0-9-]+<\/time>', html).group(1))
+
 
 
     def __lt__(self, other: 'Post'):
@@ -143,25 +150,26 @@ class Tags:
 
 
 POSTS = sorted([
-    Post(date="2024-09-05", path="make-parallelism.html", name="Parallelism with Makefiles"),
-    Post(date="2024-08-31", path="years-ago.html", name="Trouble with Dates"),
-    Post(date="2024-08-26", path="phoneless.html", name="Phoneless"),
-    Post(date="2024-08-18", path="horror.html", name="Horror"),
-    Post(date="2024-06-19", path="output.html", name="On Output"),
-    Post(date='2024-06-12', path="view-transitions.html", name="Cross-document view transitions are here!", tag=Tags.CSS),
-    Post(date="2024-06-06", path="libvirt-vm-scaling.html", name="Scaling libvirt Linux VMs", tag=Tags.Linux),
-    Post(date="2024-05-31", path="pyro-enjoyer.html", name="I guess I main Pyro now?!", tag=Tags.Genshin),
-    Post(date="2024-05-21", path="python-turtles.html", name="Python turtles"),
-    Post(date="2024-05-18", path="wayland-keyboard.html", name="How to disable builtin keyboard in Wayland", tag=Tags.Linux),
-    Post(date="2024-05-06", path="odd-versioning-systems.html", name="Odd versioning systems"),
-    Post(date="2024-04-17", path="arlecchino-backstory-thoughts.html", name="Arlecchino backstory thoughts", tag=Tags.Genshin),
-    Post(date="2024-04-17", path="i-want-to-just-spend-time-with-them.html", name="I just want to spend time with them", tag=Tags.Genshin),
-    Post(date="2024-04-14", path="16-by-19-is-an-antipattern.html", name="16:9 is an antipattern"),
-    Post(date="2024-03-24", path="fun-with-imdb-using-duckdb.html", name="Fun with IMDb using DuckDB"),
-    Post(date="2024-03-09", path="gym-lockers.html", name="Finding locker at the gym in O(1)"),
-    Post(date="2024-03-03", path="css-position-relative-grid.html", name="Nested elements onto grid using relative position", tag=Tags.CSS),
-    Post(date="2024-02-26", path="new-version-announcement-post.html", name="Website Update!", tag=Tags.WebsiteUpdate),
-    Post(date="2024-02-25", path="exploration-lore-abyss-and-lantern-rite.html", name="Exploration, Lore, Spiral Abyss and Lantern Rite", tag=Tags.Genshin),
+    Post(path="datetime.html", name="Proper Timestamps"),
+    Post(path="make-parallelism.html", name="Parallelism with Makefiles"),
+    Post(path="years-ago.html", name="Trouble with Dates"),
+    Post(path="phoneless.html", name="Phoneless"),
+    Post(path="horror.html", name="Horror"),
+    Post(path="output.html", name="On Output"),
+    Post(path="view-transitions.html", name="Cross-document view transitions are here!", tag=Tags.CSS),
+    Post(path="libvirt-vm-scaling.html", name="Scaling libvirt Linux VMs", tag=Tags.Linux),
+    Post(path="pyro-enjoyer.html", name="I guess I main Pyro now?!", tag=Tags.Genshin),
+    Post(path="python-turtles.html", name="Python turtles"),
+    Post(path="wayland-keyboard.html", name="How to disable builtin keyboard in Wayland", tag=Tags.Linux),
+    Post(path="odd-versioning-systems.html", name="Odd versioning systems"),
+    Post(path="arlecchino-backstory-thoughts.html", name="Arlecchino backstory thoughts", tag=Tags.Genshin),
+    Post(path="i-want-to-just-spend-time-with-them.html", name="I just want to spend time with them", tag=Tags.Genshin),
+    Post(path="16-by-19-is-an-antipattern.html", name="16:9 is an antipattern"),
+    Post(path="fun-with-imdb-using-duckdb.html", name="Fun with IMDb using DuckDB"),
+    Post(path="gym-lockers.html", name="Finding locker at the gym in O(1)"),
+    Post(path="css-position-relative-grid.html", name="Nested elements onto grid using relative position", tag=Tags.CSS),
+    Post(path="new-version-announcement-post.html", name="Website Update!", tag=Tags.WebsiteUpdate),
+    Post(path="exploration-lore-abyss-and-lantern-rite.html", name="Exploration, Lore, Spiral Abyss and Lantern Rite", tag=Tags.Genshin),
 ])
 
 if __name__ == "__main__":

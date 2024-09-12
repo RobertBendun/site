@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Proper Timestamps | Diana's Lab</title>
+		<meta property="og:title"          content="Parallelism with Makefiles" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+
+		<script src="/scramble.js"></script>
+		<script src="/glass-light.js"></script>
+		<link rel="stylesheet" href="/common.css" />
+<style>
+.different {
+	background-color: #ff0000aa;
+}
+</style>
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+			<p>created by hand with love</p>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>Proper Timestamps</h1>
+			<p>Written <time datetime="2024-09-12T17:36+02:00">2024-09-12</time>, a 3 minute read</p>
+
+			<p>The most common form of timestamps on the web is datestamps - where you only specify year, month and day of event.
+			It's so common that without thinking I replicated it on my website.
+			Perhaps this was a mistake.</p>
+
+			<p>The problem with dates is the same as with time - timezones ruin everything.
+			If my and yours timezone don't match nicely you can see my post as written in the future or even not see it at all if your reader throws all entries that have invalid dates (= dates that didn't happen yet according to local time).
+			To see more reasons check out <a href="https://chrisburnell.com/article/lost-in-time/">Lost in Time by Chris Burnell</a>, an article that inspired me to improve dates on my site.
+			There is one problem though.</p>
+
+			<h2>Time of publication doesn't matter</h2>
+
+			<p>My publication times are public since code for this is on Github.
+			However, they don't match what is written next to post, since those dates are for creation context and could be committed to the public anytime after they are written.
+			With this in mind, when the post is finished?
+			When I write the last sentence there could be already well after midnight but this post <em>feels</em> like it belongs to the previous day, not the new one.
+			It hasn't been written with the new day mood or circumstances so it doesn't belong to the new day.</p>
+
+			<p>While the problem above is mostly overthinking, one that is more tangible is how to mark older posts, that don't have precise timestamps.
+			If I would use commit times they sadly don't match:</p>
+
+			<div style="display: flex; flex-direction: row; justify-content: space-around; align-items: start">
+				<table>
+					<thead>
+						<tr>
+							<th>Declared</th>
+							<th>Commited</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class=""><td>2024-09-05</td><td>2024-09-05</td></tr>
+						<tr class=""><td>2024-08-31</td><td>2024-08-31</td></tr>
+						<tr class="different"><td>2024-08-26</td><td>2024-08-28</td></tr>
+						<tr class=""><td>2024-08-18</td><td>2024-08-18</td></tr>
+						<tr class=""><td>2024-06-19</td><td>2024-06-19</td></tr>
+						<tr class=""><td>2024-06-12</td><td>2024-06-12</td></tr>
+						<tr class=""><td>2024-06-06</td><td>2024-06-06</td></tr>
+						<tr class=""><td>2024-05-31</td><td>2024-05-31</td></tr>
+						<tr class=""><td>2024-05-21</td><td>2024-05-21</td></tr>
+						<tr class=""><td>2024-05-18</td><td>2024-05-18</td></tr>
+					</tbody>
+				</table>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Declared</th>
+							<th>Commited</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class=""><td>2024-05-06</td><td>2024-05-06</td></tr>
+						<tr class=""><td>2024-04-17</td><td>2024-04-17</td></tr>
+						<tr class=""><td>2024-04-17</td><td>2024-04-17</td></tr>
+						<tr class="different"><td>2024-04-14</td><td>2024-04-15</td></tr>
+						<tr class=""><td>2024-03-24</td><td>2024-03-24</td></tr>
+						<tr class="different"><td>2024-03-09</td><td>2024-03-10</td></tr>
+						<tr class=""><td>2024-03-03</td><td>2024-03-03</td></tr>
+						<tr class="different"><td>2024-02-26</td><td>2024-02-29</td></tr>
+						<tr class="different"><td>2024-02-25</td><td>2024-02-29</td></tr>
+					</tbody>
+				</table>
+			</div>
+
+			<p>So for those ones, I will go with the assumption of 23:59 at my local time.</p>
+
+			<p>With some <a href="#terrible-python">terrible Python scripting</a>, I updated all of the dates,
+			including ones in archive index by changing the source to the posts itself (using more terrible Python code):</p>
+			<pre><code>class Post:
+  @property
+  @functools.cache
+  def date(self) -&gt; datetime:
+    with open(self.path, 'r') as file:
+      html = file.read()
+    return datetime.fromisoformat(
+      re.search(r'&lt;time datetime="([0-9:T+-]+)"&gt;[0-9-]+&lt;\/time&gt;', html).group(1))</code></pre>
+
+			<h2 id="terrible-python">Addendum: terrible Python scripting</h2>
+
+<p>I've written my archive list generator in Python, which makes it quite easy to use list of posts from it
+for some quick data gathering or manipulation.
+All I need to do is <code>import index</code> to have list of all my published posts.</p>
+
+<pre><code>import datetime
+import pathlib
+import shlex
+import subprocess
+import zoneinfo
+
+import index
+
+def git_creation_date(path: str) -&gt; str | None:
+  cmd = shlex.split('git log --diff-filter=A --follow --format=%aI -1 --')
+  return subprocess.check_output((*cmd, path), text=True).strip()
+
+def main():
+  tz = zoneinfo.ZoneInfo('Europe/Warsaw')
+
+  for post in index.POSTS:
+    git = git_creation_date(post.path)
+    declared = post.date.strftime('%Y-%m-%d')
+    commited = git.split('T')[0]
+
+    post.date = post.date.replace(hour=23, minute=59, tzinfo=tz) \
+      if declared != commited \
+      else datetime.datetime.fromisoformat(git).replace(tzinfo=tz)
+
+    assert post.date.strftime('%Y-%m-%d') == declared
+
+    with open(post.path, 'r') as f:
+      html = f.read()
+
+    search = f'<time>{declared}</time>'
+    assert html.find(search) &gt;= 0, f"post {post.path}"
+    html = html.replace(search,
+      f'&lt;time datetime="{post.date.isoformat()}"&gt;{declared}&lt;/time&gt;', 1)
+
+    with open(post.path, 'w') as f:
+      f.write(html)
+
+if __name__ == "__main__":
+    main()</pre></code>
+
+<p>I love that in Python you often create both the best and the worst code ever seen.</p>
+		</main>
+	</body>
+</html>
