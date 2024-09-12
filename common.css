@@ -6,15 +6,25 @@
 	/* Gruvbox! */
 	--background: #282828;
 	--text: #fbf1c7;
-	--link: #458588;
-	--link-visited: #d3869b;
+	--link: #8b88f8;
+	--link-visited: #DA70D6;
 	--link-hover: #83a598;
 }
 body {
 	font-family: system-ui, sans-serif;
 	line-height: 1.6;
 	color: var(--text);
-	background-color: var(--background);
+	background-size: 100% 100%;
+	background-position: 0px 0px,0px 0px,0px 0px,0px 0px,0px 0px;
+	background-color: #856798;
+	background-attachment: fixed;
+	background-image:
+		radial-gradient(49% 81% at 45% 47%, #9966CC 0%, #073AFF00 100%),
+		radial-gradient(113% 91% at 17% -2%, #4d4469 1%, #FF000000 99%),
+		radial-gradient(142% 91% at 83% 7%, #b57edc 1%, #FF000000 99%),
+		radial-gradient(142% 91% at -6% 74%, #b57edc 1%, #00000080 99%),
+		radial-gradient(142% 91% at 111% 84%, #731dbf 0%, #8b24be 100%);
+
 	/* max-width: 1600px; */
 	margin: 0 auto;
 
@@ -71,7 +81,7 @@ header > div {
 
 .glass {
 	box-sizing: border-box;
-	background-color: #28282888;
+	background-color: #282828bb;
 	box-shadow: 0 0 1rem #282828;
 	position: relative;
 }
@@ -90,6 +100,9 @@ a, a:link { color: var(--link); }
 a:visited { color: var(--link-visited); }
 a:hover { color: var(--link-hover); }
 a[href^="http"]:where(:not([href*="bendun.cc/"]))::after{ content: "︎↗" }
+nav a, nav a:visited, nav a:link, nav a:hover {
+	color: #f6e5f6;
+}
 
 nav.roots ul {
 	list-style-type: none;
