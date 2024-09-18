@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Oxford comma | Diana's Lab</title>
+    <meta property="og:title"          content="Oxford comma" />
+    <meta property="og:type"           content="article" />
+    <meta property="og:article:author" content="Diana Bendun" />
+
+    <script src="/scramble.js"></script>
+    <script src="/glass-light.js"></script>
+    <link rel="stylesheet" href="/common.css" />
+  </head>
+  <body>
+    <header>
+      <a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+      <p>created by hand with love</p>
+      <nav class="roots">
+        <ul>
+          <li><a href="/archive">Archive</a></li>
+          <li><a href="/cinema">Cinema</a></li>
+          <li><a href="https://github.com/RobertBendun">Github</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main id="page" class="glass">
+      <h1>Oxford comma</h1>
+      <p>Written <time datetime="2024-09-18T20:35+02:00">2024-09-18</time>, a minute read</p>
+
+      <p>While writing other post I realized something: <a href="https://en.wikipedia.org/wiki/Serial_comma">Oxford comma</a> (aka serial comma) is my preffered option when it comes to punctiuation due to programming habbits.
+      In Python I would list fruits in this way:</p>
+
+<pre><code>FRUITS = [
+  "apple",
+  "banana",
+  "strawberry",
+]</code></pre>
+
+<p>In Go I'm forced to write it this way, since it <a href="https://go.dev/doc/effective_go#semicolons">requires trailing commas for parsing reasons</a>.</p>
+
+<pre><code>fruits := []string{
+  "apple",
+  "banana",
+  "strawberry"
+}</code></pre>
+
+<p>With code above I will get following error: <code style="white-space: normal">syntax error: unexpected newline in composite literal; possibly missing comma or }</code></p>
+
+<p>So when I'm doing short list in HTML I would write it like this:</p>
+
+<pre><code>I like
+  apples,
+  bananas,
+  and strawberries.</code></pre>
+
+<p>To ensure that when I sort entries using <code>sort</code> command, I don't have to look for the comma that is missing from the reordering of elements.
+Sure I have to prefix the last element with and but that is much easier to spot and remember.</p>
+
+<h2>Addendum: short lists with list element</h2>
+
+<p>If you are crazy enough, you can restyle this:</p>
+
+<div>I like
+<ul>
+  <li>apples</li>
+  <li>bananas</li>
+  <li>strawberries</li>
+</ul>
+</div>
+
+<p>Into this:</p>
+
+<div>I like
+<ul class="short">
+  <li>apples</li>
+  <li>bananas</li>
+  <li>strawberries</li>
+</ul>
+</div>
+
+<p>By adding class <code>short</code> to your list with this CSS:</p>
+
+<pre><code><style style="display: block">.short, .short li { display: inline; padding: 0; margin: 0 }
+.short li:not(:last-child)::after { content: "," }
+.short li:last-child::before { content: " and " }
+</style></code></pre>
+
+<p><strong>Do not use this unironically</strong> since text inside before and after cannot be selected.</p>
+    </main>
+  </body>
+</html>
