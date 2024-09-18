@@ -87,7 +87,7 @@ header > div {
 }
 
 #page, .prompt {
-	max-width: 70ch;
+	max-width: 80ch;
 	box-sizing: border-box;
 }
 
