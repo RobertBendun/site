@@ -149,6 +149,7 @@ class Tags:
 
 
 POSTS = sorted([
+    Post(path="string-new-date-nan.html", name="String(new Date(NaN))"),
     Post(path="oxford-comma.html", name="Oxford Comma"),
     Post(path="datetime.html", name="Proper Timestamps"),
     Post(path="make-parallelism.html", name="Parallelism with Makefiles"),

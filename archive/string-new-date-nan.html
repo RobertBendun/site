@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>String(new Date(NaN)) | Diana's Lab</title>
+    <meta property="og:title"          content="String(new Date(NaN))" />
+    <meta property="og:type"           content="article" />
+    <meta property="og:article:author" content="Diana Bendun" />
+
+    <script src="/scramble.js"></script>
+    <script src="/glass-light.js"></script>
+    <link rel="stylesheet" href="/common.css" />
+<style>
+blockquote {
+  background-color: #ffffff30;
+  margin: 0;
+  padding: 1px 1em 1px 1em;
+}
+</style>
+  </head>
+  <body>
+    <header>
+      <a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+      <p>created by hand with love</p>
+      <nav class="roots">
+        <ul>
+          <li><a href="/archive">Archive</a></li>
+          <li><a href="/cinema">Cinema</a></li>
+          <li><a href="https://github.com/RobertBendun">Github</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main id="page" class="glass">
+      <h1>String(new Date(NaN))</h1>
+      <p>Written <time datetime="2024-09-19T00:09+02:00">2024-09-19</time>, a 2 minute read</p>
+
+      <p>I'm glad that I didn't ever care too much for ECMAScript 5 or Internet Explorer.
+      I started with web development around 2015 and most tech that classmates used around me felt clunky and unnecessary for me.
+      I was having way too much with ECMAScript 6 features, CSS3 and HTML5.</p>
+
+      <p>This fresh look (and not working with enterprise JavaScript for next 4 years) meant that I missed all that noise of jQuery, Bootstrap and pollyfills.
+      The only thing that seemed interesting to me at the time was <a href="https://coffeescript.org/#introduction">CoffeeScript</a> since I didn't know Python back then and this kind of syntax felt fresh and interesting.</p>
+
+      <p>While reading <a href="https://philipwalton.com/articles/the-state-of-es5-on-the-web/">"The State of ES5 on the Web</a> by <a href="https://philipwalton.com">Philip Walton</a>, I realized how lucky I was to skip all of that.
+      Especially when I noticed how weird some of the pollyfills were.</p>
+
+      <p><code>String(new Date(NaN))</code> behaviour was left to implementation, as stated in <a href="https://262.ecma-international.org/5.1/#sec-15.9.5.2">ECMAScript 5 specification</a>:</p>
+
+      <blockquote cite="https://262.ecma-international.org/5.1/#sec-15.9.5.2">
+        <p><strong>15.9.5.2 Date.prototype.toString ( )</strong></p>
+        <p>This function returns a String value. The contents of the String are implementation-dependent, but are intended to
+        represent the Date in the current time zone in a convenient, human-readable form.</p>
+      </blockquote>
+
+      <p><a href="https://tc39.es/ecma262/#sec-date.prototype.tostring">ECMAScript 6 defined the output</a>,
+      by delegation to the <a href="https://tc39.es/ecma262/#sec-todatestring"><code>ToDateString(tv)</code> abstract operation</a>:
+      <blockquote>
+        <p><strong>21.4.4.41.4 ToDateString ( tv )</strong></p>
+        <p>The abstract operation ToDateString takes argument tv (an integral Number or NaN) and returns a String. It performs the following steps when called:</p>
+        <ol>
+          <li>If tv is NaN, return "Invalid Date".</li>
+          <li>Let t be LocalTime(tv).</li>
+          <li>Return the string-concatenation of DateString(t), the code unit 0x0020 (SPACE), TimeString(t), and TimeZoneString(tv).</li>
+        </ol>
+      </blockquote>
+
+      <p>The first step of this algorithm lead to this lovely pollyfill inside <a href="https://github.com/zloirock/core-js">core-js</a> (simplified by me):</p>
+
+<pre><code>if (String(new Date(NaN)) !== 'Invalid Date') {
+  var toString = Date.prototype.toString;
+  Date.prototype.toString = function() {
+    var value = this.getTime();
+    return value === value ? toString.call(this) : 'Invalid Date';
+  });
+}</code></pre>
+
+<p>Which utilizes IEEE-754 lack of equality between NaNs (shouldn't this return undefined instead of false since this comparison is unordered?) to test for their presence (with <code>value === value</code>),
+which is recommended in <a href="https://262.ecma-international.org/5.1/#sec-15.1.2.4">ECMAScript 5 standard</a>:</p>
+
+<blockquote cite="https://262.ecma-international.org/5.1/#sec-15.1.2.4">
+  <p><strong>15.1.2.4 isNaN (number)</strong></p>
+  <p>Returns true if the argument coerces to NaN, and otherwise returns false.</p>
+
+  <div style="display: flex; align-items: center; gap: 1ex">
+    <p style="margin: 0">NOTE</p>
+  <p style="margin: 0">A reliable way for ECMAScript code to test if a value X is a NaN is an expression of the form X !== X. The result will be true if and only if X is a NaN.</p>
+</blockquote>
+
+<p>Why <code>isNaN</code> wasn't implemented as reliable way to detect NaNs is beyond me
+(current standard recommends the same by the way).</p>
+    </main>
+  </body>
+</html>
