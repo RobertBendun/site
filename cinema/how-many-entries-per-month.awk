@@ -1,3 +1,8 @@
+#!/usr/bin/env -S awk -f
+# Note that -S is a non POSIX extension,
+# that works on GNU Coreutils and FreeBSD
+# but is NOT supported on OpenBSD or in BusyBox
+
 /nav.*month-toc/ {
 	count_mode = 1
 }

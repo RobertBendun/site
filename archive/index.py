@@ -143,7 +143,6 @@ HTML = """<!DOCTYPE html>
 """
 
 class Tags:
-    Genshin = Tag(name = "genshin", description="Notes from adventures in Genshin Impact, popular gacha game")
     Linux = Tag(name="linux", description="Things that come up with administration of my Linux laptops")
     WebsiteUpdate = Tag(name="site", description="Changelog for my website")
     CSS = Tag(name="css", description="Articles about CSS")
@@ -158,18 +157,14 @@ POSTS = sorted([
     Post(path="output.html", name="On Output"),
     Post(path="view-transitions.html", name="Cross-document view transitions are here!", tag=Tags.CSS),
     Post(path="libvirt-vm-scaling.html", name="Scaling libvirt Linux VMs", tag=Tags.Linux),
-    Post(path="pyro-enjoyer.html", name="I guess I main Pyro now?!", tag=Tags.Genshin),
     Post(path="python-turtles.html", name="Python turtles"),
     Post(path="wayland-keyboard.html", name="How to disable builtin keyboard in Wayland", tag=Tags.Linux),
     Post(path="odd-versioning-systems.html", name="Odd versioning systems"),
-    Post(path="arlecchino-backstory-thoughts.html", name="Arlecchino backstory thoughts", tag=Tags.Genshin),
-    Post(path="i-want-to-just-spend-time-with-them.html", name="I just want to spend time with them", tag=Tags.Genshin),
     Post(path="16-by-19-is-an-antipattern.html", name="16:9 is an antipattern"),
     Post(path="fun-with-imdb-using-duckdb.html", name="Fun with IMDb using DuckDB"),
     Post(path="gym-lockers.html", name="Finding locker at the gym in O(1)"),
     Post(path="css-position-relative-grid.html", name="Nested elements onto grid using relative position", tag=Tags.CSS),
     Post(path="new-version-announcement-post.html", name="Website Update!", tag=Tags.WebsiteUpdate),
-    Post(path="exploration-lore-abyss-and-lantern-rite.html", name="Exploration, Lore, Spiral Abyss and Lantern Rite", tag=Tags.Genshin),
 ])
 
 if __name__ == "__main__":
