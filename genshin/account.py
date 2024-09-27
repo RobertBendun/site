@@ -149,6 +149,7 @@ PAGE = """<!DOCTYPE html>
 """
 
 CHARACTERS = sorted([
+    Wish('Kinich', '2024-09-27'),
     Wish('Kachina', '2024-08-28'),
     Wish('Nilou', '2024-07-20'),
     Wish('Sethos', '2024-06-05'),

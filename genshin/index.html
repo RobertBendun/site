@@ -35,8 +35,12 @@
 				One day it would all be pretty!
 			</p>
 
-			<p>Recently (<time>2024-04-13</time>) I finally got <strong>Adventure Rank 58</strong> (took 203 days)!</p>
+			<p><span id="recently">Recently</span> (<time>2024-09-20</time>) I got <strong>Adventure Rank 59</strong> (took 160 days)</p>
+			<!-- Adventure Rank 58 got at 2024-04-13 -->
 			<!-- Adventure Rank 57 got at 2023-09-24 -->
+			<script>
+				recently.innerText = new Intl.RelativeTimeFormat('en').format(Math.ceil((Date.UTC(2024, 8, 20) - new Date()) / (1000 * 60 * 60 * 24)), 'day');
+			</script>
 		</main>
 </body>
 </html>
