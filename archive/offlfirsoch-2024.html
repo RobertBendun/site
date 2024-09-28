@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>OFFLFIRSOCH 2024: offline docs | Diana's Lab</title>
+		<meta property="og:title"          content="OFFLFIRSOCH 2024: offline docs" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+
+		<script src="/scramble.js"></script>
+		<script src="/glass-light.js"></script>
+		<link rel="stylesheet" href="/common.css" />
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
+			<p>created by hand with love</p>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>OFFLFIRSOCH 2024: offline docs</h1>
+			<p>Written <time datetime="2024-09-28T15:33+02:00">2024-08-28</time></p>
+
+			<p>OFFLine-FIRst SOftware CHallenge, or OFFLFIRSOCH is <a href="gemini://zaibatsu.circumlunar.space/~solderpunk/">solderpunk</a> (<a href="https://portal.mozz.us/gemini/zaibatsu.circumlunar.space/~solderpunk/">web link</a>) initiative
+			"to write and share a piece of software which works as well offline as it does online".
+			While I'm not part of their community and this is clearly not a Gemini document and there is at least 4 months after the deadline the idea was so cool that I had to participate.</p>
+
+			<h2>Offline documentation</h2>
+
+			<p>I hate SEO and what it done to the documentation results.
+			If I type <code>Python decorators</code> I want to see Python documentation, not some weird tutorial sites written by bots.
+			As it turns out, my distro of choice, Arch Linux, puts a lot of documentation under <code>/usr/share/doc/</code>, including Python one!
+			Now I need only nice way to see it.</p>
+
+			<p>I put some quick Ruby templates to generate nginx configuration that would serve each documentation that I find useful.
+			For example I have <code>python.localhost</code> which serves <code>/usr/share/doc/python/html/</code> and <code>rust.localhost</code> which serves result of <code>rustup doc --path</code>.</p>
+
+			<p>One problem that this setup has is lack of search engine that would connect all of this documentation into one browsable form.
+			Still looking for one that is easy to setup and wouldn't drain my resources since it is hosted locally on my machine.
+			Most packages are easily browsable with the exceptions of Arch Wiki which really needs a search engine - by the default it is just a flat list of html files in directory.</p>
+
+			<p><a href="https://github.com/RobertBendun/localhost/">You can find source code on Github.</a>
+			In the repo there is also a script that gives rough idea of what Arch Linux packages you must install to get documentation for packages you already have installed.</p>
+		</main>
+	</body>
+</html>
