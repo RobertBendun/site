@@ -10,8 +10,7 @@
 </head>
 <body>
 		<header>
-			<a href="/" class="hover-scramble" data-text="Diana's Chaotic Lab">Diana's Chaotic Lab</a>
-			<p>created by hand with love</p>
+			<a href="/" class="hover-scramble">bendun.cc</a>
 			<nav class="roots">
 				<ul>
 					<li><a href="/archive">Archive</a></li>
@@ -35,11 +34,14 @@
 				One day it would all be pretty!
 			</p>
 
-			<p><span id="recently">Recently</span> (<time>2024-09-20</time>) I got <strong>Adventure Rank 59</strong> (took 160 days)</p>
+			<p><span id="recently">Recently</span> (<time>2024-09-20</time>) I got <strong>Adventure Rank 59</strong> (took 160 days).
+			Also <span id="also"></span> I beaten Spiral Abyss with 36 stars for the first time using Vape (Arle, Xingqiu, Kazucha, Bennet) and Plunge (Chiori, Navia, Furina, Xianyun) teams!</p>
+			</p>
 			<!-- Adventure Rank 58 got at 2024-04-13 -->
 			<!-- Adventure Rank 57 got at 2023-09-24 -->
 			<script>
 				recently.innerText = new Intl.RelativeTimeFormat('en').format(Math.ceil((Date.UTC(2024, 8, 20) - new Date()) / (1000 * 60 * 60 * 24)), 'day');
+				also.innerText = new Intl.RelativeTimeFormat('en').format(Math.ceil((Date.UTC(2024, 8, 28) - new Date()) / (1000 * 60 * 60 * 24)), 'day');
 			</script>
 		</main>
 </body>
