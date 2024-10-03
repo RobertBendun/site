@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Zgadnij przystanek!</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+html {
+	color-scheme: dark;
+}
+body {
+	font-family: system-ui, sans-serif;
+	line-height: 1.6;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+</style>
+	</head>
+	<body>
+		<h1>Zgadnij przystanek!</h1>
+		<p>W polu poniżej wpisuj nazwy przystanków w Poznaniu.
+		Nie musisz dopasowywać nazw pod względem wielkości liter.
+		Lista przystanków na dzień 2024-10-03.</p>
+		<p id="time"></p>
+		<input type="text">
+		<div id="stats"></div>
+		<h2>Odgadnięto</h2>
+		<div id="guessed" style="display: flex;flex-direction: row;flex-wrap: wrap;gap: 1em;justify-content: center;align-items: center;"></div>
+		<script>
+const stops = [
+  "27 Grudnia",
+  "AWF",
+  "Aleje Marcinkowskiego",
+  "Aleje Solidarności",
+  "Arciszewskiego",
+  "Arena",
+  "Armii Poznań",
+  "Baraniaka",
+  "Bałtyk",
+  "Bonin",
+  "Budziszyńska",
+  "Bukowska",
+  "Bystra",
+  "Błażeja",
+  "Cmentarna",
+  "Drzewieckiego",
+  "Dworzec Zachodni",
+  "Dębiec PKM",
+  "Franowo",
+  "Fredry",
+  "Grochowska",
+  "Grotkowska",
+  "Gwarna",
+  "Górczyn PKM",
+  "Głogowska/Hetmańska",
+  "HCP",
+  "Hetmańska Wiadukt",
+  "Jasna Rola",
+  "Junikowo",
+  "Katedra",
+  "Klin",
+  "Kmieca",
+  "Kolejowa",
+  "Kosińskiego",
+  "Krauthofera",
+  "Krańcowa",
+  "Kurpińskiego",
+  "Kórnicka",
+  "Lechicka Poznań Plaza",
+  "Lechicka/Naramowicka",
+  "Lutycka Szpital",
+  "Matejki",
+  "Małe Garbary",
+  "Miłostowo",
+  "Mogileńska",
+  "Most Dworcowy",
+  "Most Teatralny",
+  "Most Św. Rocha",
+  "Murawa",
+  "Nad Wierzbakiem",
+  "Naramowice",
+  "Ogrody",
+  "Os. Czecha",
+  "Os. Lecha",
+  "Os. Piastowskie",
+  "Os. Pod Lipami",
+  "Os. Rzeczypospolitej",
+  "Os. Sobieskiego",
+  "Os. Tysiąclecia",
+  "Os. Winiary",
+  "Os. Łokietka",
+  "Ostroroga",
+  "Pamiątkowa",
+  "Park Wilsona",
+  "Pasieka",
+  "Piaśnicka Rynek",
+  "Piaśnicka/Kurlandzka",
+  "Piątkowska",
+  "Pl. Bernardyński",
+  "Pl. Ratajskiego",
+  "Pl. Wielkopolski",
+  "Pl. Wiosny Ludów",
+  "Polanka",
+  "Politechnika",
+  "Polna",
+  "Poznań Główny",
+  "Poznańska",
+  "Połabska",
+  "Przełajowa",
+  "Półwiejska",
+  "Ratajczaka",
+  "Rolna",
+  "Rondo Kaponiera",
+  "Rondo Nowaka-Jeziorańskiego",
+  "Rondo Rataje",
+  "Rondo Skubiszewskiego",
+  "Rondo Solidarności",
+  "Rondo Starołęka",
+  "Rondo Śródka",
+  "Rondo Żegrze",
+  "Rynek Jeżycki",
+  "Rynek Wildecki",
+  "Rynek Łazarski",
+  "Różana",
+  "Serafitek",
+  "Serbska",
+  "Sielska",
+  "Sołacz",
+  "Stadion Miejski",
+  "Starołęka Mała",
+  "Starołęka PKM",
+  "Szwajcarska",
+  "Szwedzka",
+  "Szymanowskiego",
+  "Słowiańska",
+  "Tadeuszak",
+  "Termalna",
+  "Traugutta",
+  "Unii Lubelskiej",
+  "Uniwersytet Ekonomiczny",
+  "Uniwersytet Przyrodniczy",
+  "Wielkopolska",
+  "Wierzbięcice",
+  "Wilczak",
+  "Wioślarska",
+  "Wojskowa",
+  "Wrocławska",
+  "Wspólna",
+  "Węgorka",
+  "Włodarska",
+  "Zamek",
+  "Zawady",
+  "Łacina",
+  "Łomżyńska",
+  "Łąkowa",
+  "Św. Czesława",
+  "Św. Leonarda",
+  "Św. Michała",
+  "Żegrze I",
+  "Żegrze II",
+  "Żegrze III",
+  "Żeromskiego",
+  "Żniwna"
+].map(x => ({orig: x, cmp: x.toLowerCase()}));
+
+let last_time = null;
+let start_time = null;
+let intl = new Intl.RelativeTimeFormat('pl');
+
+function update_stats() {
+	let stats = document.getElementById('stats');
+	let time = document.getElementById('time');
+
+	let time_spend = performance.now() - last_time;
+
+	if (stops.length == 0) {
+		stats.innerText = "Wszystkie odgadnięte!";
+		return;
+	} else if (stops.length % 10 >= 2 && stops.length % 10 <= 4) {
+		stats.innerText = `Pozostały ${stops.length} przystanki.`;
+	} else {
+		stats.innerText = `Pozostało ${stops.length} przystanków.`;
+	}
+
+
+	if (last_time !== null) {
+		stats.innerText += " Ostatnio odgadnięto " + intl.format(-Math.floor(time_spend / 1000), 'second');
+	}
+
+	if (start_time !== null) {
+		time.innerText = `Rozpoczęto zgadywanie ${intl.format(-Math.floor((performance.now() - start_time) / 1000), 'second')}`;
+	}
+}
+
+setInterval(update_stats, 1000);
+
+document.querySelector('input[type=text]').addEventListener('input', (e) => {
+	let guess = e.target.value.toLowerCase();
+
+	if (start_time === null) {
+		start_time = performance.now();
+	}
+
+	for (let i = 0; i < stops.length; ++i) {
+		let stop = stops[i];
+		console.log(guess, stop);
+		if (guess == stop.cmp) {
+			stops.splice(i, 1);
+			update_stats();
+			e.target.value = "";
+			const div = document.createElement("div");
+			div.innerText = stop.orig;
+			const guessed = document.getElementById('guessed');
+			last_time = performance.now();
+			for (let child of guessed.children) {
+				if (child.innerText > div.innerText) {
+					guessed.insertBefore(div, child);
+					return;
+				}
+			}
+			guessed.appendChild(div);
+			return;
+		}
+	}
+});
+
+update_stats();
+		</script>
+	</body>
+</html>
