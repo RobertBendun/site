@@ -148,6 +148,7 @@ class Tags:
 
 
 POSTS = sorted([
+    Post(path="nestable-strings.html", name="Nestable strings"),
     Post(path="offlfirsoch-2024.html", name="OFFLFIRSOCH 2024: offline docs"),
     Post(path="interests.html", name="/interests"),
     Post(path="string-new-date-nan.html", name="String(new Date(NaN))"),

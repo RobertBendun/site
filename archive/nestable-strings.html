@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Nestable Strings | Diana's Lab</title>
+		<meta property="og:title"          content="Nestable Strings" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+
+		<script src="/scramble.js"></script>
+		<script src="/glass-light.js"></script>
+		<link rel="stylesheet" href="/common.css" />
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble">bendun.cc</a>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>Nestable strings</h1>
+
+			<p>Written <time datetime="2024-10-13T01:16:35+02:00">2024-10-13</time>, a minute read</p>
+
+			<p><a href="https://en.wikipedia.org/wiki/M4_(computer_language)">m4 macro processor</a> has a nifty little feature of <em>nestable strings</em>.
+			It doesn't use the traditional <code>"</code> character to create string literals - instead it uses a pair of <code>`</code> and <code>'</code>.</p>
+
+			<table style="margin-inline: auto">
+				<tr><th>C, Python</th><td><code>"hello, world"</code></td></tr>
+				<tr><th>m4</th><td><code>`hello, world'</code></td></tr>
+			</table>
+
+			<p>This allows for easy nesting of string literals - instead of <code>"Program prints \"hello, world\""</code> in Python, in m4 you write <code>`Program prints `hello, world''</code>.
+			In m4 this is particularly useful to prevent macros referencing themselves:</p>
+<pre><code>dnl references itself and doesn't terminate:
+define(`hello', `hello, world')
+dnl terminates thanks to nested quotation:
+define(`hello', ``hello', world')</code></pre>
+<p>(<code>dnl</code> is a syntax for line comments in m4)</p>
+
+			<p>Of course this „feature” is a present in natural languages.
+			As seen in <a href="https://en.wikipedia.org/wiki/Quotation_mark">Quotation mark</a> article all natural languages follow the convention of different opening and closing quotation marks.
+			One could argue that we moved from ASCII a long time ago, however we can always use LaTeX convention of <code>,,</code> and <code>''</code> for ASCII compatible syntax.</p>
+
+			<h2>Other nice m4 features</h2>
+
+			<p>Math with <code>eval</code> can be done in almost arbitrary bases: <code>0r[base]:[number]</code> allow for numbers in base from 1 to 36 and second argument of <code>eval</code> allows choosing the base of the output.</p>
+
+<pre><code>del some hex math
+eval(`0xfa + 1', `16')
+del and using the arbitrary base syntax:
+eval(`0r16:fa + 1', `16')</code></pre>
+
+			<p>m4 doesn't support loops so iteration is commonly expressed via recursion:</p>
+
+<pre><code>del macro turns arguments into Haskell list
+define(`list', `ifelse(`$#', `0', `[]', `$1', `', `[]',  ``$1':list(shift($@))')')
+list(1,2,3)
+1:2:3:[]
+list(1)
+1:[]
+list()
+[]</pre></code>
+
+			<p>I recommend <a href="https://mbreen.com/m4.html">this excellent article</a> from <a href="">Michael Breen</a> on m4 if you are interested in learning more.
+			It's a simple Unix-style program so there isn't much to learn about it's workings.</p>
+		</main>
+	</body>
+</html>
