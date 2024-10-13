@@ -88,12 +88,9 @@ header > div {
 	position: relative;
 }
 
-#page, .prompt {
+#page {
 	max-width: 80ch;
 	box-sizing: border-box;
-}
-
-#page {
 	padding: 1px 1em 1em 1em;
 	margin: 1em auto 1em auto;
 }
@@ -115,33 +112,6 @@ nav.roots ul {
 
 nav.roots a {
 	font-size: 1.2em;
-}
-
-nav.prompt {
-	width: 100%;
-	padding: 0.5em;
-	margin-top: 1.5em;
-	font-family: monospace;
-	font-size: 1.4em;
-	display: flex;
-	flex-wrap: wrap;
-}
-
-nav.prompt ul {
-	display: flex;
-	list-style-type: none;
-}
-
-nav.prompt div::before {
-	content: "$ ";
-}
-
-nav.prompt div {
-	font-family: monospace;
-	display: block;
-	min-width: 10ch;
-	text-align: left;
-	flex-grow: 99999;
 }
 
 .hover-scramble {

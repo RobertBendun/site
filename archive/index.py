@@ -88,7 +88,6 @@ HTML = """<!DOCTYPE html>
 
 		<script src="/scramble.js"></script>
 		<script src="/glass-light.js"></script>
-		<script src="/prompt.js"></script>
 		<link rel="stylesheet" href="/common.css" />
 		<link rel="stylesheet" href="/tiers.css" />
         <style>
