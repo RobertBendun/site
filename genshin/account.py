@@ -139,6 +139,7 @@ PAGE = """<!DOCTYPE html>
 """
 
 CHARACTERS = sorted([
+    Wish('Xilonen', '2024-10-21'),
     Wish('Kinich', '2024-09-27'),
     Wish('Kachina', '2024-08-28'),
     Wish('Nilou', '2024-07-20'),
@@ -213,6 +214,8 @@ CHARACTERS = sorted([
 assert all(char.date is not None for char in CHARACTERS)
 
 FIVE_STAR_WEAPONS = sorted([
+    Wish('Uraku Misugiri', weapon=True),
+    Wish('Peak Patrol Song', weapon=True),
     Wish("Aquila Favonia", weapon=True),
     Wish("Crimson Moon's Semblance", pity=67, weapon=True),
     Wish("Skyward Harp", weapon=True),
