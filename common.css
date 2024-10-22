@@ -83,17 +83,24 @@ header > div {
 
 .glass {
 	box-sizing: border-box;
-	background-color: #282828bb;
+	background-color: #232323bb;
 	box-shadow: 0 0 1rem #282828;
 	position: relative;
 }
 
 #page {
-	max-width: 80ch;
 	box-sizing: border-box;
 	padding: 1px 1em 1em 1em;
 	margin: 1em auto 1em auto;
 }
+
+@media only screen and (min-width: calc(80ch + 4rem)) {
+	#page {
+		max-width: calc(80ch + 3rem);
+		padding: 0.5rem 4rem 0.5rem 4rem;
+	}
+}
+
 
 a, a:link { color: var(--link); }
 a:visited { color: var(--link-visited); }
