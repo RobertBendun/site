@@ -35,7 +35,7 @@ def generate_characters() -> str:
             </section>
         """.format(
             group_name=group_name,
-            characters="\n".join(f'<img style="width: 100%" src="{c.icon_url}" alt="{c.name}">' for c in group)
+            characters="\n".join(f'<img style="width: 100%" class="{c.classes}" src="{c.icon_url}" alt="{c.name}">' for c in group)
         )
         for group_name, group in grouped.items()
     )
@@ -45,7 +45,7 @@ def generate_weapons() -> str:
 
 
 class Wish:
-    def __init__(self, name: str, date: datetime|str|None = None, *, pity: typing.Optional[int] = None, weapon: bool = False):
+    def __init__(self, name: str, date: datetime|str|None = None, *, pity: typing.Optional[int] = None, weapon: bool = False, benched: bool = True):
         self.name = name
         if isinstance(date, str):
             self.date = datetime.strptime(date, "%Y-%m-%d")
@@ -53,6 +53,7 @@ class Wish:
             self.date = date
         self.pity = pity
         self.weapon = weapon
+        self.benched = benched
 
     @property
     def icon_url(self) -> str:
@@ -60,6 +61,12 @@ class Wish:
         if not self.weapon:
             return f"icons/{name}.webp"
         return f"https://rerollcdn.com/GENSHIN/Weapons/{name}.png"
+
+    @property
+    def classes(self) -> str:
+        classes = []
+        if self.benched: classes.append('benched')
+        return ' '.join(classes)
 
     def __repr__(self) -> str:
         base = [repr(self.name), repr(self.date)]
@@ -77,6 +84,11 @@ PAGE = """<!DOCTYPE html>
 		<script src="/scramble.js"></script>
 		<script src="/glass-light.js"></script>
 		<link rel="stylesheet" href="/common.css" />
+        <style>
+.benched {{
+	filter: grayscale(0.75) brightness(60%);
+}}
+        </style>
 </head>
 <body>
 		<header>
@@ -95,8 +107,11 @@ PAGE = """<!DOCTYPE html>
 		<p>
 			This are all of my characters listed by the time that I got them.
 			Currently I have {characters_count} characters.
-            Additionally I listed my 5* weapons - I'm not really a fan of weapon banner but I had some luck on it with Arlecchino and Lyney especially.
+            Additionally I listed my 5* weapons - I'm not really a fan of weapon banner but I had some luck on it.
 			You can find more information about some of the builds on my <a href="https://akasha.cv/profile/739467452">akasha profile</a>.
+        </p>
+        <p>
+            Characters that are gray and dimm are considered as benched - I either didn't use them in a while or didn't built them at all.
 		</p>
 		<p>
 			This page was generated using this <a href="characters.py">Python script</a>.
@@ -118,18 +133,18 @@ PAGE = """<!DOCTYPE html>
 """
 
 CHARACTERS = sorted([
-    Wish('Xilonen', '2024-10-21'),
+    Wish('Xilonen', '2024-10-21', benched=False),
     Wish('Kinich', '2024-09-27'),
     Wish('Kachina', '2024-08-28'),
     Wish('Nilou', '2024-07-20'),
     Wish('Sethos', '2024-06-05'),
-    Wish("Arlecchino", "2024-05-02", pity=76),
-    Wish("Chiori", "2024-03-22", pity=80),
-    Wish("Xianyun", "2024-02-18", pity=75),
+    Wish("Arlecchino", "2024-05-02", pity=76, benched=False),
+    Wish("Chiori", "2024-03-22", pity=80, benched=False),
+    Wish("Xianyun", "2024-02-18", pity=75, benched=False),
     Wish("Gaming", "2024-02-05"),
-    Wish("Chevreuse", "2024-01-13"),
-    Wish("Navia", "2023-12-20", pity=58),
-    Wish("Furina", "2023-11-08", pity=78),
+    Wish("Chevreuse", "2024-01-13", benched=False),
+    Wish("Navia", "2023-12-20", pity=58, benched=False),
+    Wish("Furina", "2023-11-08", pity=78, benched=False),
     Wish("Charlotte", "2023-11-08"),
     Wish("Freminet", "2023-09-12"),
     Wish("Lyney", "2023-09-03", pity=82),
@@ -138,51 +153,51 @@ CHARACTERS = sorted([
     Wish("Kaveh", "2023-05-05"),
     Wish("Mika", "2023-07-08"),
     Wish("Dehya", "2023-06-26"),
-    Wish("Yaoyao", "2023-02-03"),
-    Wish("Wanderer", "2022-12-10"),
-    Wish("Faruzan", "2022-12-08"),
+    Wish("Yaoyao", "2023-02-03", benched=False),
+    Wish("Wanderer", "2022-12-10", benched=False),
+    Wish("Faruzan", "2022-12-08", benched=False),
     Wish("Layla", "2023-03-02"),
-    Wish("Nahida", "2023-04-15"),
+    Wish("Nahida", "2023-04-15", benched=False),
     Wish("Cyno", "2023-03-19"),
     Wish("Candace", "2023-12-20"),
     Wish("Dori", "2022-09-09"),
     Wish("Tighnari", "2022-11-04"),
     Wish("Collei", "2022-08-24"),
     Wish("Shikanoin Heizou", "2023-06-17"),
-    Wish("Kuki Shinobu", "2022-09-28"),
-    Wish("Yelan", "2022-06-05"),
-    Wish("Kamisato Ayato", "2022-04-09"),
+    Wish("Kuki Shinobu", "2022-09-28", benched=False),
+    Wish("Yelan", "2022-06-05", benched=False),
+    Wish("Kamisato Ayato", "2022-04-09", benched=False),
     Wish("Yun Jin", "2022-04-09"),
     Wish("Arataki Itto", "2022-06-22"),
     Wish("Gorou", "2022-12-10"),
-    Wish("Thoma", "2022-02-22"),
-    Wish("Sangonomiya Kokomi", "2023-07-26", pity=43),
+    Wish("Thoma", "2022-02-22", benched=False),
+    Wish("Sangonomiya Kokomi", "2023-07-26", pity=43, benched=False),
     Wish("Raiden Shogun", "2023-01-07"),
     Wish("Kujou Sara", "2022-04-01"),
     Wish("Sayu", "2022-04-21"),
     Wish("Kamisato Ayaka", "2022-05-20"),
-    Wish("Kaedehara Kazuha", "2023-06-26", pity=45),
+    Wish("Kaedehara Kazuha", "2023-06-26", pity=45, benched=False),
     Wish("Yanfei", "2022-05-31"),
     Wish("Rosaria", "2022-05-08"),
     Wish("Xiao", "2023-02-03"),
     Wish("Ganyu", "2022-09-09"),
-    Wish("Zhongli", "2022-08-24"),
+    Wish("Zhongli", "2022-08-24", benched=False),
     Wish("Xinyan", "2022-06-13"),
     Wish("Diona", "2022-08-24"),
     Wish("Venti", "2022-10-14"),
     Wish("Keqing", "2023-10-01"),
     Wish("Mona", "2023-02-03"),
-    Wish("Qiqi", "2022-04-21"),
+    Wish("Qiqi", "2022-04-21", benched=False),
     Wish("Jean", "2022-05-13"),
     Wish("Sucrose", "2022-03-31"),
     Wish("Chongyun", "2022-11-02"),
     Wish("Noelle", "2022-02-03"),
-    Wish("Bennett", "2022-05-08"),
-    Wish("Fischl", "2022-08-02"),
+    Wish("Bennett", "2022-05-08", benched=False),
+    Wish("Fischl", "2022-08-02", benched=False),
     Wish("Ningguang", "2022-05-21"),
-    Wish("Xingqiu", "2022-04-17"),
-    Wish("Beidou", "2022-02-07"),
-    Wish("Xiangling", "2022-02-05"),
+    Wish("Xingqiu", "2022-04-17", benched=False),
+    Wish("Beidou", "2022-02-07", benched=False),
+    Wish("Xiangling", "2022-02-05", benched=False),
     Wish("Razor", "2022-04-24"),
     Wish("Barbara", "2022-02-13"),
     Wish("Lisa", "2022-02-03"),
