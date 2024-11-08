@@ -1,5 +1,6 @@
 import typing
 from datetime import datetime
+import enum
 
 # TODO: Show pity
 
@@ -13,6 +14,7 @@ def main():
         weapons=generate_weapons(),
         characters=generate_characters(),
         characters_count=len(CHARACTERS),
+        elements=''.join(generate_elements())
     ))
 
 
@@ -43,9 +45,54 @@ def generate_characters() -> str:
 def generate_weapons() -> str:
     return "\n".join(f'<img style="width: 100%" src="{c.icon_url}" alt="{c.name}">' for c in FIVE_STAR_WEAPONS)
 
+def generate_elements():
+    for i in range(2):
+        if i == 0:
+            yield '<p>How many characters from given element do I often use?</p>'
+        else:
+            yield '<p>How many characters from given element do I own?</p>'
+
+        yield '<div style="display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: 4rem auto; justify-content: center; text-align: center">'
+        element_count = {}
+        for element in Element:
+            element_count[element] = sum(1 for character in CHARACTERS if (i == 1 or not character.benched) and character.element == element)
+
+        COLORS = {
+                Element.ANEMO: '359697',
+                Element.CRYO: '4682B4',
+                Element.DENDRO: '608a00',
+                Element.ELECTRO: '945dc4',
+                Element.GEO: 'debd6c',
+                Element.HYDRO: '00BFFF',
+                Element.PYRO: 'EC4923',
+        }
+
+        m = max(element_count.values())
+
+        for element in Element:
+            p = element_count[element]/m*100
+            yield f'<div style="background: linear-gradient(to top, #{COLORS[element]} 0%, transparent {p}%);">{element_count[element]}</div>'
+
+        for element in Element:
+            yield f'<strong>{element}</strong>'
+        yield '</div>'
+
+class Element(enum.StrEnum):
+    ANEMO = "Anemo"
+    CRYO = "Cryo"
+    DENDRO = "Dendro"
+    ELECTRO = "Electro"
+    GEO = "Geo"
+    HYDRO = "Hydro"
+    PYRO = "Pyro"
 
 class Wish:
-    def __init__(self, name: str, date: datetime|str|None = None, *, pity: typing.Optional[int] = None, weapon: bool = False, benched: bool = True):
+    def __init__(self,
+                 name: str, date: datetime|str|None = None, *,
+                 pity: typing.Optional[int] = None,
+                 weapon: bool = False,
+                 benched: bool = True,
+                 ):
         self.name = name
         if isinstance(date, str):
             self.date = datetime.strptime(date, "%Y-%m-%d")
@@ -67,6 +114,11 @@ class Wish:
         classes = []
         if self.benched: classes.append('benched')
         return ' '.join(classes)
+
+    @property
+    def element(self) -> str:
+        assert self.name in CHARACTERS_ELEMENT, f"{self.name} doesn't have an element in CHARACTERS_ELEMENT table"
+        return CHARACTERS_ELEMENT[self.name]
 
     def __repr__(self) -> str:
         base = [repr(self.name), repr(self.date)]
@@ -105,9 +157,7 @@ PAGE = """<!DOCTYPE html>
 		<main id="page" class="glass">
 		<h1>My Genshin account</h1>
 		<p>
-			This are all of my characters listed by the time that I got them.
-			Currently I have {characters_count} characters.
-            Additionally I listed my 5* weapons - I'm not really a fan of weapon banner but I had some luck on it.
+			Currently I have {characters_count} characters and a few 5 star weapons.
 			You can find more information about some of the builds on my <a href="https://akasha.cv/profile/739467452">akasha profile</a>.
         </p>
         <p>
@@ -116,6 +166,12 @@ PAGE = """<!DOCTYPE html>
 		<p>
 			This page was generated using this <a href="characters.py">Python script</a>.
 		</p>
+
+        <section>
+            <h2>Elements</h2>
+            {elements}
+        </section>
+
         <section>
             <h2>5* Weapons</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
@@ -215,6 +271,99 @@ FIVE_STAR_WEAPONS = sorted([
     Wish("Skyward Harp", weapon=True),
     Wish("The First Great Magic", pity=3, weapon=True),
 ], key=lambda x: x.name)
+
+CHARACTERS_ELEMENT = {
+    "Albedo": Element.GEO,
+    "Alhaitham": Element.DENDRO,
+    "Aloy": Element.CRYO,
+    "Amber": Element.PYRO,
+    "Arataki Itto": Element.GEO,
+    "Arlecchino": Element.PYRO,
+    "Baizhu": Element.DENDRO,
+    "Barbara": Element.HYDRO,
+    "Beidou": Element.ELECTRO,
+    "Bennett": Element.PYRO,
+    "Candace": Element.HYDRO,
+    "Charlotte": Element.CRYO,
+    "Chasca": Element.ANEMO,
+    "Chevreuse": Element.PYRO,
+    "Chiori": Element.GEO,
+    "Chongyun": Element.CRYO,
+    "Clorinde": Element.ELECTRO,
+    "Collei": Element.DENDRO,
+    "Cyno": Element.ELECTRO,
+    "Dehya": Element.PYRO,
+    "Diluc": Element.PYRO,
+    "Diona": Element.CRYO,
+    "Dori": Element.ELECTRO,
+    "Emilie": Element.DENDRO,
+    "Eula": Element.CRYO,
+    "Faruzan": Element.ANEMO,
+    "Fischl": Element.ELECTRO,
+    "Freminet": Element.CRYO,
+    "Furina": Element.HYDRO,
+    "Gaming": Element.PYRO,
+    "Ganyu": Element.CRYO,
+    "Gorou": Element.GEO,
+    "Hu Tao": Element.PYRO,
+    "Jean": Element.ANEMO,
+    "Kachina": Element.GEO,
+    "Kaedehara Kazuha": Element.ANEMO,
+    "Kaeya": Element.CRYO,
+    "Kamisato Ayaka": Element.CRYO,
+    "Kamisato Ayato": Element.HYDRO,
+    "Kaveh": Element.DENDRO,
+    "Keqing": Element.ELECTRO,
+    "Kinich": Element.DENDRO,
+    "Kirara": Element.DENDRO,
+    "Klee": Element.PYRO,
+    "Kujou Sara": Element.ELECTRO,
+    "Kuki Shinobu": Element.ELECTRO,
+    "Layla": Element.CRYO,
+    "Lisa": Element.ELECTRO,
+    "Lynette": Element.ANEMO,
+    "Lyney": Element.PYRO,
+    "Mika": Element.CRYO,
+    "Mona": Element.HYDRO,
+    "Mualani": Element.HYDRO,
+    "Nahida": Element.DENDRO,
+    "Navia": Element.GEO,
+    "Neuvillette": Element.HYDRO,
+    "Nilou": Element.HYDRO,
+    "Ningguang": Element.GEO,
+    "Noelle": Element.GEO,
+    "Ororon": Element.ELECTRO,
+    "Qiqi": Element.CRYO,
+    "Raiden Shogun": Element.ELECTRO,
+    "Razor": Element.ELECTRO,
+    "Rosaria": Element.CRYO,
+    "Sangonomiya Kokomi": Element.HYDRO,
+    "Sayu": Element.ANEMO,
+    "Sethos": Element.ELECTRO,
+    "Shenhe": Element.CRYO,
+    "Shikanoin Heizou": Element.ANEMO,
+    "Sigewinne": Element.HYDRO,
+    "Sucrose": Element.ANEMO,
+    "Tartaglia": Element.HYDRO,
+    "Thoma": Element.PYRO,
+    "Tighnari": Element.DENDRO,
+    "Venti": Element.ANEMO,
+    "Wanderer": Element.ANEMO,
+    "Wriothesley": Element.CRYO,
+    "Xiangling": Element.PYRO,
+    "Xianyun": Element.ANEMO,
+    "Xiao": Element.ANEMO,
+    "Xilonen": Element.GEO,
+    "Xingqiu": Element.HYDRO,
+    "Xinyan": Element.PYRO,
+    "Yae Miko": Element.ELECTRO,
+    "Yanfei": Element.PYRO,
+    "Yaoyao": Element.DENDRO,
+    "Yelan": Element.HYDRO,
+    "Yoimiya": Element.PYRO,
+    "Yun Jin": Element.GEO,
+    "Zhongli": Element.GEO,
+}
 
 if __name__ == "__main__":
     main()
