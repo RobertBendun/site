@@ -7,6 +7,11 @@
 		<script src="/scramble.js"></script>
 		<script src="/glass-light.js"></script>
 		<link rel="stylesheet" href="/common.css" />
+<style>
+tr > * {
+	width: 20%;
+}
+</style>
 </head>
 <body>
 		<header>
@@ -21,7 +26,7 @@
 			</nav>
 		</header>
 		<main id="page" class="glass">
-			<h1>Genshin Impact shrine</h1>
+			<h1>Genshin Impact Shrine</h1>
 			<p>
 				This is a little place to document and explore my Genshin Impact playthrough.
 				It is under construction, currently hosting this subpages:
@@ -35,13 +40,92 @@
 			</p>
 
 			<p><span id="recently">Recently</span> (<time>2024-09-20</time>) I got <strong>Adventure Rank 59</strong> (took 160 days).
-			Also <span id="also"></span> I beaten Spiral Abyss with 36 stars for the first time using Vape (Arle, Xingqiu, Kazucha, Bennet) and Plunge (Chiori, Navia, Furina, Xianyun) teams!</p>
-			</p>
 			<!-- Adventure Rank 58 got at 2024-04-13 -->
 			<!-- Adventure Rank 57 got at 2023-09-24 -->
+
+			<h2>Abyss History</h2>
+
+			<p>From the 5.0 Abyss I started noting my performance due to first 36 stars completion.</p>
+
+			<h3>5.1 - Consecrated Beasts and Geo Shields</h3>
+
+			<h4>First approach (35 stars)</h4>
+
+			<p>High base resistance of Consecrated Beasts scared me off from using Arlecchino.
+			For my account this leaves me with Hyperbloom (since Navia is busy on the other side).
+			First I used Ayato team but sadly you can feel that his build is quite old.
+			</p>
+
+			<table>
+				<tbody>
+					<tr>
+						<th scope="row">First Half</th>
+						<td><img src="icons/Nahida.webp" alt="Nahida"></td>
+						<td><img src="icons/Xingqiu.webp" alt="Xingqiu"></td>
+						<td><img src="icons/Yelan.webp" alt="Yelan"></td>
+						<td><img src="icons/Kuki_Shinobu.webp" alt="Kuki Shinobu"></td>
+					</tr>
+					<tr>
+						<th scope="row">Second Half</th>
+						<td><img src="icons/Navia.webp" alt="Navia"></td>
+						<td><img src="icons/Furina.webp" alt="Furina"></td>
+						<td><img src="icons/Xianyun.webp" alt="Xianyun"></td>
+						<td><img src="icons/Chiori.webp" alt="Chiori"></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<p>I really need to invest properly into good Hyperbloom team - it feels really lacking compared to what I see on YouTube.</p>
+
+			<h4>Second approach (36 stars)</h4>
+
+			<p>Then I got Xilonen and even though she is not build fully yet (skill talent level 6, artifacts around level 16, level 80/80, signature sword at 70/70) you can feel the power.</p>
+
+			<table>
+				<tbody>
+					<tr>
+						<th scope="row">First Half</th>
+						<td><img src="icons/Arlecchino.webp" alt="Arlecchino"></td>
+						<td><img src="icons/Bennett.webp" alt="Bennett"></td>
+						<td><img src="icons/Xilonen.webp" alt="Xilonen"></td>
+						<td><img src="icons/Zhongli.webp" alt="Zhongli"></td>
+					</tr>
+					<tr>
+						<th scope="row">Second Half</th>
+						<td><img src="icons/Navia.webp" alt="Navia"></td>
+						<td><img src="icons/Furina.webp" alt="Furina"></td>
+						<td><img src="icons/Xianyun.webp" alt="Xianyun"></td>
+						<td><img src="icons/Chiori.webp" alt="Chiori"></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<h3>5.0 - Natlan and Fontaine Local Legends</h3>
+
+			<p>Fontaine meta here we go!
+			Seriously, my account is so skewed towards Fontaine, look at this:</p>
+
+			<table>
+				<tbody>
+					<tr>
+						<th scope="row">First Half</th>
+						<td><img src="icons/Arlecchino.webp" alt="Arlecchino"></td>
+						<td><img src="icons/Xingqiu.webp" alt="Xingqiu"></td>
+						<td><img src="icons/Kaedehara_Kazuha.webp" alt="Kaedehara Kazuha"></td>
+						<td><img src="icons/Bennett.webp" alt="Bennett"></td>
+					</tr>
+					<tr>
+						<th scope="row">Second Half</th>
+						<td><img src="icons/Navia.webp" alt="Navia"></td>
+						<td><img src="icons/Furina.webp" alt="Furina"></td>
+						<td><img src="icons/Xianyun.webp" alt="Xianyun"></td>
+						<td><img src="icons/Chiori.webp" alt="Chiori"></td>
+					</tr>
+				</tbody>
+			</table>
+
 			<script>
 				recently.innerText = new Intl.RelativeTimeFormat('en').format(Math.ceil((Date.UTC(2024, 8, 20) - new Date()) / (1000 * 60 * 60 * 24)), 'day');
-				also.innerText = new Intl.RelativeTimeFormat('en').format(Math.ceil((Date.UTC(2024, 8, 28) - new Date()) / (1000 * 60 * 60 * 24)), 'day');
 			</script>
 		</main>
 </body>

@@ -56,30 +56,9 @@ class Wish:
 
     @property
     def icon_url(self) -> str:
-        strip_prefix = [
-            'Shikanoin Heizou',
-            'Sangonomiya Kokomi',
-            'Kaedehara Kazuha',
-            'Kujou Sara',
-            'Kamisato Ayato',
-            'Kamisato Ayaka',
-            'Arataki Itto',
-        ]
-        strip_suffix = [
-            'Raiden Shogun'
-        ]
-
-        if not self.weapon:
-            if self.name in strip_prefix:
-                name = self.name.split()[-1]
-            elif self.name in strip_suffix:
-                name = self.name.split()[0]
-            else:
-                name = self.name
-
-            return f"https://rerollcdn.com/GENSHIN/Characters/1/{name}.png"
-
         name = self.name.replace(" ", "_")
+        if not self.weapon:
+            return f"icons/{name}.webp"
         return f"https://rerollcdn.com/GENSHIN/Weapons/{name}.png"
 
     def __repr__(self) -> str:
