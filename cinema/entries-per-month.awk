@@ -23,7 +23,11 @@ match($0, /aside.*id="([^"]+)"/, a)  {
 
 /<\/nav>/ {
 	if (count > 0) {
-		print date ": " count
+		printf date ": %2d ", count
+		for (c = 0; c < count; c++) {
+			printf "█"
+		}
+		printf "\n"
 		count_mode = 0
 	}
 }

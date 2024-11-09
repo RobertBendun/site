@@ -19,6 +19,7 @@ END {
 	min = 9999
 	max = 0
 	len = 0
+
 	for (idx in counts) {
 		if (idx > max) {
 			max = idx
