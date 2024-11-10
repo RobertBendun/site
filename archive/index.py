@@ -147,6 +147,7 @@ class Tags:
 
 
 POSTS = sorted([
+    Post(path="github-archive.html", name="My Github Repositories"),
     Post(path="nestable-strings.html", name="Nestable strings"),
     Post(path="offlfirsoch-2024.html", name="OFFLFIRSOCH 2024: offline docs"),
     Post(path="interests.html", name="/interests"),

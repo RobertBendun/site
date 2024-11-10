@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Github Repositories | Diana's Lab</title>
+    <meta property="og:title"          content="My Github Repositories" />
+    <meta property="og:type"           content="article" />
+    <meta property="og:article:author" content="Diana Bendun" />
+
+    <script src="/scramble.js"></script>
+    <script src="/glass-light.js"></script>
+    <link rel="stylesheet" href="/common.css" />
+  </head>
+  <body>
+    <header>
+      <a href="/" class="hover-scramble">bendun.cc</a>
+      <nav class="roots">
+        <ul>
+          <li><a href="/archive">Archive</a></li>
+          <li><a href="/cinema">Cinema</a></li>
+          <li><a href="https://github.com/RobertBendun">Github</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main id="page" class="glass">
+      <h1>My Github Repositories</h1>
+
+      <p>Written <time datetime="2024-11-10T14:25:38+01:00">2024-11-10</time>, a 3 minutes read</p>
+
+      <p>So today I decided to archive my Github repositories:</p>
+
+      <pre><code>gh repo list --json sshUrl --limit 1000 | jq .[].sshUrl -r | parallel git clone</code></pre>
+
+      <p>I love the github commandline interface, it makes task like this so simple.
+      Normally you would have to do some REST API mumbo jumbo but here it is just a simple shell workflow.</p>
+
+      <h2>How Many Commits?</h2>
+
+      <pre><code>ls | parallel --tag -I{} -- git -C {} rev-list --count --all \
+   | awk '{printf("%6d ", $2); print $1}' \
+   | sort -rn | head</pre></code>
+
+      <p>produces this list of repositories with most commits:</p>
+<pre><code> 10983 sonic-pi
+  2704 natalie
+  1701 dwm
+   585 nlp-menu
+   562 slstatus
+   523 musique
+   338 link
+   310 link-echo
+   222 zeroconf
+   219 stacky
+</code></pre>
+
+<p>I'm suprised that my current main project (<a href="https://github.com/RobertBendun/harmonia">Harmonia</a>) hasn't made the top 10 yet, with it's predecessor (<a href="https://github.com/RobertBendun/musique">Musique</a>) being in top 5.</p>
+
+<h2>What Languages?</h2>
+
+<pre><code>ls | parallel cloc --csv --hide-rate --quiet \
+   | grep -v 'github.com' | grep -v ',SUM,' \
+   | awk -F, '{ print $2 }' | sort | uniq -c | sort -rn
+</code></pre>
+
+<p>produces this list of languages used across the repositories:</p>
+
+<pre><code>    104 Markdown
+     44 make
+     39 C++
+     38 C/C++ Header
+     35 Bourne Shell
+     29 Python
+     21 Text
+     20 C
+     16 HTML
+     15 YAML
+     15 Rust
+     15 JavaScript
+     15 Go
+     14 TOML
+     12 JSON
+     12 Haskell
+</code></pre>
+
+<p>however this time the trail of languages used only one is interesting.
+We have gems like Ada, Clojure, D, Erlang, Julia, Lisp, Lua, R, Scala, Scheme, Zig, and much more!</p>
+
+<h2>What time?</h2>
+
+<pre><code>ls | parallel -I{} -- git -C {} log --reflog \'--pretty='%an %aI'\' \
+   | awk 'match($0, /Bendun.*T([0-9][0-9])/, a) { hours[a[1]]++ };
+          END {
+            for (hour in hours) {
+               printf("%s: %4d ", hour, hours[hour]);
+               for (c = 0; c &lt; hours[hour]/4; ++c) printf("█");
+               print ""
+            }
+          }' \
+   | sort</code></pre>
+
+<p>produces this chart of how many commits I have done in each hour:</p>
+
+<p>Sort by
+<input type="radio" name="hours_commits" id="hours" checked oninput="sort_hours_commits('hours')">
+<label for="hours">hours</label>
+<input type="radio" name="hours_commits" id="commits" oninput="sort_hours_commits('commits')">
+<label for="commits">commits</label>
+</p>
+
+<pre id="hours_commits"><span class="00">00:  150 ██████████████████████████████████████
+</span><span>01:  124 ███████████████████████████████
+</span><span>02:  117 ██████████████████████████████
+</span><span>03:   68 █████████████████
+</span><span>04:   59 ███████████████
+</span><span>05:   24 ██████
+</span><span>06:   26 ███████
+</span><span>07:   14 ████
+</span><span>08:   18 █████
+</span><span>09:   30 ████████
+</span><span>10:   42 ███████████
+</span><span>11:   29 ████████
+</span><span>12:   54 ██████████████
+</span><span>13:   78 ████████████████████
+</span><span>14:   73 ███████████████████
+</span><span>15:  101 ██████████████████████████
+</span><span>16:  110 ████████████████████████████
+</span><span>17:   83 █████████████████████
+</span><span>18:   79 ████████████████████
+</span><span>19:  105 ███████████████████████████
+</span><span>20:   88 ██████████████████████
+</span><span>21:   97 █████████████████████████
+</span><span>22:  115 █████████████████████████████
+</span><span>23:  144 ████████████████████████████████████
+</span></pre>
+
+<h2>Commit Names Wordcloud</h2>
+
+<img src="commit-messages-wordcloud.png" alt="Wordcloud created from commit names" style="width: 100%">
+
+<pre><code>wordcloud_cli --background 'rgba(0,0,0,0)' --mode RGBA \
+  --width 1000 --height 600 --imagefile /tmp/output.png \
+  --text &lt;(ls | parallel -I{} -- git -C {} log --reflog \'--pretty='%an,,,%s'\' \
+  | awk -F,,, '/Bendun/{print $2}')
+
+</code></pre>
+
+<script>
+function sort_hours_commits(mode) {
+  function extract_hour_commits(text) {
+    return text.split(' ').map(x => parseInt(x, 10)).filter(Number.isInteger);
+  }
+
+  let rows = Array.from(hours_commits.children);
+  rows.sort((a, b) => {
+    const [ahour, acommit] = extract_hour_commits(a.textContent);
+    const [bhour, bcommit] = extract_hour_commits(b.textContent);
+    switch (mode) {
+      case 'hours':
+        return ahour - bhour;
+      case 'commits':
+        return bcommit == acommit ? ahour - bhour : bcommit - acommit;
+    }
+  });
+
+  for (let row of rows) {
+    hours_commits.appendChild(row);
+  }
+
+  console.log(rows);
+}
+</script>
+    </main>
+  </body>
+</html>
