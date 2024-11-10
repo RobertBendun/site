@@ -133,8 +133,6 @@ PAGE = """<!DOCTYPE html>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>My Genshin Characters | Diana's Lab</title>
-		<script src="/scramble.js"></script>
-		<script src="/glass-light.js"></script>
 		<link rel="stylesheet" href="/common.css" />
         <style>
 .benched {{
