@@ -1,6 +1,7 @@
 import typing
-from datetime import datetime
+from datetime import datetime, timedelta
 import enum
+import collections
 
 # TODO: Show pity
 
@@ -8,8 +9,18 @@ import enum
 # to infer which characters I don't have, and for my account it is more relevant information.
 # Also this list is useless since it doesn't show which characters I use / have build.
 
-
 def main():
+    global versions
+    versions = collections.defaultdict(set)
+
+    for c, n in zip(VERSIONS, VERSIONS[1:]):
+        start  = c.start
+        finish = n.start - timedelta(days=1)
+        start_q = (start.month - 1) // 3 + 1
+        finish_q = (finish.month - 1) // 3 + 1
+        versions[f"Q{start_q} {start.year}"] |= {c}
+        versions[f"Q{finish_q} {finish.year}"] |= {c}
+
     print(PAGE.format(
         weapons=generate_weapons(),
         characters=generate_characters(),
@@ -17,11 +28,13 @@ def main():
         elements=''.join(generate_elements())
     ))
 
-
 def generate_characters() -> str:
+    global versions
     grouped = {}
+
     for c in CHARACTERS:
-        q = round((c.date.month - 1) / 4) + 1
+        q = (c.date.month - 1) // 3 + 1
+
         target = f"Q{q} {c.date.year}"
         if target not in grouped:
             grouped[target] = []
@@ -30,12 +43,14 @@ def generate_characters() -> str:
     return "\n".join(
         """
             <section>
-                <h3>{group_name}</h3>
+                <h3>{group_name} ({versions}; {usage})</h3>
                 <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
                     {characters}
                 </div>
             </section>
         """.format(
+            usage = f"{100 * sum(1 for c in group if not c.benched) / len(group):.0f}%",
+            versions=', '.join(f"{v}" for v in sorted(versions[group_name])),
             group_name=group_name,
             characters="\n".join(f'<img style="width: 100%" class="{c.classes}" src="{c.icon_url}" alt="{c.name}">' for c in group)
         )
@@ -201,7 +216,7 @@ CHARACTERS = sorted([
     Wish("Furina", "2023-11-08", pity=78, benched=False),
     Wish("Charlotte", "2023-11-08"),
     Wish("Freminet", "2023-09-12"),
-    Wish("Lyney", "2023-09-03", pity=82),
+    Wish("Lyney", "2023-09-03", pity=82, benched=False),
     Wish("Lynette", "2023-08-16"),
     Wish("Kirara", "2023-05-24"),
     Wish("Kaveh", "2023-05-05"),
@@ -233,7 +248,7 @@ CHARACTERS = sorted([
     Wish("Kaedehara Kazuha", "2023-06-26", pity=45, benched=False),
     Wish("Yanfei", "2022-05-31"),
     Wish("Rosaria", "2022-05-08"),
-    Wish("Xiao", "2023-02-03"),
+    Wish("Xiao", "2023-02-03", benched=False),
     Wish("Ganyu", "2022-09-09"),
     Wish("Zhongli", "2022-08-24", benched=False),
     Wish("Xinyan", "2022-06-13"),
@@ -362,6 +377,74 @@ CHARACTERS_ELEMENT = {
     "Yun Jin": Element.GEO,
     "Zhongli": Element.GEO,
 }
+
+
+class Version:
+    def __init__(self, major: int, minor: int, start: str):
+        self.major = major
+        self.minor = minor
+        self.start = datetime.fromisoformat(start)
+
+    def __lt__(self, other):
+        return (self.major, self.minor) < (other.major, other.minor)
+
+    def __eq__(self, other):
+        return (self.major, self.minor) == (self.major, self.minor)
+
+    def __str__(self):
+        return f"{self.major}.{self.minor}"
+
+    def __hash__(self):
+        return (self.major, self.minor).__hash__()
+
+
+
+# Paste in console:
+# [...document.querySelectorAll('h3:has([id*="Version_"]) + table[data-index-number] tr:has([data-sort-value])')].map(x => `Version(${x.querySelector('td').textContent.trim().replace(".", ", ")}, "${x.querySelector('[data-sort-value]').dataset.sortValue}"),`).join('\n')
+# on https://genshin-impact.fandom.com/wiki/Version
+
+VERSIONS = sorted((
+    Version(5, 3, "2025-01-01"),
+    Version(5, 2, "2024-11-20"),
+    Version(5, 1, "2024-10-09"),
+    Version(5, 0, "2024-08-28"),
+    Version(4, 8, "2024-07-17"),
+    Version(4, 7, "2024-06-05"),
+    Version(4, 6, "2024-04-24"),
+    Version(4, 5, "2024-03-13"),
+    Version(4, 4, "2024-01-31"),
+    Version(4, 3, "2023-12-20"),
+    Version(4, 2, "2023-11-08"),
+    Version(4, 1, "2023-09-27"),
+    Version(4, 0, "2023-08-16"),
+    Version(3, 8, "2023-07-05"),
+    Version(3, 7, "2023-05-24"),
+    Version(3, 6, "2023-04-12"),
+    Version(3, 5, "2023-03-01"),
+    Version(3, 4, "2023-01-18"),
+    Version(3, 3, "2022-12-07"),
+    Version(3, 2, "2022-11-02"),
+    Version(3, 1, "2022-09-28"),
+    Version(3, 0, "2022-08-24"),
+    Version(2, 8, "2022-07-13"),
+    Version(2, 7, "2022-05-31"),
+    Version(2, 6, "2022-03-30"),
+    Version(2, 5, "2022-02-16"),
+    Version(2, 4, "2022-01-05"),
+    Version(2, 3, "2021-11-24"),
+    Version(2, 2, "2021-10-13"),
+    Version(2, 1, "2021-09-01"),
+    Version(2, 0, "2021-07-21"),
+    Version(1, 6, "2021-06-09"),
+    Version(1, 5, "2021-04-28"),
+    Version(1, 4, "2021-03-17"),
+    Version(1, 3, "2021-02-03"),
+    Version(1, 2, "2020-12-23"),
+    Version(1, 1, "2020-11-11"),
+    Version(1, 0, "2020-09-28"),
+    Version(0, 9.9, "2020-07-02"),
+    Version(0, 7.1, "2020-03-18"),
+))
 
 if __name__ == "__main__":
     main()
