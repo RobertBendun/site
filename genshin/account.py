@@ -9,6 +9,8 @@ import collections
 # to infer which characters I don't have, and for my account it is more relevant information.
 # Also this list is useless since it doesn't show which characters I use / have build.
 
+# TODO: Add sort by date, sort by how many used
+
 def main():
     global versions
     versions = collections.defaultdict(set)
@@ -40,7 +42,7 @@ def generate_characters() -> str:
             grouped[target] = []
         grouped[target].append(c)
 
-    return "\n".join(
+    characters = "\n".join(
         """
             <section>
                 <h3>{group_name} ({versions}; {usage})</h3>
@@ -56,6 +58,12 @@ def generate_characters() -> str:
         )
         for group_name, group in grouped.items()
     )
+
+    usage = 100 * sum(1 for g in grouped.values() for c in g if not c.benched) / sum(len(g) for g in grouped)
+    return f"""
+        <h2>Characters ({usage:.0f}% used)</h2>
+        {characters}
+    """
 
 def generate_weapons() -> str:
     return "\n".join(f'<img style="width: 100%" src="{c.icon_url}" alt="{c.name}">' for c in FIVE_STAR_WEAPONS)
@@ -153,6 +161,14 @@ PAGE = """<!DOCTYPE html>
 .benched {{
 	filter: grayscale(0.75) brightness(60%);
 }}
+[data-tooltip]:hover::after {{
+  display: block;
+  position: absolute;
+  content: attr(data-tooltip);
+  border: 1px solid black;
+  background: #eee;
+  padding: .25em;
+}}
         </style>
 </head>
 <body>
@@ -192,7 +208,6 @@ PAGE = """<!DOCTYPE html>
             </div>
         </section>
         <section>
-            <h2>Characters</h2>
             {characters}
         </section>
         </main>
@@ -202,6 +217,8 @@ PAGE = """<!DOCTYPE html>
 """
 
 CHARACTERS = sorted([
+    Wish('Ororon', '2024-11-21'),
+    Wish('Chasca', '2024-11-21'),
     Wish('Xilonen', '2024-10-21', benched=False),
     Wish('Kinich', '2024-09-27'),
     Wish('Kachina', '2024-08-28'),
