@@ -16,8 +16,8 @@ match($0, /aside.*id="([^"]+)"/, a)  {
 
 /<li>/ {
 	if (count_mode) {
-		count += 1
-		total += 1
+		count++
+		total++
 	}
 }
 
@@ -29,9 +29,12 @@ match($0, /aside.*id="([^"]+)"/, a)  {
 		}
 		printf "\n"
 		count_mode = 0
+		entries[months++] = count
 	}
 }
 
 END {
 	print "  Total: " total
+	print "Average: " (total / months)
+	print " Median: " (months % 2 == 0 ? entries[months/2-1] + entries[months/2] : entries[months/2])
 }
