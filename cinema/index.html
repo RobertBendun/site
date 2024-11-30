@@ -88,6 +88,15 @@ section:not(:last-child) {
 	border-bottom: 1px dotted;
 }
 
+section h3 {
+	transition: color 450ms;
+}
+
+section:target h3 {
+	transition: color 450ms;
+	color: var(--link-hover);
+}
+
 .span-2 {
 	grid-column: span 2;
 	width: 100%;

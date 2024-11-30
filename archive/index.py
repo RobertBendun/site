@@ -15,10 +15,9 @@ def entries():
     for post in POSTS:
         date = post.date.strftime('%Y-%m-%d')
         yield textwrap.dedent(f"""<li id="{date}">
-                <div>
-                    <time datetime="{post.date.isoformat()}">{date}</time>
-                    <div><a href="{post.path}">{post.name}</a>{" #" + post.tag.name if post.tag else ""}</div>
-                </div>
+                <a href="{post.path}">
+                    <div>{post.name}</div>
+                    <time datetime="{post.date.isoformat()}">{date}</time></a>
             </li>""")
 
 
@@ -28,7 +27,7 @@ def statistics():
     max_year = max((date.year for date in dates))
 
     for year in range(min_year, max_year+1):
-        yield '<div class="year" style="display: grid; grid-template-columns: min-content auto; align-items: center">'
+        yield '<div class="year" style="display: grid; grid-template-columns: min-content auto; align-items: center" aria-hidden="true">'
         yield f'<div style="padding: 5px">{year}</div>'
         yield '<div style="padding-left: 5px; border-left: 1px solid var(--text);">'
 
@@ -47,7 +46,9 @@ def statistics():
                 href = f"href=\"#{href}\""
             except ValueError:
                 href = ""
-            yield f'<a {href} style="background-color: rgba(69, 133, 136, {alpha})"></a>'
+            yield f'<a {href} tabindex="-1" style="background-color: rgba(69, 133, 136, {alpha})"></a>'
+
+        yield f'<span style="opacity: 0.4">({len(dates_in_year)} total)</span>'
         yield '</div>'
         yield '</div>'
 
@@ -94,19 +95,43 @@ HTML = """<!DOCTYPE html>
             aspect-ratio: 1;
             border: 1px solid #fbf1c744;
         }}
-        main li > div {{
-            display: flex;
+        main li > a {{
+            display: grid;
+            grid-template-columns: auto 12ex;
             text-wrap: balance;
+            align-items: center;
             gap: 1ex;
         }}
-@media only screen and (max-width: 70ch) {{
-	main ul,
-	main li {{
-		list-style-type: none;
-		margin: 0;
-		padding: 0;
-	}}
-}}
+        main li:target a {{
+            background-color: #00000040;
+        }}
+        main li a:hover {{
+            background-color: #00000080;
+        }}
+        main li a div {{
+            display: block;
+            width: 100%;
+            letter-spacing: 0.1ex;
+        }}
+        main li time {{
+            opacity: 0.8;
+            color: var(--text);
+            text-decoration: none !important;
+            text-align: right;
+        }}
+
+        main ul {{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }}
+
+        main ul,
+        main li {{
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }}
         </style>
 	</head>
 	<body>
@@ -123,11 +148,9 @@ HTML = """<!DOCTYPE html>
 		</header>
 		<main id="page" class="glass">
 			<h1>The Archive</h1>
-            <section class="stats">
-                <p>Here how my posting looks across the weeks:</p>
+            <section class="stats" style="margin-bottom: 1rem">
                 {statistics}
             </section>
-            <p>And here all of my posts:</p>
 			<ul>
                 {entries}
 			</ul>
