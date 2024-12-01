@@ -167,6 +167,7 @@ class Tags:
 
 
 POSTS = sorted([
+    Post(path="javascript-window.html", name="self is a cross-platform way to name a window"),
     Post(path="spooktober.html", name="Spooktober 🎃"),
     Post(path="github-archive.html", name="My Github Repositories"),
     Post(path="nestable-strings.html", name="Nestable strings"),

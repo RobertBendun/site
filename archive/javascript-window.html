@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>self is a cross-platform way to name a window | Diana's Lab</title>
+		<meta property="og:title"          content="self is a cross-platform way to name a window" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+		<link rel="stylesheet" href="/common.css" />
+<style>
+				table {
+					border-collapse: collapse;
+				}
+				th,td {
+					border: 1px dotted;
+					padding: 1ex;
+				}
+</style>
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble">bendun.cc</a>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>self is a cross-platform way to name a window</h1>
+			<p>Written <time datetime="2024-10-03T20:14+02:00">2024-10-03</time></p>
+
+			<p>While scrolling through the <a href="https://deno.com/blog/v2.0-release-candidate">Deno 2.0 release notes</a> one thing cought mine eye: deprecation of <code>window</code>.
+			My first suprise was that this even existed - why standalone JavaScript interpreter needs a <code>window</code>?
+			And the second one was: what is <code>globalThis</code> and <code>self</code>?</p>
+
+			<h2>Naming global context</h2>
+			<table style="margin-inline: auto; text-align: center">
+				<tr>
+					<td style="border: 0"></td>
+					<th>Browser</th>
+					<th>WebWorker</th>
+					<th>Nodejs</th>
+					<th>Deno</th>
+					<th>Bun</th>
+				</tr>
+				<tr>
+					<th>window</th>
+					<td>&check;</td>
+					<td></td>
+					<td></td>
+					<td>&check;</td>
+					<td></td>
+				</tr>
+				<tr>
+					<th>frames</th>
+					<td>&check;</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr style="border: 2px solid">
+					<th>self</th>
+					<td>&check;</td>
+					<td>&check;</td>
+					<td>&check;</td>
+					<td>&check;</td>
+					<td>&check;</td>
+				</tr>
+				<tr>
+					<th>globalThis</th>
+					<td>&check;</td>
+					<td></td>
+					<td>&check;</td>
+					<td>&check;</td>
+					<td>&check;</td>
+				</tr>
+				<tr>
+					<th>global</th>
+					<td></td>
+					<td></td>
+					<td>&check;</td>
+					<td></td>
+					<td>&check;</td>
+				</tr>
+			</table>
+
+			<p>There is only one way to access in all JavaScript execution environments the global object: <code>self</code>.
+			Any other way is quirky and works only in some context.</p>
+
+			<h3>Standards</h3>
+
+			<table>
+				<tr>
+					<th><a href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#the-window-object">HTML Spec</a></th>
+					<td>The window, frames, and self getter steps are to return this's relevant realm.[[GlobalEnv]].[[GlobalThisValue]].</td>
+				</tr>
+				<tr>
+					<th><a href="https://tc39.es/ecma262/#sec-globalthis">ECMAScript 2020</a></th>
+					<td>The initial value of the "globalThis" property of the global object in a Realm Record realm is realm.[[GlobalEnv]].[[GlobalThisValue]].</td>
+				</tr>
+			</table>
+
+			<p>ECMAScript doesn't have <code>self</code> defined in the standard and the HTML standard doesn't have <code>globalThis</code> defined, relying on reference to ECMA-262 standard.
+			So the only cross platform convention is unofficial one.</p>
+		</main>
+	</body>
+</html>
