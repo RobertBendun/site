@@ -16,9 +16,40 @@ h2 {
 	border-top: 1px solid;
 	border-bottom: 1px solid;
 }
-h3 {
-	border: 1px dashed;
-	padding-left: 1ex;
+
+._2x2 {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+}
+
+:root {
+	--color-anemo: #33ccb3;
+  --color-geo: #cfa726;
+  --color-electro: #d376f0;
+  --color-dendro: #7bb42d;
+  --color-hydro: #1c72fd;
+  --color-pyro: #e2311d;
+  --color-cryo: #98c8e8;
+}
+
+.electro { --element: var(--color-electro); }
+.geo { --element: var(--color-geo); }
+.pyro { --element: var(--color-pyro); }
+.hydro { --element: var(--color-hydro); }
+
+span.electro { color: var(--color-electro); }
+span.pyro { color: var(--color-pyro); }
+span.geo { color: var(--color-geo); }
+span.hydro { color: var(--color-hydro); }
+span.dendro { color: var(--color-dendro); }
+span.anemo { color: var(--color-anemo); }
+
+#teams > ._2x2 {
+	background: linear-gradient(transparent 20%, var(--element));
+	box-shadow: 0px 12px 3px 2px var(--element);
+}
+#teams {
+	margin-bottom: 2em;
 }
 </style>
 </head>
@@ -42,6 +73,7 @@ h3 {
 			</p>
 			<ul>
 				<li><a href="account.html">Overview of my Genshin acconut</a></li>
+				<li><a href="abyss.html">Spiral Abyss</a></li>
 				<li><a href="natlan-local-legends.html">Natlan Local Legends</a></li>
 			</ul>
 			<p>
@@ -53,116 +85,80 @@ h3 {
 			<!-- Adventure Rank 58 got at 2024-04-13 -->
 			<!-- Adventure Rank 57 got at 2023-09-24 -->
 
-			<h2>Abyss History</h2>
+			<h2>Favourite Characters</h2>
+			<p>Some time ago I used Genshin sorter to find out my favourite Genshin characters.
+			Results are obvious for anyone that ever talked about Genshin with me,
+			50% of my motivation is character design (35% is reaction based combat, 5% worldbuilding and 10% stunning views).</p>
 
-			<p>From the 5.0 Abyss I started noting my performance due to first 36 stars completion.</p>
+			<div style="display: grid; grid-template-columns: repeat(5, 1fr)">
+				<img src="stickers/beidou.webp" alt="Beidou">
+				<img src="stickers/chiori.webp" alt="Chiori">
+				<img src="stickers/clorinde.webp" alt="Clorinde">
+				<img src="stickers/layla.webp" alt="Layla">
+				<img src="stickers/furina.webp" alt="Furina">
+			</div>
 
-			<h3>5.2 - No theme this time</h3>
+			<h2>Other Favourites</h2>
 
-			<h4>First approach (35 stars)</h4>
+			<h3 style="text-align: center">Fontaine</h3>
 
-			<p>First time using Xiao and straight to Abyss. Pretty good, especially for the unfinished build - still level 80/80 on both weapon and character,
-			artifacts also could be better.</p>
+			<img style="max-width: 7ch; margin-inline: auto; display: block" src="fontaine.webp" alt="Fontaine">
 
-			<p>My second team was a bit underwhelming - Beidou shield didn't really do much to protect Arlecchino, which forced me to reset chamber once.
-			Perhaps Xilonen team would be better, but I will try the same team again and maybe get those 36 stars.</p>
+			<p>Fontaine is my favourite region.
+			It is my second "completed" region (with 100% exploration), has the best Archon Quest and World Quest (Narzissenkreuz Ordo).
+			It's main cast is full of friendship material, characters are well defined in terms of relationships with each other and personal stories.
+			Even fashion is used as a character defining language. Genshin's peak!</p>
 
-			<table>
-				<tbody>
-					<tr>
-						<th scope="row">First Half</th>
-						<td><img src="icons/Xiao.webp" alt="Xiao"></td>
-						<td><img src="icons/Faruzan.webp" alt="Faruzan"></td>
-						<td><img src="icons/Xianyun.webp" alt="Xianyun"></td>
-						<td><img src="icons/Furina.webp" alt="Furina"></td>
-					</tr>
-					<tr>
-						<th scope="row">Second Half</th>
-						<td><img src="icons/Arlecchino.webp" alt="Arlecchino"></td>
-						<td><img src="icons/Chevreuse.webp" alt="Chevreuse"></td>
-						<td><img src="icons/Fischl.webp" alt="Fischl"></td>
-						<td><img src="icons/Beidou.webp" alt="Beidou"></td>
-					</tr>
-				</tbody>
-			</table>
+			<h3 style="text-align: center">Teams</h3>
+			<div style="display: flex; gap: 3ex; justify-content: center; flex-wrap: wrap" id="teams">
+				<div class="_2x2 electro" style="max-width: 14ch">
+					<img src="icons/Beidou.webp" alt="Beidou">
+					<img src="icons/Furina.webp" alt="Furina">
+					<img src="icons/Fischl.webp" alt="Fischl">
+					<img src="icons/Yaoyao.webp" alt="Yaoyao">
+				</div>
+				<div class="_2x2 pyro" style="max-width: 14ch">
+					<img src="icons/Arlecchino.webp" alt="Arlecchino">
+					<img src="icons/Bennett.webp" alt="Bennett">
+					<img src="icons/Xilonen.webp" alt="Xilonen">
+					<img src="icons/Chiori.webp" alt="Chiori">
+				</div>
+				<div class="_2x2 geo" style="max-width: 14ch">
+					<img src="icons/Navia.webp" alt="Navia">
+					<img src="icons/Furina.webp" alt="Fischl">
+					<img src="icons/Xianyun.webp" alt="Xianyun">
+					<img src="icons/Chiori.webp" alt="Chiori">
+				</div>
+				<div class="_2x2 hydro" style="max-width: 14ch">
+					<img src="icons/Sangonomiya_Kokomi.webp" alt="Kokomi">
+					<img src="icons/Furina.webp" alt="Fischl">
+					<img src="icons/Yelan.webp" alt="Yelan">
+					<img src="icons/Kaedehara_Kazuha.webp" alt="Kazucha">
+				</div>
+			</div>
 
+			<p>Despite having Chiori C1R1, I swear, I'm not Chiori main.
+			With Xilonen release, the Chiori-Xilonen core is so addictive.
+			Only the first team, Beidou Radish Power is a real preset.
+			Others have different versions like:
+			<ul>
+				<li><span class="pyro">Arlecchino</span> Overload with <span class="pyro">Chevrouse</span>, <span class="electro">Fischl</span> and <span class="pyro">Bennet</span>/<span class="electro">Beidou</span></li>
+				<li><span class="pyro">Arlecchino</span> Vape with
+					<span class="hydro">Xingqiu</span>,
+					<span class="geo">Zhongli</span>/<span class="anemo">Kazucha</span>,
+					<span class="pyro">Bennet</span>
+				</li>
+				<li><span class="hydro">Kokomi</span> Wet Rock with
+					<span class="hydro">Furina</span>,
+					<span class="geo">Xilonen</span>
+					and <span class="geo">Chiori</span></li>
+				<li><span class="hydro">Kokomi</span> Taser with
+					<span class="hydro">Furina</span>,
+					<span class="electro">Fishl</span>
+					and <span class="electro">Beidou</span></li>
+			</ul>
 
-			<h3>5.1 - Consecrated Beasts and Geo Shields</h3>
-
-			<h4>First approach (35 stars)</h4>
-
-			<p>High base resistance of Consecrated Beasts scared me off from using Arlecchino.
-			For my account this leaves me with Hyperbloom (since Navia is busy on the other side).
-			First I used Ayato team but sadly you can feel that his build is quite old.
-			</p>
-
-			<table>
-				<tbody>
-					<tr>
-						<th scope="row">First Half</th>
-						<td><img src="icons/Nahida.webp" alt="Nahida"></td>
-						<td><img src="icons/Xingqiu.webp" alt="Xingqiu"></td>
-						<td><img src="icons/Yelan.webp" alt="Yelan"></td>
-						<td><img src="icons/Kuki_Shinobu.webp" alt="Kuki Shinobu"></td>
-					</tr>
-					<tr>
-						<th scope="row">Second Half</th>
-						<td><img src="icons/Navia.webp" alt="Navia"></td>
-						<td><img src="icons/Furina.webp" alt="Furina"></td>
-						<td><img src="icons/Xianyun.webp" alt="Xianyun"></td>
-						<td><img src="icons/Chiori.webp" alt="Chiori"></td>
-					</tr>
-				</tbody>
-			</table>
-
-			<p>I really need to invest properly into good Hyperbloom team - it feels really lacking compared to what I see on YouTube.</p>
-
-			<h4>Second approach (36 stars)</h4>
-
-			<p>Then I got Xilonen and even though she is not build fully yet (skill talent level 6, artifacts around level 16, level 80/80, signature sword at 70/70) you can feel the power.</p>
-
-			<table>
-				<tbody>
-					<tr>
-						<th scope="row">First Half</th>
-						<td><img src="icons/Arlecchino.webp" alt="Arlecchino"></td>
-						<td><img src="icons/Bennett.webp" alt="Bennett"></td>
-						<td><img src="icons/Xilonen.webp" alt="Xilonen"></td>
-						<td><img src="icons/Zhongli.webp" alt="Zhongli"></td>
-					</tr>
-					<tr>
-						<th scope="row">Second Half</th>
-						<td><img src="icons/Navia.webp" alt="Navia"></td>
-						<td><img src="icons/Furina.webp" alt="Furina"></td>
-						<td><img src="icons/Xianyun.webp" alt="Xianyun"></td>
-						<td><img src="icons/Chiori.webp" alt="Chiori"></td>
-					</tr>
-				</tbody>
-			</table>
-
-			<h3>5.0 - Natlan and Fontaine Local Legends</h3>
-
-			<p>Fontaine meta here we go!
-			Seriously, my account is so skewed towards Fontaine, look at this:</p>
-
-			<table>
-				<tbody>
-					<tr>
-						<th scope="row">First Half</th>
-						<td><img src="icons/Arlecchino.webp" alt="Arlecchino"></td>
-						<td><img src="icons/Xingqiu.webp" alt="Xingqiu"></td>
-						<td><img src="icons/Kaedehara_Kazuha.webp" alt="Kaedehara Kazuha"></td>
-						<td><img src="icons/Bennett.webp" alt="Bennett"></td>
-					</tr>
-					<tr>
-						<th scope="row">Second Half</th>
-						<td><img src="icons/Navia.webp" alt="Navia"></td>
-						<td><img src="icons/Furina.webp" alt="Furina"></td>
-						<td><img src="icons/Xianyun.webp" alt="Xianyun"></td>
-						<td><img src="icons/Chiori.webp" alt="Chiori"></td>
-					</tr>
-				</tbody>
-			</table>
+			<p>Simply put, I try to use my favourite characters as much as possible.</p>
 
 			<script>
 				recently.innerText = new Intl.RelativeTimeFormat('en').format(Math.ceil((Date.UTC(2024, 8, 20) - new Date()) / (1000 * 60 * 60 * 24)), 'day');
