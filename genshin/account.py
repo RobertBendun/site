@@ -217,7 +217,7 @@ PAGE = """<!DOCTYPE html>
 """
 
 CHARACTERS = sorted([
-    Wish('Ororon', '2024-11-21'),
+    Wish('Ororon', '2024-11-21', benched=False),
     Wish('Chasca', '2024-11-21'),
     Wish('Xilonen', '2024-10-21', benched=False),
     Wish('Kinich', '2024-09-27'),
@@ -275,7 +275,7 @@ CHARACTERS = sorted([
     Wish("Mona", "2023-02-03"),
     Wish("Qiqi", "2022-04-21", benched=False),
     Wish("Jean", "2022-05-13"),
-    Wish("Sucrose", "2022-03-31"),
+    Wish("Sucrose", "2022-03-31", benched=False),
     Wish("Chongyun", "2022-11-02"),
     Wish("Noelle", "2022-02-03"),
     Wish("Bennett", "2022-05-08", benched=False),
