@@ -70,12 +70,24 @@ def generate_weapons() -> str:
 
 def generate_elements():
     for i in range(2):
+        yield '<details style="margin-bottom: 1rem"><summary>'
         if i == 0:
-            yield '<p>How many characters from given element do I often use?</p>'
+            yield 'How many characters from given element do I often use?'
         else:
-            yield '<p>How many characters from given element do I own?</p>'
+            yield 'How many characters from given element do I own?'
+        yield '</summary>'
 
-        yield '<div style="display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: 4rem auto; justify-content: center; text-align: center">'
+        yield '<div style="display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: auto auto; justify-content: center; text-align: center">'
+        for element in Element:
+            yield f'<div>'
+            for character in sorted(CHARACTERS, key=lambda c: c.name):
+                if character.element == element and (i == 1 or not character.benched):
+                    yield f'<img style="width: 33.3%"src="{character.icon_url}" title="{character.name}">'
+            yield f'</div>'
+        yield '</div>'
+        yield f'</details>'
+
+        yield '<div style="display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: 4rem auto auto; justify-content: center; text-align: center; margin-bottom: 1rem">'
         element_count = {}
         for element in Element:
             element_count[element] = sum(1 for character in CHARACTERS if (i == 1 or not character.benched) and character.element == element)
@@ -98,6 +110,7 @@ def generate_elements():
 
         for element in Element:
             yield f'<strong>{element}</strong>'
+
         yield '</div>'
 
 class Element(enum.StrEnum):
