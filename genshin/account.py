@@ -35,26 +35,29 @@ def generate_characters() -> str:
     grouped = {}
 
     for c in CHARACTERS:
-        q = (c.date.month - 1) // 3 + 1
+        for v in VERSIONS:
+            if c.date < v.start:
+                break
+            version = v
 
-        target = f"Q{q} {c.date.year}"
+        target = f"{version.major}.{version.minor}"
         if target not in grouped:
             grouped[target] = []
         grouped[target].append(c)
 
     characters = "\n".join(
         """
-            <section>
-                <h3>{group_name} ({versions}; {usage})</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">{group_name}</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
                     {characters}
                 </div>
-            </section>
+            </div>
         """.format(
             usage = f"{100 * sum(1 for c in group if not c.benched) / len(group):.0f}%",
             versions=', '.join(f"{v}" for v in sorted(versions[group_name])),
             group_name=group_name,
-            characters="\n".join(f'<img style="width: 100%" class="{c.classes}" src="{c.icon_url}" alt="{c.name}">' for c in group)
+            characters="\n".join(f'<div class="{c.classes}"><img src="{c.icon_url}" alt="{c.name}" title="{c.name}"></div>' for c in group)
         )
         for group_name, group in grouped.items()
     )
@@ -62,7 +65,10 @@ def generate_characters() -> str:
     usage = 100 * sum(1 for g in grouped.values() for c in g if not c.benched) / sum(len(g) for g in grouped)
     return f"""
         <h2>Characters ({usage:.0f}% used)</h2>
-        {characters}
+        <p>⭐ - favourite characters (by design/gameplay/personality)</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; border-style: solid; border-width: 1px 0 0 1px">
+            {characters}
+        </div>
     """
 
 def generate_weapons() -> str:
@@ -128,6 +134,7 @@ class Wish:
                  pity: typing.Optional[int] = None,
                  weapon: bool = False,
                  benched: bool = True,
+                 favourite: bool = False,
                  ):
         self.name = name
         if isinstance(date, str):
@@ -137,6 +144,7 @@ class Wish:
         self.pity = pity
         self.weapon = weapon
         self.benched = benched
+        self.favourite = favourite
 
     @property
     def icon_url(self) -> str:
@@ -149,6 +157,7 @@ class Wish:
     def classes(self) -> str:
         classes = []
         if self.benched: classes.append('benched')
+        if self.favourite: classes.append('favourite')
         return ' '.join(classes)
 
     @property
@@ -171,7 +180,7 @@ PAGE = """<!DOCTYPE html>
 		<title>My Genshin Characters | Diana's Lab</title>
 		<link rel="stylesheet" href="/common.css" />
         <style>
-.benched {{
+.benched img {{
 	filter: grayscale(0.75) brightness(60%);
 }}
 [data-tooltip]:hover::after {{
@@ -181,6 +190,16 @@ PAGE = """<!DOCTYPE html>
   border: 1px solid black;
   background: #eee;
   padding: .25em;
+}}
+
+.favourite {{
+    position: relative;
+}}
+.favourite::after {{
+    content: "⭐";
+    position: absolute;
+    top: 0;
+    right: 0;
 }}
         </style>
 </head>
@@ -230,50 +249,50 @@ PAGE = """<!DOCTYPE html>
 """
 
 CHARACTERS = sorted([
-    Wish('Ororon', '2024-11-21', benched=False),
+    Wish('Ororon', '2024-11-21', benched=False, favourite=True),
     Wish('Chasca', '2024-11-21'),
     Wish('Xilonen', '2024-10-21', benched=False),
     Wish('Kinich', '2024-09-27'),
     Wish('Kachina', '2024-08-28'),
     Wish('Nilou', '2024-07-20'),
     Wish('Sethos', '2024-06-05'),
-    Wish("Arlecchino", "2024-05-02", pity=76, benched=False),
-    Wish("Chiori", "2024-03-22", pity=80, benched=False),
+    Wish("Arlecchino", "2024-05-02", pity=76, benched=False, favourite=True),
+    Wish("Chiori", "2024-03-22", pity=80, benched=False, favourite=True),
     Wish("Xianyun", "2024-02-18", pity=75, benched=False),
-    Wish("Gaming", "2024-02-05"),
+    Wish("Gaming", "2024-02-05", favourite=True),
     Wish("Chevreuse", "2024-01-13", benched=False),
-    Wish("Navia", "2023-12-20", pity=58, benched=False),
-    Wish("Furina", "2023-11-08", pity=78, benched=False),
+    Wish("Navia", "2023-12-20", pity=58, benched=False, favourite=True),
+    Wish("Furina", "2023-11-08", pity=78, benched=False, favourite=True),
     Wish("Charlotte", "2023-11-08"),
     Wish("Freminet", "2023-09-12"),
     Wish("Lyney", "2023-09-03", pity=82, benched=False),
-    Wish("Lynette", "2023-08-16"),
-    Wish("Kirara", "2023-05-24"),
+    Wish("Lynette", "2023-08-16", favourite=True),
+    Wish("Kirara", "2023-05-24", favourite=True),
     Wish("Kaveh", "2023-05-05"),
     Wish("Mika", "2023-07-08"),
     Wish("Dehya", "2023-06-26"),
-    Wish("Yaoyao", "2023-02-03", benched=False),
+    Wish("Yaoyao", "2023-02-03", benched=False, favourite=True),
     Wish("Wanderer", "2022-12-10", benched=False),
     Wish("Faruzan", "2022-12-08", benched=False),
-    Wish("Layla", "2023-03-02"),
-    Wish("Nahida", "2023-04-15", benched=False),
+    Wish("Layla", "2023-03-02", favourite=True),
+    Wish("Nahida", "2023-04-15", benched=False, favourite=True),
     Wish("Cyno", "2023-03-19"),
     Wish("Candace", "2023-12-20"),
     Wish("Dori", "2022-09-09"),
     Wish("Tighnari", "2022-11-04"),
     Wish("Collei", "2022-08-24"),
     Wish("Shikanoin Heizou", "2023-06-17"),
-    Wish("Kuki Shinobu", "2022-09-28", benched=False),
-    Wish("Yelan", "2022-06-05", benched=False),
+    Wish("Kuki Shinobu", "2022-09-28", benched=False, favourite=True),
+    Wish("Yelan", "2022-06-05", benched=False, favourite=True),
     Wish("Kamisato Ayato", "2022-04-09", benched=False),
     Wish("Yun Jin", "2022-04-09"),
-    Wish("Arataki Itto", "2022-06-22"),
+    Wish("Arataki Itto", "2022-06-22", favourite=True),
     Wish("Gorou", "2022-12-10"),
     Wish("Thoma", "2022-02-22", benched=False),
-    Wish("Sangonomiya Kokomi", "2023-07-26", pity=43, benched=False),
+    Wish("Sangonomiya Kokomi", "2023-07-26", pity=43, benched=False, favourite=True),
     Wish("Raiden Shogun", "2023-01-07"),
     Wish("Kujou Sara", "2022-04-01"),
-    Wish("Sayu", "2022-04-21"),
+    Wish("Sayu", "2022-04-21", favourite=True),
     Wish("Kamisato Ayaka", "2022-05-20"),
     Wish("Kaedehara Kazuha", "2023-06-26", pity=45, benched=False),
     Wish("Yanfei", "2022-05-31"),
@@ -286,16 +305,16 @@ CHARACTERS = sorted([
     Wish("Venti", "2022-10-14"),
     Wish("Keqing", "2023-10-01"),
     Wish("Mona", "2023-02-03"),
-    Wish("Qiqi", "2022-04-21", benched=False),
+    Wish("Qiqi", "2022-04-21", benched=False, favourite=True),
     Wish("Jean", "2022-05-13"),
     Wish("Sucrose", "2022-03-31", benched=False),
     Wish("Chongyun", "2022-11-02"),
     Wish("Noelle", "2022-02-03"),
     Wish("Bennett", "2022-05-08", benched=False),
-    Wish("Fischl", "2022-08-02", benched=False),
+    Wish("Fischl", "2022-08-02", benched=False, favourite=True),
     Wish("Ningguang", "2022-05-21"),
     Wish("Xingqiu", "2022-04-17", benched=False),
-    Wish("Beidou", "2022-02-07", benched=False),
+    Wish("Beidou", "2022-02-07", benched=False, favourite=True),
     Wish("Xiangling", "2022-02-05", benched=False),
     Wish("Razor", "2022-04-24"),
     Wish("Barbara", "2022-02-13"),

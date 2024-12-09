@@ -6,7 +6,7 @@
 		<title>My Genshin Characters | Diana's Lab</title>
 		<link rel="stylesheet" href="/common.css" />
         <style>
-.benched {
+.benched img {
 	filter: grayscale(0.75) brightness(60%);
 }
 [data-tooltip]:hover::after {
@@ -16,6 +16,16 @@
   border: 1px solid black;
   background: #eee;
   padding: .25em;
+}
+
+.favourite {
+    position: relative;
+}
+.favourite::after {
+    content: "⭐";
+    position: absolute;
+    top: 0;
+    right: 0;
 }
         </style>
 </head>
@@ -62,163 +72,264 @@
         </section>
         <section>
             
-        <h2>Characters (33% used)</h2>
-        
-            <section>
-                <h3>Q4 2024 (5.0, 5.1, 5.2; 67%)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
-                    <img style="width: 100%" class="" src="icons/Ororon.webp" alt="Ororon">
-<img style="width: 100%" class="benched" src="icons/Chasca.webp" alt="Chasca">
-<img style="width: 100%" class="" src="icons/Xilonen.webp" alt="Xilonen">
+        <h2>Characters (36% used)</h2>
+        <p>⭐ - favourite characters (by design/gameplay/personality)</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; border-style: solid; border-width: 1px 0 0 1px">
+            
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">5.2</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="favourite"><img src="icons/Ororon.webp" alt="Ororon" title="Ororon"></div>
+<div class="benched"><img src="icons/Chasca.webp" alt="Chasca" title="Chasca"></div>
                 </div>
-            </section>
+            </div>
         
 
-            <section>
-                <h3>Q3 2024 (4.7, 4.8, 5.0; 0%)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
-                    <img style="width: 100%" class="benched" src="icons/Kinich.webp" alt="Kinich">
-<img style="width: 100%" class="benched" src="icons/Kachina.webp" alt="Kachina">
-<img style="width: 100%" class="benched" src="icons/Nilou.webp" alt="Nilou">
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">5.1</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class=""><img src="icons/Xilonen.webp" alt="Xilonen" title="Xilonen"></div>
                 </div>
-            </section>
+            </div>
         
 
-            <section>
-                <h3>Q2 2024 (4.5, 4.6, 4.7; 50%)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
-                    <img style="width: 100%" class="benched" src="icons/Sethos.webp" alt="Sethos">
-<img style="width: 100%" class="" src="icons/Arlecchino.webp" alt="Arlecchino">
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">5.0</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched"><img src="icons/Kinich.webp" alt="Kinich" title="Kinich"></div>
+<div class="benched"><img src="icons/Kachina.webp" alt="Kachina" title="Kachina"></div>
                 </div>
-            </section>
+            </div>
         
 
-            <section>
-                <h3>Q1 2024 (4.3, 4.4, 4.5; 75%)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
-                    <img style="width: 100%" class="" src="icons/Chiori.webp" alt="Chiori">
-<img style="width: 100%" class="" src="icons/Xianyun.webp" alt="Xianyun">
-<img style="width: 100%" class="benched" src="icons/Gaming.webp" alt="Gaming">
-<img style="width: 100%" class="" src="icons/Chevreuse.webp" alt="Chevreuse">
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">4.8</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched"><img src="icons/Nilou.webp" alt="Nilou" title="Nilou"></div>
                 </div>
-            </section>
+            </div>
         
 
-            <section>
-                <h3>Q4 2023 (4.1, 4.2, 4.3; 40%)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
-                    <img style="width: 100%" class="" src="icons/Navia.webp" alt="Navia">
-<img style="width: 100%" class="benched" src="icons/Candace.webp" alt="Candace">
-<img style="width: 100%" class="" src="icons/Furina.webp" alt="Furina">
-<img style="width: 100%" class="benched" src="icons/Charlotte.webp" alt="Charlotte">
-<img style="width: 100%" class="benched" src="icons/Keqing.webp" alt="Keqing">
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">4.7</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched"><img src="icons/Sethos.webp" alt="Sethos" title="Sethos"></div>
                 </div>
-            </section>
+            </div>
         
 
-            <section>
-                <h3>Q3 2023 (3.7, 3.8, 4.0, 4.1; 40%)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
-                    <img style="width: 100%" class="benched" src="icons/Freminet.webp" alt="Freminet">
-<img style="width: 100%" class="" src="icons/Lyney.webp" alt="Lyney">
-<img style="width: 100%" class="benched" src="icons/Lynette.webp" alt="Lynette">
-<img style="width: 100%" class="" src="icons/Sangonomiya_Kokomi.webp" alt="Sangonomiya Kokomi">
-<img style="width: 100%" class="benched" src="icons/Mika.webp" alt="Mika">
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">4.6</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="favourite"><img src="icons/Arlecchino.webp" alt="Arlecchino" title="Arlecchino"></div>
                 </div>
-            </section>
+            </div>
         
 
-            <section>
-                <h3>Q2 2023 (3.5, 3.6, 3.7; 33%)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
-                    <img style="width: 100%" class="" src="icons/Kaedehara_Kazuha.webp" alt="Kaedehara Kazuha">
-<img style="width: 100%" class="benched" src="icons/Dehya.webp" alt="Dehya">
-<img style="width: 100%" class="benched" src="icons/Shikanoin_Heizou.webp" alt="Shikanoin Heizou">
-<img style="width: 100%" class="benched" src="icons/Kirara.webp" alt="Kirara">
-<img style="width: 100%" class="benched" src="icons/Kaveh.webp" alt="Kaveh">
-<img style="width: 100%" class="" src="icons/Nahida.webp" alt="Nahida">
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">4.5</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="favourite"><img src="icons/Chiori.webp" alt="Chiori" title="Chiori"></div>
                 </div>
-            </section>
+            </div>
         
 
-            <section>
-                <h3>Q1 2023 (3.3, 3.4, 3.5; 33%)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
-                    <img style="width: 100%" class="benched" src="icons/Cyno.webp" alt="Cyno">
-<img style="width: 100%" class="benched" src="icons/Layla.webp" alt="Layla">
-<img style="width: 100%" class="" src="icons/Yaoyao.webp" alt="Yaoyao">
-<img style="width: 100%" class="" src="icons/Xiao.webp" alt="Xiao">
-<img style="width: 100%" class="benched" src="icons/Mona.webp" alt="Mona">
-<img style="width: 100%" class="benched" src="icons/Raiden_Shogun.webp" alt="Raiden Shogun">
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">4.4</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class=""><img src="icons/Xianyun.webp" alt="Xianyun" title="Xianyun"></div>
+<div class="benched favourite"><img src="icons/Gaming.webp" alt="Gaming" title="Gaming"></div>
                 </div>
-            </section>
+            </div>
         
 
-            <section>
-                <h3>Q4 2022 (3.1, 3.2, 3.3; 33%)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
-                    <img style="width: 100%" class="" src="icons/Wanderer.webp" alt="Wanderer">
-<img style="width: 100%" class="benched" src="icons/Gorou.webp" alt="Gorou">
-<img style="width: 100%" class="" src="icons/Faruzan.webp" alt="Faruzan">
-<img style="width: 100%" class="benched" src="icons/Tighnari.webp" alt="Tighnari">
-<img style="width: 100%" class="benched" src="icons/Chongyun.webp" alt="Chongyun">
-<img style="width: 100%" class="benched" src="icons/Venti.webp" alt="Venti">
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">4.3</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class=""><img src="icons/Chevreuse.webp" alt="Chevreuse" title="Chevreuse"></div>
+<div class="favourite"><img src="icons/Navia.webp" alt="Navia" title="Navia"></div>
+<div class="benched"><img src="icons/Candace.webp" alt="Candace" title="Candace"></div>
                 </div>
-            </section>
+            </div>
         
 
-            <section>
-                <h3>Q3 2022 (2.7, 2.8, 3.0, 3.1; 43%)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
-                    <img style="width: 100%" class="" src="icons/Kuki_Shinobu.webp" alt="Kuki Shinobu">
-<img style="width: 100%" class="benched" src="icons/Ganyu.webp" alt="Ganyu">
-<img style="width: 100%" class="benched" src="icons/Dori.webp" alt="Dori">
-<img style="width: 100%" class="" src="icons/Zhongli.webp" alt="Zhongli">
-<img style="width: 100%" class="benched" src="icons/Diona.webp" alt="Diona">
-<img style="width: 100%" class="benched" src="icons/Collei.webp" alt="Collei">
-<img style="width: 100%" class="" src="icons/Fischl.webp" alt="Fischl">
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">4.2</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="favourite"><img src="icons/Furina.webp" alt="Furina" title="Furina"></div>
+<div class="benched"><img src="icons/Charlotte.webp" alt="Charlotte" title="Charlotte"></div>
                 </div>
-            </section>
+            </div>
         
 
-            <section>
-                <h3>Q2 2022 (2.6, 2.7; 31%)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
-                    <img style="width: 100%" class="benched" src="icons/Arataki_Itto.webp" alt="Arataki Itto">
-<img style="width: 100%" class="benched" src="icons/Xinyan.webp" alt="Xinyan">
-<img style="width: 100%" class="" src="icons/Yelan.webp" alt="Yelan">
-<img style="width: 100%" class="benched" src="icons/Yanfei.webp" alt="Yanfei">
-<img style="width: 100%" class="benched" src="icons/Ningguang.webp" alt="Ningguang">
-<img style="width: 100%" class="benched" src="icons/Kamisato_Ayaka.webp" alt="Kamisato Ayaka">
-<img style="width: 100%" class="benched" src="icons/Jean.webp" alt="Jean">
-<img style="width: 100%" class="benched" src="icons/Rosaria.webp" alt="Rosaria">
-<img style="width: 100%" class="" src="icons/Bennett.webp" alt="Bennett">
-<img style="width: 100%" class="benched" src="icons/Razor.webp" alt="Razor">
-<img style="width: 100%" class="benched" src="icons/Sayu.webp" alt="Sayu">
-<img style="width: 100%" class="" src="icons/Qiqi.webp" alt="Qiqi">
-<img style="width: 100%" class="" src="icons/Xingqiu.webp" alt="Xingqiu">
-<img style="width: 100%" class="benched" src="icons/Yun_Jin.webp" alt="Yun Jin">
-<img style="width: 100%" class="" src="icons/Kamisato_Ayato.webp" alt="Kamisato Ayato">
-<img style="width: 100%" class="benched" src="icons/Kujou_Sara.webp" alt="Kujou Sara">
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">4.1</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched"><img src="icons/Keqing.webp" alt="Keqing" title="Keqing"></div>
                 </div>
-            </section>
+            </div>
         
 
-            <section>
-                <h3>Q1 2022 (2.3, 2.4, 2.5, 2.6; 44%)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
-                    <img style="width: 100%" class="" src="icons/Sucrose.webp" alt="Sucrose">
-<img style="width: 100%" class="" src="icons/Thoma.webp" alt="Thoma">
-<img style="width: 100%" class="benched" src="icons/Barbara.webp" alt="Barbara">
-<img style="width: 100%" class="" src="icons/Beidou.webp" alt="Beidou">
-<img style="width: 100%" class="" src="icons/Xiangling.webp" alt="Xiangling">
-<img style="width: 100%" class="benched" src="icons/Noelle.webp" alt="Noelle">
-<img style="width: 100%" class="benched" src="icons/Lisa.webp" alt="Lisa">
-<img style="width: 100%" class="benched" src="icons/Kaeya.webp" alt="Kaeya">
-<img style="width: 100%" class="benched" src="icons/Amber.webp" alt="Amber">
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">4.0</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched"><img src="icons/Freminet.webp" alt="Freminet" title="Freminet"></div>
+<div class=""><img src="icons/Lyney.webp" alt="Lyney" title="Lyney"></div>
+<div class="benched favourite"><img src="icons/Lynette.webp" alt="Lynette" title="Lynette"></div>
                 </div>
-            </section>
+            </div>
         
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">3.8</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="favourite"><img src="icons/Sangonomiya_Kokomi.webp" alt="Sangonomiya Kokomi" title="Sangonomiya Kokomi"></div>
+<div class="benched"><img src="icons/Mika.webp" alt="Mika" title="Mika"></div>
+                </div>
+            </div>
+        
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">3.7</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class=""><img src="icons/Kaedehara_Kazuha.webp" alt="Kaedehara Kazuha" title="Kaedehara Kazuha"></div>
+<div class="benched"><img src="icons/Dehya.webp" alt="Dehya" title="Dehya"></div>
+<div class="benched"><img src="icons/Shikanoin_Heizou.webp" alt="Shikanoin Heizou" title="Shikanoin Heizou"></div>
+<div class="benched favourite"><img src="icons/Kirara.webp" alt="Kirara" title="Kirara"></div>
+                </div>
+            </div>
+        
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">3.6</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched"><img src="icons/Kaveh.webp" alt="Kaveh" title="Kaveh"></div>
+<div class="favourite"><img src="icons/Nahida.webp" alt="Nahida" title="Nahida"></div>
+                </div>
+            </div>
+        
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">3.5</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched"><img src="icons/Cyno.webp" alt="Cyno" title="Cyno"></div>
+<div class="benched favourite"><img src="icons/Layla.webp" alt="Layla" title="Layla"></div>
+                </div>
+            </div>
+        
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">3.4</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="favourite"><img src="icons/Yaoyao.webp" alt="Yaoyao" title="Yaoyao"></div>
+<div class=""><img src="icons/Xiao.webp" alt="Xiao" title="Xiao"></div>
+<div class="benched"><img src="icons/Mona.webp" alt="Mona" title="Mona"></div>
+                </div>
+            </div>
+        
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">3.3</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched"><img src="icons/Raiden_Shogun.webp" alt="Raiden Shogun" title="Raiden Shogun"></div>
+<div class=""><img src="icons/Wanderer.webp" alt="Wanderer" title="Wanderer"></div>
+<div class="benched"><img src="icons/Gorou.webp" alt="Gorou" title="Gorou"></div>
+<div class=""><img src="icons/Faruzan.webp" alt="Faruzan" title="Faruzan"></div>
+                </div>
+            </div>
+        
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">3.2</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched"><img src="icons/Tighnari.webp" alt="Tighnari" title="Tighnari"></div>
+<div class="benched"><img src="icons/Chongyun.webp" alt="Chongyun" title="Chongyun"></div>
+                </div>
+            </div>
+        
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">3.1</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched"><img src="icons/Venti.webp" alt="Venti" title="Venti"></div>
+<div class="favourite"><img src="icons/Kuki_Shinobu.webp" alt="Kuki Shinobu" title="Kuki Shinobu"></div>
+                </div>
+            </div>
+        
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">3.0</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched"><img src="icons/Ganyu.webp" alt="Ganyu" title="Ganyu"></div>
+<div class="benched"><img src="icons/Dori.webp" alt="Dori" title="Dori"></div>
+<div class=""><img src="icons/Zhongli.webp" alt="Zhongli" title="Zhongli"></div>
+<div class="benched"><img src="icons/Diona.webp" alt="Diona" title="Diona"></div>
+<div class="benched"><img src="icons/Collei.webp" alt="Collei" title="Collei"></div>
+                </div>
+            </div>
+        
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">2.8</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="favourite"><img src="icons/Fischl.webp" alt="Fischl" title="Fischl"></div>
+                </div>
+            </div>
+        
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">2.7</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched favourite"><img src="icons/Arataki_Itto.webp" alt="Arataki Itto" title="Arataki Itto"></div>
+<div class="benched"><img src="icons/Xinyan.webp" alt="Xinyan" title="Xinyan"></div>
+<div class="favourite"><img src="icons/Yelan.webp" alt="Yelan" title="Yelan"></div>
+<div class="benched"><img src="icons/Yanfei.webp" alt="Yanfei" title="Yanfei"></div>
+                </div>
+            </div>
+        
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">2.6</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched"><img src="icons/Ningguang.webp" alt="Ningguang" title="Ningguang"></div>
+<div class="benched"><img src="icons/Kamisato_Ayaka.webp" alt="Kamisato Ayaka" title="Kamisato Ayaka"></div>
+<div class="benched"><img src="icons/Jean.webp" alt="Jean" title="Jean"></div>
+<div class="benched"><img src="icons/Rosaria.webp" alt="Rosaria" title="Rosaria"></div>
+<div class=""><img src="icons/Bennett.webp" alt="Bennett" title="Bennett"></div>
+<div class="benched"><img src="icons/Razor.webp" alt="Razor" title="Razor"></div>
+<div class="benched favourite"><img src="icons/Sayu.webp" alt="Sayu" title="Sayu"></div>
+<div class="favourite"><img src="icons/Qiqi.webp" alt="Qiqi" title="Qiqi"></div>
+<div class=""><img src="icons/Xingqiu.webp" alt="Xingqiu" title="Xingqiu"></div>
+<div class="benched"><img src="icons/Yun_Jin.webp" alt="Yun Jin" title="Yun Jin"></div>
+<div class=""><img src="icons/Kamisato_Ayato.webp" alt="Kamisato Ayato" title="Kamisato Ayato"></div>
+<div class="benched"><img src="icons/Kujou_Sara.webp" alt="Kujou Sara" title="Kujou Sara"></div>
+<div class=""><img src="icons/Sucrose.webp" alt="Sucrose" title="Sucrose"></div>
+                </div>
+            </div>
+        
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">2.5</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class=""><img src="icons/Thoma.webp" alt="Thoma" title="Thoma"></div>
+                </div>
+            </div>
+        
+
+            <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
+                <h3 style="padding: 0; margin: 0">2.4</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                    <div class="benched"><img src="icons/Barbara.webp" alt="Barbara" title="Barbara"></div>
+<div class="favourite"><img src="icons/Beidou.webp" alt="Beidou" title="Beidou"></div>
+<div class=""><img src="icons/Xiangling.webp" alt="Xiangling" title="Xiangling"></div>
+<div class="benched"><img src="icons/Noelle.webp" alt="Noelle" title="Noelle"></div>
+<div class="benched"><img src="icons/Lisa.webp" alt="Lisa" title="Lisa"></div>
+<div class="benched"><img src="icons/Kaeya.webp" alt="Kaeya" title="Kaeya"></div>
+<div class="benched"><img src="icons/Amber.webp" alt="Amber" title="Amber"></div>
+                </div>
+            </div>
+        
+        </div>
     
         </section>
         </main>
