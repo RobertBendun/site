@@ -225,7 +225,7 @@ PAGE = """<!DOCTYPE html>
             Characters that are gray and dimm are considered as benched - I either didn't use them in a while or didn't built them at all.
 		</p>
 		<p>
-			This page was generated using this <a href="characters.py">Python script</a>.
+			This page was generated using this <a href="account.py">Python script</a>.
 		</p>
 
         <section>
@@ -250,7 +250,7 @@ PAGE = """<!DOCTYPE html>
 
 CHARACTERS = sorted([
     Wish('Ororon', '2024-11-21', benched=False, favourite=True),
-    Wish('Chasca', '2024-11-21'),
+    Wish('Chasca', '2024-11-21', benched=False),
     Wish('Xilonen', '2024-10-21', benched=False),
     Wish('Kinich', '2024-09-27'),
     Wish('Kachina', '2024-08-28'),
