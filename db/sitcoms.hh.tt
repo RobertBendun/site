@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Timeline</title>
+<style>
+body {
+	background-color: #1d2021;
+	color: #fbf1c7;
+}
+#parent {
+	width: 100%;
+	overflow-x: scroll;
+}
+main {
+	text-align: center;
+	justify-content: center;
+	margin-inline: auto;
+	display: grid;
+	width: @out(sitcoms.size() * 5 + 4);@rem;
+	grid-template-columns: 4rem repeat(@out(sitcoms.size());@, 5rem);
+}
+</style>
+	</head>
+	<body>
+		<div id="parent">
+			<main>
+				<div style="grid-column: 1/@out(sitcoms.size() + 2);@; grid-row: 8/18; background-color: #282828"></div>
+				<div style="grid-column: 1/@out(sitcoms.size() + 2);@; grid-row: 28/42; background-color: #282828"></div>
+
+				@for (auto [n, x] : std::views::enumerate(inclusive_range{year_start, year_end})) {@
+					<div style="grid-column: 1; grid-row: @out(n+2);@">@out(x);@</div>
+				@}@
+				<div style="border-right: 1px dotted; grid-row: 1/42; grid-column: @out(sitcoms.size()+1);@"></div>
+				@for (auto const&[n1, s] : std::views::enumerate(sitcoms)) {@
+					@auto n = n1 + 2;@
+					<div style="border-left: 1px dotted; grid-row: 1/42; grid-column: @out(n);@"></div>
+					<!-- TODO: Title font size should be calculated from the longest word in the title -->
+					<div style="font-size: 0.8rem; grid-row: 1; grid-column: @out(n);@">@out(s->title);@</div>
+					@auto [from, to] = std::ranges::minmax(std::views::join(s->seasons));@
+					@std::string_view const colors[] = { "#b8bb26", "#fabd2f", "#83a598", "#d3869b", "#8ec07c", "#928374", "#fe8019" };@
+
+					<!-- TODO: Use more granular seasons data -->
+					@for (auto x = from; x <= to; ++x) {@
+						@auto diff = (x - year_start).count();@
+						<div style="grid-column: @out(n);@; grid-row: @out(diff + 2);@; background-color: @out(colors[(n-1) % std::size(colors)]);@"></div>
+					@}@
+				@}@
+			</main>
+		</div>
+	</body>
+</html>
