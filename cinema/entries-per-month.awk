@@ -36,5 +36,5 @@ match($0, /aside.*id="([^"]+)"/, a)  {
 END {
 	print "  Total: " total
 	print "Average: " (total / months)
-	print " Median: " (months % 2 == 0 ? entries[months/2-1] + entries[months/2] : entries[months/2])
+	print " Median: " (months % 2 == 0 ? ((entries[int(months/2)-1] + entries[int(months/2)]) / 2) : entries[int(months/2)])
 }
