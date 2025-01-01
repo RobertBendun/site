@@ -10,6 +10,7 @@ import collections
 # Also this list is useless since it doesn't show which characters I use / have build.
 
 # TODO: Add sort by date, sort by how many used
+# TODO: Add weapon stats - how often do I use characters from given weapon type, how much I own etc
 
 def main():
     global versions
@@ -88,7 +89,7 @@ def generate_elements():
             yield f'<div>'
             for character in sorted(CHARACTERS, key=lambda c: c.name):
                 if character.element == element and (i == 1 or not character.benched):
-                    yield f'<img style="width: 33.3%"src="{character.icon_url}" title="{character.name}">'
+                    yield f'<img style="width: 33.3%"src="{character.icon_url}" title="{character.name}">\n'
             yield f'</div>'
         yield '</div>'
         yield f'</details>'
@@ -112,7 +113,7 @@ def generate_elements():
 
         for element in Element:
             p = element_count[element]/m*100
-            yield f'<div style="background: linear-gradient(to top, #{COLORS[element]} 0%, transparent {p}%);">{element_count[element]}</div>'
+            yield f'<div style="background: linear-gradient(to top, #{COLORS[element]} 0%, transparent {p}%);">{element_count[element]}</div>\n'
 
         for element in Element:
             yield f'<strong>{element}</strong>'
@@ -249,6 +250,7 @@ PAGE = """<!DOCTYPE html>
 """
 
 CHARACTERS = sorted([
+    Wish('Citlali', '2025-01-01'),
     Wish('Ororon', '2024-11-21', benched=False, favourite=True),
     Wish('Chasca', '2024-11-21', benched=False),
     Wish('Xilonen', '2024-10-21', benched=False),
@@ -351,6 +353,7 @@ CHARACTERS_ELEMENT = {
     "Chevreuse": Element.PYRO,
     "Chiori": Element.GEO,
     "Chongyun": Element.CRYO,
+    "Citlali": Element.CRYO,
     "Clorinde": Element.ELECTRO,
     "Collei": Element.DENDRO,
     "Cyno": Element.ELECTRO,
