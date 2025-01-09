@@ -250,7 +250,7 @@ PAGE = """<!DOCTYPE html>
 """
 
 CHARACTERS = sorted([
-    Wish('Citlali', '2025-01-01'),
+    Wish('Citlali', '2025-01-01', benched=False, favourite=True),
     Wish('Ororon', '2024-11-21', benched=False, favourite=True),
     Wish('Chasca', '2024-11-21', benched=False),
     Wish('Xilonen', '2024-10-21', benched=False),
