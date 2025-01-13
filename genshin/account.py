@@ -120,6 +120,7 @@ def generate_elements():
 
         yield '</div>'
 
+
 class Element(enum.StrEnum):
     ANEMO = "Anemo"
     CRYO = "Cryo"
@@ -129,11 +130,29 @@ class Element(enum.StrEnum):
     HYDRO = "Hydro"
     PYRO = "Pyro"
 
+class WeaponType:
+    BOW = "Bow"
+    CATALYST = "Catalyst"
+    CLAYMORE = "Claymore"
+    POLEARM = "Polearm"
+    SWORD = "Sword"
+
+class Region(enum.StrEnum):
+    FONTAINE = "Fontaine"
+    INAZUMA = "Inazuma"
+    LIYUE = "Liyue"
+    MONDSTADT = "Mondstadt"
+    NATLAN = "Natlan"
+    SNEZHNAYA = "Snezhnaya"
+    SUMERU = "Sumeru"
+
+
 class Wish:
     def __init__(self,
                  name: str, date: datetime|str|None = None, *,
                  pity: typing.Optional[int] = None,
                  weapon: bool = False,
+                 weapon_type: WeaponType|None = None,
                  benched: bool = True,
                  favourite: bool = False,
                  ):
@@ -146,6 +165,7 @@ class Wish:
         self.weapon = weapon
         self.benched = benched
         self.favourite = favourite
+        self.weapon_type = weapon_type
 
     @property
     def icon_url(self) -> str:
@@ -236,7 +256,7 @@ PAGE = """<!DOCTYPE html>
 
         <section>
             <h2>5* Weapons</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, 100px); justify-content: center">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, 80px); justify-content: center">
                 {weapons}
             </div>
         </section>
@@ -328,13 +348,14 @@ CHARACTERS = sorted([
 assert all(char.date is not None for char in CHARACTERS)
 
 FIVE_STAR_WEAPONS = sorted([
-    Wish('Uraku Misugiri', weapon=True),
-    Wish('Peak Patrol Song', weapon=True),
-    Wish("Aquila Favonia", weapon=True),
-    Wish("Crimson Moon's Semblance", pity=67, weapon=True),
-    Wish("Skyward Harp", weapon=True),
-    Wish("The First Great Magic", pity=3, weapon=True),
-], key=lambda x: x.name)
+    Wish("Aquila Favonia", weapon=True, weapon_type=WeaponType.SWORD),
+    Wish("Crimson Moon's Semblance", pity=67, weapon=True, weapon_type=WeaponType.POLEARM),
+    Wish("Skyward Harp", weapon=True, weapon_type=WeaponType.BOW),
+    Wish("The First Great Magic", pity=3, weapon=True, weapon_type=WeaponType.BOW),
+    Wish('Peak Patrol Song', weapon=True, weapon_type=WeaponType.SWORD),
+    Wish('Primordial Jade Winged-Spear', weapon=True, weapon_type=WeaponType.POLEARM),
+    Wish('Uraku Misugiri', weapon=True, weapon_type=WeaponType.SWORD),
+], key=lambda x: ([WeaponType.SWORD, WeaponType.POLEARM, WeaponType.CLAYMORE, WeaponType.BOW, WeaponType.CATALYST].index(x.weapon_type), x.name))
 
 CHARACTERS_ELEMENT = {
     "Albedo": Element.GEO,
@@ -430,6 +451,100 @@ CHARACTERS_ELEMENT = {
     "Zhongli": Element.GEO,
 }
 
+"""
+CHARACTERS_REGION = {
+    "Albedo": Region.MONDSTADT,
+    "Alhaitham": Region.SUMERU,
+    "Amber": Region.MONDSTADT,
+    "Arataki Itto": Region.INAZUMA,
+    "Arlecchino": Region.SNEZHNAYA,
+    "Baizhu": Region.LIYUE,
+    "Barbara": Region.MONDSTADT,
+    "Beidou": Region.LIYUE,
+    "Bennett": Region.MONDSTADT,
+    "Candace": Region.SUMERU,
+    "Charlotte": Region.FONTAINE,
+    "Chasca": Region.NATLAN,
+    "Chevreuse": Region.FONTAINE,
+    "Chiori": Region.INAZUMA,
+    "Chongyun": Region.,
+    "Citlali": Region.,
+    "Clorinde": Region.,
+    "Collei": Region.,
+    "Cyno": Region.,
+    "Dehya": Region.,
+    "Diluc": Region.,
+    "Diona": Region.,
+    "Dori": Region.,
+    "Emilie": Region.,
+    "Eula": Region.,
+    "Faruzan": Region.,
+    "Fischl": Region.,
+    "Freminet": Region.,
+    "Furina": Region.,
+    "Gaming": Region.,
+    "Ganyu": Region.,
+    "Gorou": Region.,
+    "Hu Tao": Region.,
+    "Jean": Region.,
+    "Kachina": Region.,
+    "Kaedehara Kazuha": Region.,
+    "Kaeya": Region.,
+    "Kamisato Ayaka": Region.,
+    "Kamisato Ayato": Region.,
+    "Kaveh": Region.,
+    "Keqing": Region.,
+    "Kinich": Region.,
+    "Kirara": Region.,
+    "Klee": Region.,
+    "Kujou Sara": Region.,
+    "Kuki Shinobu": Region.,
+    "Layla": Region.,
+    "Lisa": Region.,
+    "Lynette": Region.,
+    "Lyney": Region.,
+    "Mika": Region.,
+    "Mona": Region.,
+    "Mualani": Region.,
+    "Nahida": Region.,
+    "Navia": Region.,
+    "Neuvillette": Region.,
+    "Nilou": Region.,
+    "Ningguang": Region.,
+    "Noelle": Region.,
+    "Ororon": Region.,
+    "Qiqi": Region.,
+    "Raiden Shogun": Region.,
+    "Razor": Region.,
+    "Rosaria": Region.,
+    "Sangonomiya Kokomi": Region.,
+    "Sayu": Region.,
+    "Sethos": Region.,
+    "Shenhe": Region.,
+    "Shikanoin Heizou": Region.,
+    "Sigewinne": Region.,
+    "Sucrose": Region.,
+    "Tartaglia": Region.,
+    "Thoma": Region.,
+    "Tighnari": Region.,
+    "Venti": Region.,
+    "Wanderer": Region.,
+    "Wriothesley": Region.,
+    "Xiangling": Region.,
+    "Xianyun": Region.,
+    "Xiao": Region.,
+    "Xilonen": Region.,
+    "Xingqiu": Region.,
+    "Xinyan": Region.,
+    "Yae Miko": Region.,
+    "Yanfei": Region.,
+    "Yaoyao": Region.,
+    "Yelan": Region.,
+    "Yoimiya": Region.,
+    "Yun Jin": Region.,
+    "Zhongli": Region.,
+}
+"""
 
 class Version:
     def __init__(self, major: int, minor: int, start: str):
