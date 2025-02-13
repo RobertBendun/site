@@ -261,7 +261,7 @@ def generate_regions():
         yield '</summary>'
 
         yield '<div style="display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: auto auto; justify-content: center; text-align: center">'
-        for region in Region:
+        for region in REGION_ORDER:
             yield f'<div>'
             for character in sorted(CHARACTERS, key=lambda c: c.name):
                 if character.region == region and (i == 1 or not character.benched):
@@ -272,16 +272,16 @@ def generate_regions():
 
         yield '<div style="display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: 4rem auto auto; justify-content: center; text-align: center; margin-bottom: 1rem">'
         region_count = {}
-        for region in Region:
+        for region in REGION_ORDER:
             region_count[region] = sum(1 for character in CHARACTERS if (i == 1 or not character.benched) and character.region == region)
 
         m = max(region_count.values())
 
-        for region in Region:
+        for region in REGION_ORDER:
             p = region_count[region]/m*100
             yield f'<div style="background: linear-gradient(to top, white 0%, transparent {p}%);">{region_count[region]}</div>\n'
 
-        for region in Region:
+        for region in REGION_ORDER:
             yield f'<img style="width: 60%; margin-inline: auto; display: block" src="{region.icon_url}" alt="{region}">'
             # yield f'<strong>{region.icon_url}</strong>'
 
@@ -386,6 +386,7 @@ class Region(enum.StrEnum):
     def icon_url(self):
         return f"{str(self.lower())}.webp"
 
+REGION_ORDER = [Region.MONDSTADT, Region.LIYUE, Region.INAZUMA, Region.SUMERU, Region.FONTAINE, Region.NATLAN]
 
 class Wish:
     def __init__(self,
