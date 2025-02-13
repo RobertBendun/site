@@ -167,6 +167,7 @@ class Tags:
 
 
 POSTS = sorted([
+    Post(path="month-with-raku.html", name="Month with Raku"),
     Post(path="defaults.html", name="Defaults"),
     Post(path="javascript-window.html", name="self is a cross-platform way to name a window"),
     Post(path="spooktober.html", name="Spooktober 🎃"),

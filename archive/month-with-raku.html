@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Month with Raku | Diana's Lab</title>
+		<meta property="og:title"          content="Defaults" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+		<link rel="stylesheet" href="/common.css" />
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble">bendun.cc</a>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>Month with Raku</h1>
+
+			<p><time datetime="2025-02-07T11:33:42+01:00">2025-02-07</time>, a 10 minute read</p>
+
+<ol>
+  <li><a href="#first-impressionss">First Impressions</a></li>
+  <li><a href="#features">Notable features</a><ol>
+    <li><a href="#program-organization">Program organization</a></li>
+    <li><a href="#control-flow">Control flow</a></li>
+    <li><a href="#grammars">Grammars and regular expressions</a></li>
+    <li><a href="#declarative">Declarative programming</a></li></ol></li>
+  <li><a href="#missing-value-types">Lack of value types</a></li>
+  <li><a href="#c-ffi">C Foreign Function Interface</a></li>
+</ol>
+
+			<p>Raku was language that I was interested in for a while.
+			I was on a hype train for a while, mostly thanks to <a href="https://www.hillelwayne.com/">Hillel Wayne</a>
+			and their two excellent posts on Raku: <a href="https://buttondown.com/hillelwayne/archive/raku-a-language-for-gremlins/">Raku: A Language for Gremlins</a> and <a href="https://buttondown.com/hillelwayne/archive/five-unusual-raku-features/">Five Unusual Raku Features</a>.
+			I decided that Advent of Code would be a perfect playground to get a taste of the language.
+			And dare I say it, I was impressed!</p>
+
+			<p>As always with Advent of Code I gradually loose interest.
+			I managed to complete up to Day 8 and used quite a few mechanics of Raku.
+			However, I only scratched the surface of this language and I wish that one day I could properly embrace this weird language.
+			I don't quite know what to use it for yet, perhaps some quick parsing and text processing where AWK wouldn't be enough and large Python standard library wouldn't be necessary.
+			I also didn't figure out Raku package system yet which gives another point to Python for now.</p>
+
+			<h2 id="first-impressionss">First Impressions</h2>
+
+			<p>This is <em>the</em> scripting language.
+			A love child of a various random features that somehow feels quite coherent.
+			AWK and Python with some declarative and array programming put together to directly express your intent, regardless of your programming background.
+			Which is great for small scripts and programs that you create every day, especially when you do a lot of parsing and weird data processing.</p>
+
+			<p>The scripting language feel is enforced by how it doesn't seem easy to scale.
+			It may have the same issue as C++, when you or your team need to create per project conventions that must be upheld.
+			Since language is large you need to choose which subset of the language to use.
+			This may be hard if the libraries don't follow your conventions.
+			C++ may be the worst case of this and I may be just traumatized - I would really like to meet a dedicated Raku programmer to chat about it.</p>
+
+			<h2 id="features">Notable features</h2>
+
+			<h3 id="program-organization">Program organization</h3>
+
+			<p>Whole Advent of Code is contained in one file: <a href="https://github.com/RobertBendun/x/blob/main/advent-of-code/2024/aoc.raku">aoc.raku</a>.
+			It can be called as a script on Linux due to <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a> on the top.
+			Entrypoint is chosen based on command line arguments by using <a href="https://docs.raku.org/syntax/multi">multimethods</a>.
+			First, the entrypoint prototype validates that arguments match expected input: two integers for day number and day part, then a string beeing a file path:</p>
+	<pre><code>proto MAIN(Int $day, Int $part, Str $file where *.IO.f, |) {*}</code></pre>
+
+			<p>The most interesting part of this signature is the hole: <code>{*}</code>.
+			It can be used to control <em>when</em> the dispatch to multimethod is handled:</p>
+
+<pre><code>proto dispatch_only_when_even(Int $value) {
+  if ($value % 2 == 0) {
+    return {*};
+  }
+  return "$value is odd";
+}
+
+multi dispatch_only_when_even(Int $value) {
+  return "$value is even";
+}
+
+say dispatch_only_when_even(4); # prints "4 is even"
+say dispatch_only_when_even(3); # prints "3 is odd"</code></pre>
+
+		<p>Then each multi method definition specifies which day and which part it is.
+		For example for day 4, part 2 the definition is:</p>
+<pre><code>multi MAIN(4, 2, $filename) {
+}</code></pre>
+
+<h3 id="control-flow">Control flow</h3>
+
+<h4>Supercharged conditionals with <code>when</code></h4>
+
+<p>Raku has a few extensions of standard set of control flow constructs.
+A small one is <a href="https://docs.raku.org/syntax/when"><code>when</code></a>,
+a variant of <code>if</code> that on false skips all the following statements in the surrounding block and goes to the outer block.</p>
+
+<pre><code>sub test($x) {
+  {
+    when $x == 0 { say "$x equal to 0" }
+    say "$x not equal to 0";
+  }
+  say "end of test";
+}
+
+test(0);
+test(1);</code></pre>
+
+<p>Code above produces this output:</p>
+
+<pre><code>0 equal to 0
+end of test
+1 not equal to 0
+end of test</code></pre>
+
+<p>Another difference with <code>if</code> is the test that it's performed.
+It uses <a href="https://docs.raku.org/routine/~~">smartmatch</a> against a <a href="https://docs.raku.org/syntax/$_">topic variable</a>
+to provide <em>comfy</em> contextual matching.
+For example when iterating over the lines of file using <code>for $file.IO.lines {}</code> statement, the topic is current line of file.
+By smartmatching against regular expression we can select only those lines that contain a number:
+<pre><code>for $file.IO.lines {
+  when /\d+/ { say "$_ contains a number"; }
+}</code></pre>
+
+<p>With the <a href="https://docs.raku.org/language/control#given"><code>given</code></a> one can reproduce <code>switch</code> in Raku,
+without explicit support for it.</p>
+
+<p>My favourite use of <code>when</code> (in conjuction with the regular expressions described below)
+is in solution of day 3 part 2 with parsing of simple expressions.
+This code is so beautiful and self expressive that one could immediately deduce the task from what is written (if they know Raku regexes of course):</p>
+
+<pre><code>given $file.IO.slurp {
+  for m:exhaustive{ ("do" "n't"? "()")
+    || "mul("( \d ** 1..3) "," (\d**1..3) ")"
+  } {
+    when "do()"    { $enabled = True  }
+    when "don't()" { $enabled = False }
+    default        { $total += $_[0] * $_[1] if $enabled }
+  }
+}</code></pre>
+
+<h4>Statement modifiers</h4>
+
+<p>Conditional statements can be turned into statement modifiers, controlling the execution of single statement.
+This allows for readable and quick early exits and conditions that are just a joy to write.
+My favourite use in the Advent of Code solutions is this one:</p>
+
+<pre><code>last unless inbounds @grid, $x, $y;</code></pre>
+
+<p>which would translate to this C code:</p>
+
+<pre><code>if (!inbounds(grid, x, y)) { break; }</code></pre>
+
+<p>and could be split by formatter to up to 4 lines!</p>
+
+<p>Also naming <code>continue/break</code>, <code>next/last</code> is a smart move, if C syntax wouldn't hold entire programming world hostage we should switch.</p>
+
+<h4>gather/take</h4>
+
+<p>In Raku loops already behave like list comprehansions in other languages:</p>
+
+<pre><code>say (for 1..10 -&gt; $v { $v if $v % 2 == 0 });
+# printed (2 4 6 8 10)</code></pre>
+
+<p>Raku allows this mechanism of value collection to be used explicitly with <code>gather</code> that creates a block where values will be gathered and <code>take</code> that will send values to <code>gather</code>. The simplest use would be like this:</p>
+
+<pre><code>say gather {
+  take 1;
+  take 2;
+};
+# printed (1 2)</code></pre>
+
+<p>What makes it unique in the languages that support similar features (like Python or JavaScript generators) is that <code>take</code> can send from function to caller without any special syntax:</p>
+
+<pre><code>sub count($n) {
+  for 0..$n -> $i { take $i; }
+}
+
+say gather {
+  count(5);
+  count(4);
+}
+# prints (0 1 2 3 4 5 0 1 2 3 4)</code></pre>
+
+<p>It's superpowers doesn't end there.
+Since Raku has builtin pair type, gather that produces sequence of pairs could be easily coerced into a dictionary data structure.
+There is also a lazy variant which would stop the execution between each produced take depending on consumption.
+Fun doesn't stop there - Raku provides also an asynchronous stream like variant called <code>supply/emit</code>.</p>
+
+<h3 id="grammars">Grammars and regular expressions</h3>
+
+<p>I've written a lot of lexers, parsers and data extractors.
+Both in context of programming languages and outside of it.
+I'm used to writing standard <a href="https://en.wikipedia.org/wiki/Recursive_descent_parser">recursive descent</a>
+or mocking some abomination of loops and regular expressions in Python.</p>
+
+<p>Raku feels like a very welcome revolution by improving the syntax of regular expressions and introducing grammars as a primary composition methods of them.
+This is pure comfort and joy.
+Parsing no longer feels like encoding some automata that you have in your head and instead is provided as is, declarative, in the language, without special EDSLs, compilers or generators.
+I don't like most parser libraries, I find them not worth the effort.
+Having support for parsing right in the language is a bliss.</p>
+
+<p><strong>Regular expressions</strong> in Raku make a few key changes that improve readability.
+By introducing insignificant whitespace, comments and regexes composition via interpolation one could easily structure regex in clear way.
+Escaping special characters isn't necessary when you can put literals in quotes: matching suffix <code>.com</code> can be easily done with regex <code>/".com"$/</code>.</p>
+
+<p>Quantifiers can be modified with the separator.
+<code>%</code> modifies quantifier of the left to expect values separated by the value on the right.
+<code>%%</code> does the same but allows trailing separators.
+So if you want to specify regex for a CSV file that contains some numbers you could do this like this: <code>/((\d+)+ % ",")* % \n/</code>.
+
+<p><a href="https://docs.raku.org/language/regexes">The documentation for Regexes in Raku</a> is <em>massive</em>.
+I think that with my usage I only scratched the surface of what can be accomplished.
+For Advent of Code it was however enough enough.</p>
+
+<p>When you grasp Raku Regexes, <strong>Grammars</strong> offer a way to structure them nicely.
+For me, the words aren't enough and would only muddy the picture.
+The best showcase is this simple <a href="https://github.com/moritz/json/blob/master/lib/JSON/Tiny/Grammar.pm">JSON grammar in Raku</a> that can deserialize JSON in 40 lines of code.
+Impressive.</p>
+
+<h3 id="declarative">Declarative programming</h3>
+
+<p>Raku has a bunch of sugar that allows to specify directly what one thinks.
+In this matter it's very similar to languages like Haskell or APL.</p>
+
+<p>Raku has a lot of non-standard operators, including different array and hash indexing operators (<code>array[idx]</code> and <code>hash{idx}</code>),
+replication operators (<code>x</code> for strings, <code>xx</code> for lists) and flip-flop operators (<code>ff</code>; the wildest of them all).
+The most impressive ones are metaoperators - operators that are parametrized by other operators.
+It puts Haskell-style list processing to shame and is the closest that I felt a „normal language” has approach concatenative paradigm.</p>
+
+<p><strong>Metaoperators</strong> are operators that enhance or modify the behaviour of normal operators.
+The simplest case is the negation of the operator: <code>!=</code> can be viewed as the usage of metaoperator <code>!</code> with operator <code>==</code>.
+In Raku this is correct interpretation, the cannonical spelling of not equals is <code>!==</code> with <code>!=</code> as an alias.
+Another simple operation is reversing the sides of binary operators.
+This is done in Raku with <code>R</code>: <code>10 - 9 == 9 R- 10</code>.</p>
+
+<p>Why one would need to reverse a binary operator? For reductions of course.
+You could turn any binary operator into a reduction by putting it into square brackets.
+This makes it a unary reduction operator!
+For example <code>[*] 1..5</code> would calculate 5 factorial.
+If you want partial results, just add one character: <code>[\*] 1..5 == (1, 2, 6, 24, 120)</code>.
+In conjuction with operator reversing this allows for any common kind of fold:</p>
+
+<table>
+	<tr>
+		<th>Math</th>
+		<th>Haskell</th>
+		<th>Raku</th>
+	</tr>
+	<tr>
+		<td><code>(((0-1)-2)-3)-4</code></td>
+		<td><code>foldl (-) 0 [1..4]</code></td>
+		<td><code>[-] (0, 1..4).flat</code></td>
+	</tr>
+	<tr>
+		<td><code>((1-2)-3)-4</code></td>
+		<td><code>foldl1 (-) [1..4]</code></td>
+		<td><code>[-] 1..4</code></td>
+	</tr>
+	<tr>
+		<td><code>0-(1-(2-(3-4)))</code></td>
+		<td><code>foldr (-) 0 [1..4]</code></td>
+		<td><code>[R-] (0, 1..4).flat</code></td>
+	</tr>
+	<tr>
+		<td><code>1-(2-(3-4))</code></td>
+		<td><code>foldr1 (-) [1..4]</code></td>
+		<td><code>[R-] 1..4</code></td>
+	</tr>
+</table>
+
+<h2 id="missing-value-types">Lack of value types</h2>
+
+<p>As with many languages, cracks begin to show when builtin primitive types aren't enough.
+For example, let's say you want to map two dimensional vector to some numeric value.
+In Python this can easily be done using tuples: <code>{(1, 2): 3, (4, 5): 6}</code>.
+In Raku however, if one would like to index with array, Raku would respond by indexing by each element of array:</p>
+
+<pre><code>&gt; {3 =&gt; 4, 4 =&gt; 5}{3,4,5}
+(4 5 (Any))
+&gt; {[3,4] =&gt; 10, [5,6] =&gt; 20}{[3,4]}
+((Any) (Any))
+&gt; {[3,4] =&gt; 10, [5,6] =&gt; 20}{"3 4"}
+10
+</code></pre>
+
+<p>Listing above shows what really happens.
+If we index with arrays during hash creation, then they are automatically converted to strings.
+If we index after creation with an array, then it uses array elements as indices.
+It was for a moment a breaking point for me with Raku.
+One could use builtin pair type, however it also has a set of quirks.</p>
+
+<h2 id="c-ffi">C Foreign Function Interface</h2>
+
+<p>C ABI on given platform is <em>the interface of programming languages</em>.
+If your language doesn't support it the use of it is quite limited.
+Raku shows with what would I categorize as the modern standard for C interoperability
+by using Raku normal syntax for classes and functions to define foregin ones with a bit of traits magic.
+You can find documentation <a href="https://docs.raku.org/language/nativecall">here</a>.</p>
+
+<pre><code>In C:
+void InitWindow(int width, int height, char const* title);
+In Raku:
+LIBRAYLIB = "/path/to/raylib.so"
+sub InitWindow(int32 $width, int32 $height, Str $title) is native(LIBRAYLIB) {*}
+</code></pre>
+
+<p>Structures can be also defined with one to one match:</p>
+
+<pre><code>class Color is repr('CStruct') {
+  has uint8 $.r is rw;
+  has uint8 $.g is rw;
+  has uint8 $.b is rw;
+  has uint8 $.a is rw;
+}</code></pre>
+
+<p>However, as in most scripting languages there is requirement to pass structures by reference, not by value.
+This is fine for some C APIs but not all of them, especially Raylib.
+Since Color class can fit inside the 32bit value workaround is easy:</p>
+
+<pre><code>class Color is repr('CStruct') {
+  has uint8 $.r is rw;
+  has uint8 $.g is rw;
+  has uint8 $.b is rw;
+  has uint8 $.a is rw;
+
+  method asInt {
+    $.r +&lt; (3 * 8) +|
+    $.g +&lt; (2 * 8) +|
+    $.b +&lt; (1 * 8) +|
+    $.a +&lt; (0 * 8)
+  }
+}
+sub ClearBackgroundNative(int64 $color)
+  is native(LIBRAYLIB)
+  is symbol("ClearBackground") {*}
+
+sub ClearBackground(Color $c) {
+  ClearBackgroundNative($c.asInt);
+}</code></pre>
+
+<p>Sadly, I couldn't get multimethods to work here, since <code>int64</code> isn't a real type that Raku could dispatch on.</p>
+
+		</main>
+	</body>
+</html>
+
