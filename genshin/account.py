@@ -24,12 +24,108 @@ def main():
         versions[f"Q{start_q} {start.year}"] |= {c}
         versions[f"Q{finish_q} {finish.year}"] |= {c}
 
-    print(PAGE.format(
-        weapons=generate_weapons(),
-        characters=generate_characters(),
-        characters_count=len(CHARACTERS),
-        elements=''.join(generate_elements())
-    ))
+    write_account_page()
+    write_characters_page()
+
+def write_account_page():
+    with open("account.html", "w") as f:
+        print(PAGE.format(
+            five_star_weapons=generate_five_star_weapons(),
+            characters=generate_characters(),
+            characters_count=len(CHARACTERS),
+            elements=''.join(generate_elements()),
+            weapons=''.join(generate_weapons()),
+            regions=''.join(generate_regions()),
+            versions=''.join(generate_versions()),
+            five_star_vs_four_star=''.join(generate_five_star_vs_four_star()),
+        ), file=f)
+
+def write_characters_page():
+    characters = '\n'.join(f"""<img class="icon" src="{c.icon_url}" alt={c.name} title="{c.name}" data-version="{'.'.join(map(str, c.release))}" data-benched="{c.benched}">"""
+                           for c in sorted(CHARACTERS, key=lambda x: (x.release, x.benched, x.name)))
+
+    script = "const versions = [" + ',\n'.join(f'"{v}"' for v in VERSIONS) + "]" + \
+    """
+    function onInput(e) {
+        const min = versions[min_version.value];
+        const max = versions[max_version.value];
+        if (e.target == max_version && max < min) min_version.value = max_version.value;
+        if (e.target == min_version && min > max) max_version.value = min_version.value;
+
+        document.querySelector("label[for=min_version] span").textContent = min;
+        document.querySelector("label[for=max_version] span").textContent = max;
+
+        for (const icon of document.querySelectorAll(".icon")) {
+        console.log(icon.dataset.version, min, max);
+            if (min <= icon.dataset.version && icon.dataset.version <= max) {
+                icon.classList.remove("hide");
+            } else {
+                icon.classList.add("hide");
+            }
+            if (icon.dataset.benched.toLowerCase() == "true") {
+                icon.classList.add('benched');
+            }
+        }
+    }
+
+    min_version.addEventListener("input", onInput);
+    max_version.addEventListener("input", onInput);
+    onInput({ target: null });
+    """
+
+    style = """
+    .hide {
+        display: none;
+    }
+    .benched {
+        filter: grayscale(0.75) brightness(60%);
+    }
+    tr, th, td {
+        border: 1px solid black;
+    }
+    """
+
+    def generate_table():
+        yield '<tr>'
+        yield '<td></td>'
+        for weapon in WEAPON_ORDER:
+            yield f'<th>{weapon}</th>'
+        yield '</tr>'
+        for element in Element:
+            yield '<tr>'
+            yield f'<th>{element}</th>'
+            for weapon in WEAPON_ORDER:
+                yield '<td>'
+                for c in CHARACTERS:
+                    if c.weapon == weapon and c.element == element and (not c.benched or c.name in ["Gaming", "Kinich", "Rosaria", "Raiden Shogun", "Candace", "Kirara", "Ganyu", "Ningguang"]):
+                        yield f'<img src="{c.icon_url}">'
+                yield '</td>'
+            yield '</tr>'
+
+    table = '\n'.join(generate_table())
+
+    with open("characters.html", "w") as f:
+        print(f"""<!DOCTYPE html>
+        <html>
+            <head>
+            <style>{style}</style>
+            </head>
+        <body>
+            <input type="range" min="0" max="{len(VERSIONS)-1}" step="1" value="0" id="min_version" name="min_version">
+            <label for="min_version">From: <span>1.0</span></label>
+            <input type="range" min="0" max="{len(VERSIONS)-1}" step="1" value="{len(VERSIONS)-1}" id="max_version" name="max_version">
+            <label for="max_version">To: <span>1.0</span></label>
+            <div>
+                {characters}
+            </div>
+            <table>
+                {table}
+            </table>
+            <script>
+                {script}
+            </script>
+        </body>
+        </html>""", file=f)
 
 def generate_characters() -> str:
     global versions
@@ -50,7 +146,7 @@ def generate_characters() -> str:
         """
             <div style="display: grid; grid-template-columns: 3ch auto; align-items: center; border-style: solid; padding: 1ch; border-width: 0 1px 1px 0">
                 <h3 style="padding: 0; margin: 0">{group_name}</h3>
-                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1ch">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); justify-content: center; gap: 1ch">
                     {characters}
                 </div>
             </div>
@@ -58,7 +154,7 @@ def generate_characters() -> str:
             usage = f"{100 * sum(1 for c in group if not c.benched) / len(group):.0f}%",
             versions=', '.join(f"{v}" for v in sorted(versions[group_name])),
             group_name=group_name,
-            characters="\n".join(f'<div class="{c.classes}"><img src="{c.icon_url}" alt="{c.name}" title="{c.name}"></div>' for c in group)
+            characters="\n".join(f'<div class="{c.classes}"><img style="width: 100%" src="{c.icon_url}" alt="{c.name}" title="{c.name}"></div>' for c in group)
         )
         for group_name, group in grouped.items()
     )
@@ -72,7 +168,7 @@ def generate_characters() -> str:
         </div>
     """
 
-def generate_weapons() -> str:
+def generate_five_star_weapons() -> str:
     return "\n".join(f'<img style="width: 100%" src="{c.icon_url}" alt="{c.name}">' for c in FIVE_STAR_WEAPONS)
 
 def generate_elements():
@@ -120,6 +216,134 @@ def generate_elements():
 
         yield '</div>'
 
+def generate_weapons():
+    for i in range(2):
+        yield '<details style="margin-bottom: 1rem"><summary>'
+        if i == 0:
+            yield 'How many characters who use given weapon do I often use?'
+        else:
+            yield 'How many characters who use given weapon do I own?'
+        yield '</summary>'
+
+        yield '<div style="display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: auto auto; justify-content: center; text-align: center">'
+        for weapon in WEAPON_ORDER:
+            yield f'<div>'
+            for character in sorted(CHARACTERS, key=lambda c: c.name):
+                if character.weapon == weapon and (i == 1 or not character.benched):
+                    yield f'<img style="width: 33.3%"src="{character.icon_url}" title="{character.name}">\n'
+            yield f'</div>'
+        yield '</div>'
+        yield f'</details>'
+
+        yield '<div style="display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: 4rem auto auto; justify-content: center; text-align: center; margin-bottom: 1rem">'
+        weapon_count = {}
+        for weapon in WEAPON_ORDER:
+            weapon_count[weapon] = sum(1 for character in CHARACTERS if (i == 1 or not character.benched) and character.weapon == weapon)
+
+        m = max(weapon_count.values())
+
+        for weapon in WEAPON_ORDER:
+            p = weapon_count[weapon]/m*100
+            yield f'<div style="background: linear-gradient(to top, white 0%, transparent {p}%);">{weapon_count[weapon]}</div>\n'
+
+        for weapon in WEAPON_ORDER:
+            yield f'<img style="width: 40%; display: block; margin-inline: auto" src="{weapon.icon_url}" alt="{weapon}">'
+
+        yield '</div>'
+
+def generate_regions():
+    for i in range(2):
+        yield '<details style="margin-bottom: 1rem"><summary>'
+        if i == 0:
+            yield 'How many characters from given region do I often use?'
+        else:
+            yield 'How many characters from given region do I own?'
+        yield '</summary>'
+
+        yield '<div style="display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: auto auto; justify-content: center; text-align: center">'
+        for region in Region:
+            yield f'<div>'
+            for character in sorted(CHARACTERS, key=lambda c: c.name):
+                if character.region == region and (i == 1 or not character.benched):
+                    yield f'<img style="width: 33.3%"src="{character.icon_url}" title="{character.name}">\n'
+            yield f'</div>'
+        yield '</div>'
+        yield f'</details>'
+
+        yield '<div style="display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: 4rem auto auto; justify-content: center; text-align: center; margin-bottom: 1rem">'
+        region_count = {}
+        for region in Region:
+            region_count[region] = sum(1 for character in CHARACTERS if (i == 1 or not character.benched) and character.region == region)
+
+        m = max(region_count.values())
+
+        for region in Region:
+            p = region_count[region]/m*100
+            yield f'<div style="background: linear-gradient(to top, white 0%, transparent {p}%);">{region_count[region]}</div>\n'
+
+        for region in Region:
+            yield f'<img style="width: 60%; margin-inline: auto; display: block" src="{region.icon_url}" alt="{region}">'
+            # yield f'<strong>{region.icon_url}</strong>'
+
+        yield '</div>'
+
+def generate_versions():
+    versions = sorted(set(c.release[0] for c in CHARACTERS if not c.benched))
+
+    for i in range(2):
+        yield '<details style="margin-bottom: 1rem"><summary>'
+        if i == 0:
+            yield 'How many characters from given major version do I often use?'
+        else:
+            yield 'How many characters from given major version do I own?'
+        yield '</summary>'
+
+        yield f'<div style="display: grid; grid-template-columns: repeat({len(versions)}, 1fr); grid-template-rows: auto auto; justify-content: center; text-align: center">'
+        for version in versions:
+            yield f'<div>'
+            for character in sorted(CHARACTERS, key=lambda c: c.name):
+                if character.release[0] == version and (i == 1 or not character.benched):
+                    yield f'<img style="width: 33.3%"src="{character.icon_url}" title="{character.name}">\n'
+            yield f'</div>'
+        yield '</div>'
+        yield f'</details>'
+
+        yield f'<div style="display: grid; grid-template-columns: repeat({len(versions)}, 1fr); grid-template-rows: 4rem auto auto; justify-content: center; text-align: center; margin-bottom: 1rem">'
+        version_count = {}
+        for version in versions:
+            version_count[version] = sum(1 for character in CHARACTERS if (i == 1 or not character.benched) and character.release[0] == version)
+
+        m = max(version_count.values())
+
+        for version in versions:
+            p = version_count[version]/m*100
+            yield f'<div style="background: linear-gradient(to top, white 0%, transparent {p}%);">{version_count[version]}</div>\n'
+
+        for version in versions:
+            yield f'<strong>{version}</strong>'
+
+        yield '</div>'
+
+def generate_five_star_vs_four_star():
+    five_stars_used  = sum(1 for c in CHARACTERS if not c.benched and c.five_star)
+    five_stars_total = sum(1 for c in CHARACTERS if c.five_star)
+    four_stars_used  = sum(1 for c in CHARACTERS if not c.benched and not c.five_star)
+    four_stars_total = sum(1 for c in CHARACTERS if not c.five_star)
+
+    u4 = four_stars_used / (five_stars_used + four_stars_used) * 100
+    t4 = four_stars_total / (five_stars_total + four_stars_total) * 100
+
+    yield '<div class="fvf">'
+    yield f'<h3 style="grid-column: span 2; margin-top: 0.5rem">Used</h3>'
+    yield f'<div style="grid-column: span 2; width: 100%; height: 1rem; background: linear-gradient(to right, rgb(148,112,187) 0%, rgb(148,112,187) {u4}%, rgba(200,124,36) {u4}%)"></div>'
+    yield f'<div>Four stars: {four_stars_used}</div>'
+    yield f'<div style="text-align: right">Five stars: {five_stars_used}</div>'
+
+    yield f'<h3 style="grid-column: span 2">Total</h3>'
+    yield f'<div style="grid-column: span 2; width: 100%; height: 1rem; background: linear-gradient(to right, rgb(148,112,187) 0%, rgb(148,112,187) {t4}%, rgba(200,124,36) {t4}%)"></div>'
+    yield f'<div>Four stars: {four_stars_total}</div>'
+    yield f'<div style="text-align: right">Five stars: {five_stars_total}</div>'
+    yield '</div>'
 
 class Element(enum.StrEnum):
     ANEMO = "Anemo"
@@ -130,12 +354,25 @@ class Element(enum.StrEnum):
     HYDRO = "Hydro"
     PYRO = "Pyro"
 
-class WeaponType:
+class WeaponType(enum.StrEnum):
     BOW = "Bow"
     CATALYST = "Catalyst"
     CLAYMORE = "Claymore"
     POLEARM = "Polearm"
     SWORD = "Sword"
+
+    @property
+    def icon_url(self):
+        return f"{self.lower()}.webp"
+
+WEAPON_ORDER = [WeaponType.SWORD, WeaponType.POLEARM, WeaponType.CLAYMORE, WeaponType.BOW, WeaponType.CATALYST]
+
+class Role(enum.StrEnum):
+    ON_FIELD = "On-Field"
+    OFF_FIELD = "Off-Field"
+    DPS = "DPS"
+    SUPPORT = "Support"
+    SURVIVABILITY = "Survivability"
 
 class Region(enum.StrEnum):
     FONTAINE = "Fontaine"
@@ -143,34 +380,41 @@ class Region(enum.StrEnum):
     LIYUE = "Liyue"
     MONDSTADT = "Mondstadt"
     NATLAN = "Natlan"
-    SNEZHNAYA = "Snezhnaya"
     SUMERU = "Sumeru"
+
+    @property
+    def icon_url(self):
+        return f"{str(self.lower())}.webp"
 
 
 class Wish:
     def __init__(self,
+                 release_version: str,
                  name: str, date: datetime|str|None = None, *,
                  pity: typing.Optional[int] = None,
                  weapon: bool = False,
                  weapon_type: WeaponType|None = None,
                  benched: bool = True,
                  favourite: bool = False,
+                 five_star: bool = False,
                  ):
         self.name = name
+        self.release = list(map(int, release_version.split('.')))
         if isinstance(date, str):
             self.date = datetime.strptime(date, "%Y-%m-%d")
         else:
             self.date = date
         self.pity = pity
-        self.weapon = weapon
+        self.is_weapon = weapon
         self.benched = benched
         self.favourite = favourite
         self.weapon_type = weapon_type
+        self.five_star = five_star
 
     @property
     def icon_url(self) -> str:
         name = self.name.replace(" ", "_")
-        if not self.weapon:
+        if not self.is_weapon:
             return f"icons/{name}.webp"
         return f"https://rerollcdn.com/GENSHIN/Weapons/{name}.png"
 
@@ -182,9 +426,19 @@ class Wish:
         return ' '.join(classes)
 
     @property
-    def element(self) -> str:
+    def element(self) -> Element:
         assert self.name in CHARACTERS_ELEMENT, f"{self.name} doesn't have an element in CHARACTERS_ELEMENT table"
         return CHARACTERS_ELEMENT[self.name]
+
+    @property
+    def weapon(self) -> WeaponType:
+        assert self.name in CHARACTERS_WEAPON, f"{self.name} doesn't have a weapon in CHARACTERS_WEAPON table"
+        return CHARACTERS_WEAPON[self.name]
+
+    @property
+    def region(self) -> Region:
+        assert self.name in CHARACTERS_REGION, f"{self.name} doesn't have a region in CHARACTERS_REGION table"
+        return CHARACTERS_REGION[self.name]
 
     def __repr__(self) -> str:
         base = [repr(self.name), repr(self.date)]
@@ -222,6 +476,10 @@ PAGE = """<!DOCTYPE html>
     top: 0;
     right: 0;
 }}
+.fvf {{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}}
         </style>
 </head>
 <body>
@@ -254,10 +512,33 @@ PAGE = """<!DOCTYPE html>
             {elements}
         </section>
 
+        <details>
+            <summary>More statistics</summary>
+            <section>
+                <h2>Weapons</h2>
+                {weapons}
+            </section>
+
+            <section>
+                <h2>Regions</h2>
+                {regions}
+            </section>
+
+            <section>
+                <h2>Versions</h2>
+                {versions}
+            </section>
+        </details>
+
+        <section>
+            <h2 style="margin-bottom: 0">Five star vs four stars</h2>
+            {five_star_vs_four_star}
+        </section>
+
         <section>
             <h2>5* Weapons</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, 80px); justify-content: center">
-                {weapons}
+                {five_star_weapons}
             </div>
         </section>
         <section>
@@ -270,92 +551,94 @@ PAGE = """<!DOCTYPE html>
 """
 
 CHARACTERS = sorted([
-    Wish('Citlali', '2025-01-01', benched=False, favourite=True),
-    Wish('Ororon', '2024-11-21', benched=False, favourite=True),
-    Wish('Chasca', '2024-11-21', benched=False),
-    Wish('Xilonen', '2024-10-21', benched=False),
-    Wish('Kinich', '2024-09-27'),
-    Wish('Kachina', '2024-08-28'),
-    Wish('Nilou', '2024-07-20'),
-    Wish('Sethos', '2024-06-05'),
-    Wish("Arlecchino", "2024-05-02", pity=76, benched=False, favourite=True),
-    Wish("Chiori", "2024-03-22", pity=80, benched=False, favourite=True),
-    Wish("Xianyun", "2024-02-18", pity=75, benched=False),
-    Wish("Gaming", "2024-02-05", favourite=True),
-    Wish("Chevreuse", "2024-01-13", benched=False),
-    Wish("Navia", "2023-12-20", pity=58, benched=False, favourite=True),
-    Wish("Furina", "2023-11-08", pity=78, benched=False, favourite=True),
-    Wish("Charlotte", "2023-11-08"),
-    Wish("Freminet", "2023-09-12"),
-    Wish("Lyney", "2023-09-03", pity=82, benched=False),
-    Wish("Lynette", "2023-08-16", favourite=True),
-    Wish("Kirara", "2023-05-24", favourite=True),
-    Wish("Kaveh", "2023-05-05"),
-    Wish("Mika", "2023-07-08"),
-    Wish("Dehya", "2023-06-26"),
-    Wish("Yaoyao", "2023-02-03", benched=False, favourite=True),
-    Wish("Wanderer", "2022-12-10", benched=False),
-    Wish("Faruzan", "2022-12-08", benched=False),
-    Wish("Layla", "2023-03-02", favourite=True),
-    Wish("Nahida", "2023-04-15", benched=False, favourite=True),
-    Wish("Cyno", "2023-03-19"),
-    Wish("Candace", "2023-12-20"),
-    Wish("Dori", "2022-09-09"),
-    Wish("Tighnari", "2022-11-04"),
-    Wish("Collei", "2022-08-24"),
-    Wish("Shikanoin Heizou", "2023-06-17"),
-    Wish("Kuki Shinobu", "2022-09-28", benched=False, favourite=True),
-    Wish("Yelan", "2022-06-05", benched=False, favourite=True),
-    Wish("Kamisato Ayato", "2022-04-09", benched=False),
-    Wish("Yun Jin", "2022-04-09"),
-    Wish("Arataki Itto", "2022-06-22", favourite=True),
-    Wish("Gorou", "2022-12-10"),
-    Wish("Thoma", "2022-02-22", benched=False),
-    Wish("Sangonomiya Kokomi", "2023-07-26", pity=43, benched=False, favourite=True),
-    Wish("Raiden Shogun", "2023-01-07"),
-    Wish("Kujou Sara", "2022-04-01"),
-    Wish("Sayu", "2022-04-21", favourite=True),
-    Wish("Kamisato Ayaka", "2022-05-20"),
-    Wish("Kaedehara Kazuha", "2023-06-26", pity=45, benched=False),
-    Wish("Yanfei", "2022-05-31"),
-    Wish("Rosaria", "2022-05-08"),
-    Wish("Xiao", "2023-02-03", benched=False),
-    Wish("Ganyu", "2022-09-09"),
-    Wish("Zhongli", "2022-08-24", benched=False),
-    Wish("Xinyan", "2022-06-13"),
-    Wish("Diona", "2022-08-24"),
-    Wish("Venti", "2022-10-14"),
-    Wish("Keqing", "2023-10-01"),
-    Wish("Mona", "2023-02-03"),
-    Wish("Qiqi", "2022-04-21", benched=False, favourite=True),
-    Wish("Jean", "2022-05-13"),
-    Wish("Sucrose", "2022-03-31", benched=False),
-    Wish("Chongyun", "2022-11-02"),
-    Wish("Noelle", "2022-02-03"),
-    Wish("Bennett", "2022-05-08", benched=False),
-    Wish("Fischl", "2022-08-02", benched=False, favourite=True),
-    Wish("Ningguang", "2022-05-21"),
-    Wish("Xingqiu", "2022-04-17", benched=False),
-    Wish("Beidou", "2022-02-07", benched=False, favourite=True),
-    Wish("Xiangling", "2022-02-05", benched=False),
-    Wish("Razor", "2022-04-24"),
-    Wish("Barbara", "2022-02-13"),
-    Wish("Lisa", "2022-02-03"),
-    Wish("Kaeya", "2022-02-03"),
-    Wish("Amber", "2022-02-03"),
+    Wish("5.3", "Lan Yan", "2025-01-21"),
+    Wish("5.3", 'Citlali', '2025-01-01', benched=False, favourite=True, five_star=True),
+    Wish("5.2", 'Ororon', '2024-11-21', benched=False, favourite=True),
+    Wish("5.2", 'Chasca', '2024-11-21', benched=False, five_star=True),
+    Wish("5.1", 'Xilonen', '2024-10-21', benched=False, five_star=True, favourite=True),
+    Wish("5.0", 'Kinich', '2024-09-27', five_star=True),
+    Wish("5.0", 'Kachina', '2024-08-28'),
+    Wish("4.7", 'Sethos', '2024-06-05'),
+    Wish("4.7", "Clorinde", "2025-02-10", favourite=True, five_star=True),
+    Wish("4.6", "Arlecchino", "2024-05-02", pity=76, benched=False, favourite=True, five_star=True),
+    Wish("4.5", "Chiori", "2024-03-22", pity=80, benched=False, favourite=True, five_star=True),
+    Wish("4.4", "Xianyun", "2024-02-18", pity=75, benched=False, five_star=True, favourite=True),
+    Wish("4.4", "Gaming", "2024-02-05", favourite=True),
+    Wish("4.3", "Navia", "2023-12-20", pity=58, benched=False, favourite=True, five_star=True),
+    Wish("4.3", "Chevreuse", "2024-01-13", benched=False),
+    Wish("4.2", "Furina", "2023-11-08", pity=78, benched=False, favourite=True, five_star=True),
+    Wish("4.2", "Charlotte", "2023-11-08"),
+    Wish("4.0", "Lyney", "2023-09-03", pity=82, benched=False, five_star=True),
+    Wish("4.0", "Lynette", "2023-08-16", favourite=True),
+    Wish("4.0", "Freminet", "2023-09-12"),
+    Wish("3.7", "Kirara", "2023-05-24", favourite=True),
+    Wish("3.6", "Kaveh", "2023-05-05"),
+    Wish("3.5", "Mika", "2023-07-08"),
+    Wish("3.5", "Dehya", "2023-06-26", five_star=True),
+    Wish("3.4", "Yaoyao", "2023-02-03", benched=False, favourite=True),
+    Wish("3.3", "Wanderer", "2022-12-10", benched=False, five_star=True),
+    Wish("3.3", "Faruzan", "2022-12-08", benched=False),
+    Wish("3.2", "Nahida", "2023-04-15", benched=False, favourite=True, five_star=True),
+    Wish("3.2", "Layla", "2023-03-02", favourite=True),
+    Wish("3.1", 'Nilou', '2024-07-20', five_star=True),
+    Wish("3.1", "Cyno", "2023-03-19", five_star=True),
+    Wish("3.1", "Candace", "2023-12-20", favourite=True),
+    Wish("3.0", "Tighnari", "2022-11-04", five_star=True),
+    Wish("3.0", "Dori", "2022-09-09"),
+    Wish("3.0", "Collei", "2022-08-24"),
+    Wish("2.8", "Shikanoin Heizou", "2023-06-17"),
+    Wish("2.7", "Yelan", "2022-06-05", benched=False, favourite=True, five_star=True),
+    Wish("2.7", "Kuki Shinobu", "2022-09-28", benched=False, favourite=True),
+    Wish("2.6", "Kamisato Ayato", "2022-04-09", benched=False, five_star=True),
+    Wish("2.4", "Yun Jin", "2022-04-09"),
+    Wish("2.3", "Gorou", "2022-12-10"),
+    Wish("2.3", "Arataki Itto", "2022-06-22", favourite=True, five_star=True),
+    Wish("2.2", "Thoma", "2022-02-22", benched=False),
+    Wish("2.1", "Sangonomiya Kokomi", "2023-07-26", pity=43, benched=False, favourite=True, five_star=True),
+    Wish("2.1", "Raiden Shogun", "2023-01-07", five_star=True),
+    Wish("2.1", "Kujou Sara", "2022-04-01"),
+    Wish("2.0", "Sayu", "2022-04-21", favourite=True),
+    Wish("2.0", "Kamisato Ayaka", "2022-05-20", benched=False, five_star=True),
+    Wish("1.6", "Kaedehara Kazuha", "2023-06-26", pity=45, benched=False, five_star=True),
+    Wish("1.5", "Yanfei", "2022-05-31"),
+    Wish("1.4", "Rosaria", "2022-05-08"),
+    Wish("1.3", "Xiao", "2023-02-03", benched=False, five_star=True),
+    Wish("1.2", "Ganyu", "2022-09-09", five_star=True),
+    Wish("1.1", "Zhongli", "2022-08-24", benched=False, five_star=True),
+    Wish("1.1", "Xinyan", "2022-06-13"),
+    Wish("1.1", "Diona", "2022-08-24"),
+    Wish("1.0", "Xingqiu", "2022-04-17", benched=False),
+    Wish("1.0", "Xiangling", "2022-02-05", benched=False),
+    Wish("1.0", "Venti", "2022-10-14", five_star=True),
+    Wish("1.0", "Sucrose", "2022-03-31", benched=False, favourite=True),
+    Wish("1.0", "Razor", "2022-04-24"),
+    Wish("1.0", "Qiqi", "2022-04-21", benched=False, favourite=True, five_star=True),
+    Wish("1.0", "Noelle", "2022-02-03"),
+    Wish("1.0", "Ningguang", "2022-05-21"),
+    Wish("1.0", "Mona", "2023-02-03", five_star=True),
+    Wish("1.0", "Lisa", "2022-02-03"),
+    Wish("1.0", "Keqing", "2023-10-01", five_star=True),
+    Wish("1.0", "Kaeya", "2022-02-03"),
+    Wish("1.0", "Jean", "2022-05-13", five_star=True),
+    Wish("1.0", "Fischl", "2022-08-02", benched=False, favourite=True),
+    Wish("1.0", "Chongyun", "2022-11-02"),
+    Wish("1.0", "Bennett", "2022-05-08", benched=False),
+    Wish("1.0", "Beidou", "2022-02-07", benched=False, favourite=True),
+    Wish("1.0", "Barbara", "2022-02-13"),
+    Wish("1.0", "Amber", "2022-02-03"),
 ], key=lambda x: (x.date, x.name), reverse=True)
 
 assert all(char.date is not None for char in CHARACTERS)
 
 FIVE_STAR_WEAPONS = sorted([
-    Wish("Aquila Favonia", weapon=True, weapon_type=WeaponType.SWORD),
-    Wish("Crimson Moon's Semblance", pity=67, weapon=True, weapon_type=WeaponType.POLEARM),
-    Wish("Skyward Harp", weapon=True, weapon_type=WeaponType.BOW),
-    Wish("The First Great Magic", pity=3, weapon=True, weapon_type=WeaponType.BOW),
-    Wish('Peak Patrol Song', weapon=True, weapon_type=WeaponType.SWORD),
-    Wish('Primordial Jade Winged-Spear', weapon=True, weapon_type=WeaponType.POLEARM),
-    Wish('Uraku Misugiri', weapon=True, weapon_type=WeaponType.SWORD),
-], key=lambda x: ([WeaponType.SWORD, WeaponType.POLEARM, WeaponType.CLAYMORE, WeaponType.BOW, WeaponType.CATALYST].index(x.weapon_type), x.name))
+    Wish("0.0", "Aquila Favonia", weapon=True, weapon_type=WeaponType.SWORD),
+    Wish("0.0", "Crimson Moon's Semblance", pity=67, weapon=True, weapon_type=WeaponType.POLEARM),
+    Wish("0.0", "Skyward Harp", weapon=True, weapon_type=WeaponType.BOW),
+    Wish("0.0", "The First Great Magic", pity=3, weapon=True, weapon_type=WeaponType.BOW),
+    Wish("0.0", 'Peak Patrol Song', weapon=True, weapon_type=WeaponType.SWORD),
+    Wish("0.0", 'Primordial Jade Winged-Spear', weapon=True, weapon_type=WeaponType.POLEARM),
+    Wish("0.0", 'Uraku Misugiri', weapon=True, weapon_type=WeaponType.SWORD),
+], key=lambda x: (WEAPON_ORDER.index(x.weapon_type), x.name))
 
 CHARACTERS_ELEMENT = {
     "Albedo": Element.GEO,
@@ -405,6 +688,7 @@ CHARACTERS_ELEMENT = {
     "Klee": Element.PYRO,
     "Kujou Sara": Element.ELECTRO,
     "Kuki Shinobu": Element.ELECTRO,
+    "Lan Yan": Element.ANEMO,
     "Layla": Element.CRYO,
     "Lisa": Element.ELECTRO,
     "Lynette": Element.ANEMO,
@@ -451,13 +735,111 @@ CHARACTERS_ELEMENT = {
     "Zhongli": Element.GEO,
 }
 
-"""
+CHARACTERS_WEAPON = {
+"Keqing": WeaponType.SWORD,
+"Albedo": WeaponType.SWORD,
+"Alhaitham": WeaponType.SWORD,
+"Aloy": WeaponType.BOW,
+"Amber": WeaponType.BOW,
+"Arataki Itto": WeaponType.CLAYMORE,
+"Arlecchino": WeaponType.POLEARM,
+"Baizhu": WeaponType.CATALYST,
+"Barbara": WeaponType.CATALYST,
+"Beidou": WeaponType.CLAYMORE,
+"Bennett": WeaponType.SWORD,
+"Candace": WeaponType.POLEARM,
+"Charlotte": WeaponType.CATALYST,
+"Chasca": WeaponType.BOW,
+"Chevreuse": WeaponType.POLEARM,
+"Chiori": WeaponType.SWORD,
+"Chongyun": WeaponType.CLAYMORE,
+"Citlali": WeaponType.CATALYST,
+"Clorinde": WeaponType.SWORD,
+"Collei": WeaponType.BOW,
+"Cyno": WeaponType.POLEARM,
+"Dehya": WeaponType.CLAYMORE,
+"Diluc": WeaponType.CLAYMORE,
+"Diona": WeaponType.BOW,
+"Dori": WeaponType.CLAYMORE,
+"Emilie": WeaponType.POLEARM,
+"Eula": WeaponType.CLAYMORE,
+"Faruzan": WeaponType.BOW,
+"Fischl": WeaponType.BOW,
+"Freminet": WeaponType.CLAYMORE,
+"Furina": WeaponType.SWORD,
+"Gaming": WeaponType.CLAYMORE,
+"Ganyu": WeaponType.BOW,
+"Gorou": WeaponType.BOW,
+"Hu Tao": WeaponType.POLEARM,
+"Jean": WeaponType.SWORD,
+"Kachina": WeaponType.POLEARM,
+"Kaedehara Kazuha": WeaponType.SWORD,
+"Kaeya": WeaponType.SWORD,
+"Kamisato Ayaka": WeaponType.SWORD,
+"Kamisato Ayato": WeaponType.SWORD,
+"Kaveh": WeaponType.CLAYMORE,
+"Kinich": WeaponType.CLAYMORE,
+"Kirara": WeaponType.SWORD,
+"Klee": WeaponType.CATALYST,
+"Kujou Sara": WeaponType.BOW,
+"Kuki Shinobu": WeaponType.SWORD,
+"Lan Yan": WeaponType.CATALYST,
+"Layla": WeaponType.SWORD,
+"Lisa": WeaponType.CATALYST,
+"Lynette": WeaponType.SWORD,
+"Lyney": WeaponType.BOW,
+"Mavuika": WeaponType.CLAYMORE,
+"Mika": WeaponType.POLEARM,
+"Mona": WeaponType.CATALYST,
+"Mualani": WeaponType.CATALYST,
+"Nahida": WeaponType.CATALYST,
+"Navia": WeaponType.CLAYMORE,
+"Neuvillette": WeaponType.CATALYST,
+"Nilou": WeaponType.SWORD,
+"Ningguang": WeaponType.CATALYST,
+"Noelle": WeaponType.CLAYMORE,
+"Ororon": WeaponType.BOW,
+"Qiqi": WeaponType.SWORD,
+"Raiden Shogun": WeaponType.POLEARM,
+"Razor": WeaponType.CLAYMORE,
+"Rosaria": WeaponType.POLEARM,
+"Sangonomiya Kokomi": WeaponType.CATALYST,
+"Sayu": WeaponType.CLAYMORE,
+"Sethos": WeaponType.BOW,
+"Shenhe": WeaponType.POLEARM,
+"Shikanoin Heizou": WeaponType.CATALYST,
+"Sigewinne": WeaponType.BOW,
+"Sucrose": WeaponType.CATALYST,
+"Tartaglia": WeaponType.BOW,
+"Tighnari": WeaponType.BOW,
+"Thoma": WeaponType.POLEARM,
+"Venti": WeaponType.BOW,
+"Wanderer": WeaponType.CATALYST,
+"Wriothesley": WeaponType.CATALYST,
+"Xiangling": WeaponType.POLEARM,
+"Xianyun": WeaponType.CATALYST,
+"Xiao": WeaponType.POLEARM,
+"Xilonen": WeaponType.SWORD,
+"Xingqiu": WeaponType.SWORD,
+"Xinyan": WeaponType.CLAYMORE,
+"Yae Miko": WeaponType.CATALYST,
+"Yanfei": WeaponType.CATALYST,
+"Yaoyao": WeaponType.POLEARM,
+"Yelan": WeaponType.BOW,
+"Yoimiya": WeaponType.BOW,
+"Yumemizuki Mizuki": WeaponType.CATALYST,
+"Yun Jin": WeaponType.POLEARM,
+"Zhongli": WeaponType.POLEARM,
+}
+
+
 CHARACTERS_REGION = {
+        "Lan Yan": Region.LIYUE,
     "Albedo": Region.MONDSTADT,
     "Alhaitham": Region.SUMERU,
     "Amber": Region.MONDSTADT,
     "Arataki Itto": Region.INAZUMA,
-    "Arlecchino": Region.SNEZHNAYA,
+    "Arlecchino": Region.FONTAINE,
     "Baizhu": Region.LIYUE,
     "Barbara": Region.MONDSTADT,
     "Beidou": Region.LIYUE,
@@ -466,85 +848,85 @@ CHARACTERS_REGION = {
     "Charlotte": Region.FONTAINE,
     "Chasca": Region.NATLAN,
     "Chevreuse": Region.FONTAINE,
-    "Chiori": Region.INAZUMA,
-    "Chongyun": Region.,
-    "Citlali": Region.,
-    "Clorinde": Region.,
-    "Collei": Region.,
-    "Cyno": Region.,
-    "Dehya": Region.,
-    "Diluc": Region.,
-    "Diona": Region.,
-    "Dori": Region.,
-    "Emilie": Region.,
-    "Eula": Region.,
-    "Faruzan": Region.,
-    "Fischl": Region.,
-    "Freminet": Region.,
-    "Furina": Region.,
-    "Gaming": Region.,
-    "Ganyu": Region.,
-    "Gorou": Region.,
-    "Hu Tao": Region.,
-    "Jean": Region.,
-    "Kachina": Region.,
-    "Kaedehara Kazuha": Region.,
-    "Kaeya": Region.,
-    "Kamisato Ayaka": Region.,
-    "Kamisato Ayato": Region.,
-    "Kaveh": Region.,
-    "Keqing": Region.,
-    "Kinich": Region.,
-    "Kirara": Region.,
-    "Klee": Region.,
-    "Kujou Sara": Region.,
-    "Kuki Shinobu": Region.,
-    "Layla": Region.,
-    "Lisa": Region.,
-    "Lynette": Region.,
-    "Lyney": Region.,
-    "Mika": Region.,
-    "Mona": Region.,
-    "Mualani": Region.,
-    "Nahida": Region.,
-    "Navia": Region.,
-    "Neuvillette": Region.,
-    "Nilou": Region.,
-    "Ningguang": Region.,
-    "Noelle": Region.,
-    "Ororon": Region.,
-    "Qiqi": Region.,
-    "Raiden Shogun": Region.,
-    "Razor": Region.,
-    "Rosaria": Region.,
-    "Sangonomiya Kokomi": Region.,
-    "Sayu": Region.,
-    "Sethos": Region.,
-    "Shenhe": Region.,
-    "Shikanoin Heizou": Region.,
-    "Sigewinne": Region.,
-    "Sucrose": Region.,
-    "Tartaglia": Region.,
-    "Thoma": Region.,
-    "Tighnari": Region.,
-    "Venti": Region.,
-    "Wanderer": Region.,
-    "Wriothesley": Region.,
-    "Xiangling": Region.,
-    "Xianyun": Region.,
-    "Xiao": Region.,
-    "Xilonen": Region.,
-    "Xingqiu": Region.,
-    "Xinyan": Region.,
-    "Yae Miko": Region.,
-    "Yanfei": Region.,
-    "Yaoyao": Region.,
-    "Yelan": Region.,
-    "Yoimiya": Region.,
-    "Yun Jin": Region.,
-    "Zhongli": Region.,
+    "Chiori": Region.FONTAINE,
+    "Chongyun": Region.LIYUE,
+    "Citlali": Region.NATLAN,
+    "Clorinde": Region.FONTAINE,
+    "Collei": Region.SUMERU,
+    "Cyno": Region.SUMERU,
+    "Dehya": Region.SUMERU,
+    "Diluc": Region.MONDSTADT,
+    "Diona": Region.MONDSTADT,
+    "Dori": Region.SUMERU,
+    "Emilie": Region.FONTAINE,
+    "Eula": Region.MONDSTADT,
+    "Faruzan": Region.SUMERU,
+    "Fischl": Region.MONDSTADT,
+    "Freminet": Region.FONTAINE,
+    "Furina": Region.FONTAINE,
+    "Gaming": Region.LIYUE,
+    "Ganyu": Region.LIYUE,
+    "Gorou": Region.INAZUMA,
+    "Hu Tao": Region.LIYUE,
+    "Jean": Region.MONDSTADT,
+    "Kachina": Region.NATLAN,
+    "Kaedehara Kazuha": Region.INAZUMA,
+    "Kaeya": Region.MONDSTADT,
+    "Kamisato Ayaka": Region.INAZUMA,
+    "Kamisato Ayato": Region.INAZUMA,
+    "Kaveh": Region.SUMERU,
+    "Keqing": Region.LIYUE,
+    "Kinich": Region.NATLAN,
+    "Kirara": Region.INAZUMA,
+    "Klee": Region.MONDSTADT,
+    "Kujou Sara": Region.INAZUMA,
+    "Kuki Shinobu": Region.INAZUMA,
+    "Layla": Region.SUMERU,
+    "Lisa": Region.MONDSTADT,
+    "Lynette": Region.FONTAINE,
+    "Lyney": Region.FONTAINE,
+    "Mika": Region.MONDSTADT,
+    "Mona": Region.MONDSTADT,
+    "Mualani": Region.NATLAN,
+    "Nahida": Region.SUMERU,
+    "Navia": Region.FONTAINE,
+    "Neuvillette": Region.FONTAINE,
+    "Nilou": Region.SUMERU,
+    "Ningguang": Region.LIYUE,
+    "Noelle": Region.MONDSTADT,
+    "Ororon": Region.NATLAN,
+    "Qiqi": Region.LIYUE,
+    "Raiden Shogun": Region.INAZUMA,
+    "Razor": Region.MONDSTADT,
+    "Rosaria": Region.MONDSTADT,
+    "Sangonomiya Kokomi": Region.INAZUMA,
+    "Sayu": Region.INAZUMA,
+    "Sethos": Region.SUMERU,
+    "Shenhe": Region.LIYUE,
+    "Shikanoin Heizou": Region.INAZUMA,
+    "Sigewinne": Region.FONTAINE,
+    "Sucrose": Region.MONDSTADT,
+    #"Tartaglia": Region.SNEZHNAYA,
+    "Thoma": Region.INAZUMA,
+    "Tighnari": Region.SUMERU,
+    "Venti": Region.MONDSTADT,
+    "Wanderer": Region.SUMERU,
+    "Wriothesley": Region.FONTAINE,
+    "Xiangling": Region.LIYUE,
+    "Xianyun": Region.LIYUE,
+    "Xiao": Region.LIYUE,
+    "Xilonen": Region.NATLAN,
+    "Xingqiu": Region.LIYUE,
+    "Xinyan": Region.LIYUE,
+    "Yae Miko": Region.INAZUMA,
+    "Yanfei": Region.LIYUE,
+    "Yaoyao": Region.SUMERU,
+    "Yelan": Region.LIYUE,
+    "Yoimiya": Region.INAZUMA,
+    "Yun Jin": Region.LIYUE,
+    "Zhongli": Region.LIYUE,
 }
-"""
+
 
 class Version:
     def __init__(self, major: int, minor: int, start: str):
@@ -609,9 +991,24 @@ VERSIONS = sorted((
     Version(1, 2, "2020-12-23"),
     Version(1, 1, "2020-11-11"),
     Version(1, 0, "2020-09-28"),
-    Version(0, 9.9, "2020-07-02"),
-    Version(0, 7.1, "2020-03-18"),
 ))
+
+def bag(iterable):
+    b = {}
+    for (k, v) in iterable:
+        if k not in b:
+            b[k] = []
+        b[k].append(v)
+    return b
+
+# TODO: turn into table
+got = set((c.weapon, c.element) for c in CHARACTERS if not c.benched)
+
+for element in Element:
+    for weapon in WeaponType:
+        if (weapon, element) in got:
+            continue
+        print(f"{element} {weapon}:", ', '.join(c.name for c in CHARACTERS if c.benched and c.weapon == weapon and c.element == element))
 
 if __name__ == "__main__":
     main()
