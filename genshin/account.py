@@ -41,7 +41,7 @@ def write_account_page():
         ), file=f)
 
 def write_characters_page():
-    characters = '\n'.join(f"""<img class="icon" src="{c.icon_url}" alt={c.name} title="{c.name}" data-version="{'.'.join(map(str, c.release))}" data-benched="{c.benched}">"""
+    characters = '\n'.join(f"""<img class="icon" src="{c.icon_url}" alt={c.name} title="{c.name}" data-version="{'.'.join(map(str, c.release))}" data-benched="{c.benched}" data-element="{c.element.lower()}">"""
                            for c in sorted(CHARACTERS, key=lambda x: (x.release, x.benched, x.name)))
 
     script = "const versions = [" + ',\n'.join(f'"{v}"' for v in VERSIONS) + "]" + \
@@ -55,21 +55,47 @@ def write_characters_page():
         document.querySelector("label[for=min_version] span").textContent = min;
         document.querySelector("label[for=max_version] span").textContent = max;
 
+        let matched = 0;
+
         for (const icon of document.querySelectorAll(".icon")) {
-        console.log(icon.dataset.version, min, max);
-            if (min <= icon.dataset.version && icon.dataset.version <= max) {
-                icon.classList.remove("hide");
-            } else {
+            const hide = icon.dataset.version < min || max < icon.dataset.version
+                || !document.getElementById(icon.dataset.element).checked;
+
+            if (hide) {
                 icon.classList.add("hide");
+            } else {
+                ++matched;
+                icon.classList.remove("hide");
             }
             if (icon.dataset.benched.toLowerCase() == "true") {
                 icon.classList.add('benched');
             }
         }
+
+        document.getElementById('matched_benched').innerText = matched;
     }
 
     min_version.addEventListener("input", onInput);
     max_version.addEventListener("input", onInput);
+
+    for (const el of document.querySelectorAll('input[name="element"]')) {
+        el.addEventListener('input', onInput);
+    }
+
+
+    document.getElementById('enable_all').addEventListener('click', () => {
+        for (const el of document.querySelectorAll('input[name="element"]')) {
+            el.checked = true;
+        }
+        onInput({ target: null });
+    });
+    document.getElementById('disable_all').addEventListener('click', () => {
+        for (const el of document.querySelectorAll('input[name="element"]')) {
+            el.checked = false;
+        }
+        onInput({ target: null });
+    });
+
     onInput({ target: null });
     """
 
@@ -115,6 +141,18 @@ def write_characters_page():
             <label for="min_version">From: <span>1.0</span></label>
             <input type="range" min="0" max="{len(VERSIONS)-1}" step="1" value="{len(VERSIONS)-1}" id="max_version" name="max_version">
             <label for="max_version">To: <span>1.0</span></label>
+            <div>
+                <button id="enable_all">Enable all</button>
+                <button id="disable_all">Disable all</button>
+                <input type="checkbox" checked id="anemo" name="element"><label for="anemo">Anemo</label>
+                <input type="checkbox" checked id="cryo" name="element"><label for="cryo">Cryo</label>
+                <input type="checkbox" checked id="dendro" name="element"><label for="dendro">Dendro</label>
+                <input type="checkbox" checked id="electro" name="element"><label for="electro">Electro</label>
+                <input type="checkbox" checked id="geo" name="element"><label for="geo">Geo</label>
+                <input type="checkbox" checked id="hydro" name="element"><label for="hydro">Hydro</label>
+                <input type="checkbox" checked id="pyro" name="element"><label for="pyro">Pyro</label>
+            </div>
+            <p>Characters matching criteria: <span id="matched_benched"></span></p>
             <div>
                 {characters}
             </div>
@@ -581,7 +619,7 @@ CHARACTERS = sorted([
     Wish("3.3", "Faruzan", "2022-12-08", benched=False),
     Wish("3.2", "Nahida", "2023-04-15", benched=False, favourite=True, five_star=True),
     Wish("3.2", "Layla", "2023-03-02", favourite=True),
-    Wish("3.1", 'Nilou', '2024-07-20', five_star=True),
+    Wish("3.1", 'Nilou', '2024-07-20', five_star=True, benched=False),
     Wish("3.1", "Cyno", "2023-03-19", five_star=True),
     Wish("3.1", "Candace", "2023-12-20", favourite=True),
     Wish("3.0", "Tighnari", "2022-11-04", five_star=True),
