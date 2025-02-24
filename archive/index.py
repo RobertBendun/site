@@ -167,6 +167,8 @@ class Tags:
 
 
 POSTS = sorted([
+    Post(path="now-2025-02-25.html", name="Now (Febuary 2025)"),
+    Post(path="what-i-watched-in-january-2025.html", name="What I Watched in January"),
     Post(path="month-with-raku.html", name="Month with Raku"),
     Post(path="defaults.html", name="Defaults"),
     Post(path="javascript-window.html", name="self is a cross-platform way to name a window"),
