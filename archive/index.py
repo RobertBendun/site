@@ -4,29 +4,42 @@ import collections
 import dataclasses
 import textwrap
 import functools
+import itertools
 
 def main():
+    stats = (f"""<section class="stats" style="margin-bottom: 1rem; margin-top: 1rem">{s}</section>""" for s in statistics())
+    entrs = (f"""<ul>{e}</ul>""" for e in entries())
+
     print(HTML.format(
-        statistics='\n'.join(statistics()),
-        entries='\n'.join(entries())
+        here = '\n'.join(itertools.chain(*zip(stats, entrs))),
     ))
 
 def entries():
-    for post in POSTS:
-        date = post.date.strftime('%Y-%m-%d')
-        yield textwrap.dedent(f"""<li id="{date}">
-                <a href="{post.path}">
-                    <div>{post.name}</div>
-                    <time datetime="{post.date.isoformat()}">{date}</time></a>
-            </li>""")
+    min_year = POSTS[-1].date.year
+    max_year = POSTS[0].date.year
+
+
+    def per_year(year):
+        for post in POSTS:
+            if post.date.year != year:
+                continue
+            date = post.date.strftime('%Y-%m-%d')
+            yield textwrap.dedent(f"""<li id="{date}">
+                    <a href="{post.path}">
+                        <div>{post.name}</div>
+                        <time datetime="{post.date.isoformat()}">{date}</time></a>
+                </li>""")
+
+    for year in reversed(range(min_year, max_year+1)):
+        yield '\n'.join(per_year(year))
 
 
 def statistics():
     dates = [post.date for post in POSTS]
-    min_year = min((date.year for date in dates))
-    max_year = max((date.year for date in dates))
+    min_year = dates[-1].year
+    max_year = dates[0].year
 
-    for year in range(min_year, max_year+1):
+    def per_year(year):
         yield '<div class="year" style="display: grid; grid-template-columns: min-content auto; align-items: center" aria-hidden="true">'
         yield f'<div style="padding: 5px">{year}</div>'
         yield '<div style="padding-left: 5px; border-left: 1px solid var(--text);">'
@@ -51,6 +64,9 @@ def statistics():
         yield f'<span style="opacity: 0.4">({len(dates_in_year)} total)</span>'
         yield '</div>'
         yield '</div>'
+
+    for year in reversed(range(min_year, max_year+1)):
+        yield '\n'.join(per_year(year))
 
 @dataclasses.dataclass
 class Tag:
@@ -148,12 +164,7 @@ HTML = """<!DOCTYPE html>
 		</header>
 		<main id="page" class="glass">
 			<h1>The Archive</h1>
-            <section class="stats" style="margin-bottom: 1rem">
-                {statistics}
-            </section>
-			<ul>
-                {entries}
-			</ul>
+            {here}
             <p>Generated using <a href="index.py">index.py</a></p>
 		</main>
 	</body>
