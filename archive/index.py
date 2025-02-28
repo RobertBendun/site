@@ -178,7 +178,8 @@ class Tags:
 
 
 POSTS = sorted([
-    Post(path="now-2025-02-25.html", name="Now (Febuary 2025)"),
+    Post(path="what-i-watched-in-febuary-2025.html", name="What I Watched in February"),
+    Post(path="now-2025-02-25.html", name="Now (February 2025)"),
     Post(path="what-i-watched-in-january-2025.html", name="What I Watched in January"),
     Post(path="month-with-raku.html", name="Month with Raku"),
     Post(path="defaults.html", name="Defaults"),
