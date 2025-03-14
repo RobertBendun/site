@@ -598,7 +598,7 @@ CHARACTERS = sorted([
     Wish("5.0", 'Kinich', '2024-09-27', five_star=True),
     Wish("5.0", 'Kachina', '2024-08-28'),
     Wish("4.7", 'Sethos', '2024-06-05'),
-    Wish("4.7", "Clorinde", "2025-02-10", favourite=True, five_star=True),
+    Wish("4.7", "Clorinde", "2025-02-10", favourite=True, five_star=True, benched=False),
     Wish("4.6", "Arlecchino", "2024-05-02", pity=76, benched=False, favourite=True, five_star=True),
     Wish("4.5", "Chiori", "2024-03-22", pity=80, benched=False, favourite=True, five_star=True),
     Wish("4.4", "Xianyun", "2024-02-18", pity=75, benched=False, five_star=True, favourite=True),
