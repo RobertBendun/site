@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>TIL: A reason to use bool in C | Diana's Lab</title>
+		<meta property="og:title"          content="TIL: A reason to use bool in C" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+		<link rel="stylesheet" href="/common.css" />
+		<link rel="stylesheet" href="/tiers.css">
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble">bendun.cc</a>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>TIL: A Reason To Use <code>bool</code> in C</h1>
+
+			<p><time datetime="2025-03-16T22:31:42+01:00">2025-03-16</time></p>
+
+			<p>While making notes for my students I came upon something that changed my view of <code>bool</code> in C.
+			Feature introduced in C99 via <a href="https://en.cppreference.com/w/c/header/stdbool"><code>stdbool.h</code></a> header that hide ugly <code>_Bool</code> name behind the <code>bool</code> macro, only to be replaced in C23 by proper keyword (thanks <a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2934.pdf">N2934</a>).
+
+			<h2><code>bool</code> vs <code>int</code></h2>
+
+			<p>The standard value for truth in most of the C code I seen is <code>int</code>.
+			However we are 25 years after C99 and I think that every compiler had time to catch up and there is no need for pure C89 code bases (I would love to be proven wrong).
+			I think that this what it: just a more appropiate usage of types.
+			However I was proven wrong when I discovered that <em>type conversion differs for bool and int</em>:</p>
+
+			<pre><code><strong>$ cat test.c</strong>
+#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+
+int main()
+{
+  printf("as int:  %d\n", (int)0.5);
+  printf("as bool: %d\n", (bool)0.5);
+  return 0;
+}
+<strong>$ cc test.c -o test -std=c99 &amp;&amp; ./test</strong>
+as int:  0
+as bool: 1
+<strong>$ cc test.c -o test -std=c23 &amp;&amp; ./test</strong>
+as int:  0
+as bool: 1
+<strong>$ cp test.c test.cc &amp;&amp; c++ test.cc -o test &amp;&amp; ./test</strong>
+as int:  0
+as bool: 1</code></pre>
+
+			<p>The difference is a suprise, however a welcome one.
+			It allows to match the behaviour of logical tests:</p>
+
+<pre><code><strong>$ cat test.c</strong>
+#include &lt;stdio.h&gt;
+
+int main()
+{
+  printf("as int:  %d\n", (int)0.5);
+  printf("as bool: %d\n", (0.5 ? 1 : 0));
+  return 0;
+}
+<strong>$ cc test.c -o test -std=c89 && ./test</strong>
+as int:  0
+as bool: 1
+<strong>$ cc test.c -o test -std=c23 && ./test</strong>
+as int:  0
+as bool: 1</code></pre>
+
+		<p>I recommend teaching to everyone.
+		After 10 years of coding I discovered something new in the 40 years old „simple” language.</p>
+		</main>
+	</body>
+</html>
+
+
