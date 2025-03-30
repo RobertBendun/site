@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>One-liners I often use | Diana's Lab</title>
+		<meta property="og:title"          content="One-liners I often use" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+		<link rel="stylesheet" href="/common.css" />
+		<link rel="stylesheet" href="/tiers.css">
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble">bendun.cc</a>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>One-liners I often use</h1>
+
+			<p><time datetime="2025-03-30T23:56:34+02:00">2025-03-30</time></p>
+
+			<p>This page is meant to collect one liners that I use often, it will be extended in the future.</p>
+
+			<h3>Simple occurance statistics</h3>
+
+			<p>This is probably my most common use of shell (without couting running simple commands):</p>
+
+			<code style="word-wrap:wrap">sort | uniq -c | sort -rn</code>
+
+			<h3>Getting all the alt descriptions in the page</h3>
+
+			<p>I use it mostly for my <a href="/genshin/">Genshin</a> pages to get count of characters mentioned.</p>
+
+			<code style="word-wrap:wrap">perl -ne '/alt="([^"]+)"/ &amp;&amp; print "$1\n"'</code>
+
+			<h3>Get word count of a page</h3>
+
+			<p>Extracts text in the &lt;body&gt; tag, removes all the tags and counts the words.
+			Works only if there isn't tags like &lt;style&gt; or &lt;script&gt; in the body of the page.</p>
+
+			<code style="word-wrap:wrap">awk '/&lt;body[^&gt;]*&gt;/,/&lt;\/body&gt;/' | sed "s/&lt;[^&gt;]*&gt;//g" | wc -w</code>
+
+
+			<h3>Visualizing output of <code>uniq -c</code></h3>
+
+			<p>Some AWK magic squeezed into one line.
+			Calculates the max width of the input data and stores in in the table.
+			Then prints it with the bar that follows each line which length is determined from the first found number in the input line.</p>
+
+			<code style="word-wrap:wrap">awk 'match($0,/([0-9]+)/,a){c=length($0);w=c&gt;w?c:w;l[NR]=$0;m[NR]=a[1]}END{for(i in l){printf(sprintf("%%-%ds",w+1),l[i]);for(j=0;j&lt;m[i];++j)printf("█");print ""}}'</code>
+
+		</main>
+	</body>
+</html>
+
+
