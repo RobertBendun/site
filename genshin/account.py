@@ -192,7 +192,7 @@ def generate_characters() -> str:
             usage = f"{100 * sum(1 for c in group if not c.benched) / len(group):.0f}%",
             versions=', '.join(f"{v}" for v in sorted(versions[group_name])),
             group_name=group_name,
-            characters="\n".join(f'<div class="{c.classes}"><img style="width: 100%" src="{c.icon_url}" alt="{c.name}" title="{c.name}"></div>' for c in group)
+            characters="\n".join(f'<div class="{c.classes}"><img style="width: 100%" src="{c.icon_url}" alt="{c.name}" data-date="{c.date.date()}" title="Got {c.name} on {c.date.date()}"></div>' for c in group)
         )
         for group_name, group in grouped.items()
     )
@@ -590,6 +590,7 @@ PAGE = """<!DOCTYPE html>
 """
 
 CHARACTERS = sorted([
+    Wish("5.5", "Iansan", "2025-03-26"),
     Wish("5.3", "Lan Yan", "2025-01-21"),
     Wish("5.3", 'Citlali', '2025-01-01', benched=False, favourite=True, five_star=True),
     Wish("5.2", 'Ororon', '2024-11-21', benched=False, favourite=True),
@@ -680,6 +681,7 @@ FIVE_STAR_WEAPONS = sorted([
 ], key=lambda x: (WEAPON_ORDER.index(x.weapon_type), x.name))
 
 CHARACTERS_ELEMENT = {
+    "Iansan": Element.ELECTRO,
     "Albedo": Element.GEO,
     "Alhaitham": Element.DENDRO,
     "Aloy": Element.CRYO,
@@ -775,6 +777,7 @@ CHARACTERS_ELEMENT = {
 }
 
 CHARACTERS_WEAPON = {
+"Iansan": WeaponType.POLEARM,
 "Keqing": WeaponType.SWORD,
 "Albedo": WeaponType.SWORD,
 "Alhaitham": WeaponType.SWORD,
@@ -873,6 +876,7 @@ CHARACTERS_WEAPON = {
 
 
 CHARACTERS_REGION = {
+        "Iansan": Region.NATLAN,
         "Lan Yan": Region.LIYUE,
     "Albedo": Region.MONDSTADT,
     "Alhaitham": Region.SUMERU,
@@ -992,6 +996,8 @@ class Version:
 # on https://genshin-impact.fandom.com/wiki/Version
 
 VERSIONS = sorted((
+    Version(5, 5, "2025-03-26"),
+    Version(5, 4, "2025-02-12"),
     Version(5, 3, "2025-01-01"),
     Version(5, 2, "2024-11-20"),
     Version(5, 1, "2024-10-09"),
