@@ -436,6 +436,7 @@ class Wish:
                  benched: bool = True,
                  favourite: bool = False,
                  five_star: bool = False,
+                 constellation: int = 0,
                  ):
         self.name = name
         self.release = list(map(int, release_version.split('.')))
@@ -449,6 +450,7 @@ class Wish:
         self.favourite = favourite
         self.weapon_type = weapon_type
         self.five_star = five_star
+        self.constellation = constellation
 
     @property
     def icon_url(self) -> str:
@@ -591,81 +593,81 @@ PAGE = """<!DOCTYPE html>
 
 CHARACTERS = sorted([
     Wish("5.5", "Iansan", "2025-03-26"),
-    Wish("5.3", "Lan Yan", "2025-01-21"),
+    Wish("5.3", "Lan Yan", "2025-01-21", constellation=5),
     Wish("5.3", 'Citlali', '2025-01-01', benched=False, favourite=True, five_star=True),
-    Wish("5.2", 'Ororon', '2024-11-21', benched=False, favourite=True),
-    Wish("5.2", 'Chasca', '2024-11-21', benched=False, five_star=True),
+    Wish("5.2", 'Ororon', '2024-11-21', benched=False, favourite=True, constellation=3),
+    Wish("5.2", 'Chasca', '2024-11-21', benched=False, five_star=True, constellation=2),
     Wish("5.1", 'Xilonen', '2024-10-21', benched=False, five_star=True, favourite=True),
     Wish("5.0", 'Kinich', '2024-09-27', five_star=True),
-    Wish("5.0", 'Kachina', '2024-08-28'),
-    Wish("4.7", 'Sethos', '2024-06-05'),
+    Wish("5.0", 'Kachina', '2024-08-28', constellation=5),
+    Wish("4.7", 'Sethos', '2024-06-05', constellation=2),
     Wish("4.7", "Clorinde", "2025-02-10", favourite=True, five_star=True, benched=False),
     Wish("4.6", "Arlecchino", "2024-05-02", pity=76, benched=False, favourite=True, five_star=True),
-    Wish("4.5", "Chiori", "2024-03-22", pity=80, benched=False, favourite=True, five_star=True),
+    Wish("4.5", "Chiori", "2024-03-22", pity=80, benched=False, favourite=True, five_star=True, constellation=1),
     Wish("4.4", "Xianyun", "2024-02-18", pity=75, benched=False, five_star=True, favourite=True),
-    Wish("4.4", "Gaming", "2024-02-05", favourite=True),
+    Wish("4.4", "Gaming", "2024-02-05", favourite=True, constellation=6),
     Wish("4.3", "Navia", "2023-12-20", pity=58, benched=False, favourite=True, five_star=True),
-    Wish("4.3", "Chevreuse", "2024-01-13", benched=False),
-    Wish("4.2", "Furina", "2023-11-08", pity=78, benched=False, favourite=True, five_star=True),
+    Wish("4.3", "Chevreuse", "2024-01-13", benched=False, constellation=6),
+    Wish("4.2", "Furina", "2023-11-08", pity=78, benched=False, favourite=True, five_star=True, constellation=1),
     Wish("4.2", "Charlotte", "2023-11-08"),
     Wish("4.0", "Lyney", "2023-09-03", pity=82, benched=False, five_star=True),
-    Wish("4.0", "Lynette", "2023-08-16", favourite=True),
-    Wish("4.0", "Freminet", "2023-09-12"),
-    Wish("3.7", "Kirara", "2023-05-24", favourite=True),
-    Wish("3.6", "Kaveh", "2023-05-05"),
-    Wish("3.5", "Mika", "2023-07-08"),
-    Wish("3.5", "Dehya", "2023-06-26", five_star=True),
-    Wish("3.4", "Yaoyao", "2023-02-03", benched=False, favourite=True),
+    Wish("4.0", "Lynette", "2023-08-16", favourite=True, constellation=6),
+    Wish("4.0", "Freminet", "2023-09-12", constellation=4),
+    Wish("3.7", "Kirara", "2023-05-24", favourite=True, constellation=4),
+    Wish("3.6", "Kaveh", "2023-05-05", constellation=1),
+    Wish("3.5", "Mika", "2023-07-08", constellation=2),
+    Wish("3.5", "Dehya", "2023-06-26", five_star=True, constellation=3),
+    Wish("3.4", "Yaoyao", "2023-02-03", benched=False, favourite=True, constellation=6),
     Wish("3.3", "Wanderer", "2022-12-10", benched=False, five_star=True),
-    Wish("3.3", "Faruzan", "2022-12-08", benched=False),
+    Wish("3.3", "Faruzan", "2022-12-08", benched=False, constellation=6),
     Wish("3.2", "Nahida", "2023-04-15", benched=False, favourite=True, five_star=True),
-    Wish("3.2", "Layla", "2023-03-02", favourite=True),
+    Wish("3.2", "Layla", "2023-03-02", favourite=True, constellation=3),
     Wish("3.1", 'Nilou', '2024-07-20', five_star=True, benched=False),
     Wish("3.1", "Cyno", "2023-03-19", five_star=True),
-    Wish("3.1", "Candace", "2023-12-20", favourite=True),
-    Wish("3.0", "Tighnari", "2022-11-04", five_star=True),
-    Wish("3.0", "Dori", "2022-09-09"),
-    Wish("3.0", "Collei", "2022-08-24"),
-    Wish("2.8", "Shikanoin Heizou", "2023-06-17"),
+    Wish("3.1", "Candace", "2023-12-20", favourite=True, constellation=4),
+    Wish("3.0", "Tighnari", "2022-11-04", five_star=True, constellation=2),
+    Wish("3.0", "Dori", "2022-09-09", constellation=5),
+    Wish("3.0", "Collei", "2022-08-24", constellation=6),
+    Wish("2.8", "Shikanoin Heizou", "2023-06-17", constellation=1),
     Wish("2.7", "Yelan", "2022-06-05", benched=False, favourite=True, five_star=True),
-    Wish("2.7", "Kuki Shinobu", "2022-09-28", benched=False, favourite=True),
+    Wish("2.7", "Kuki Shinobu", "2022-09-28", benched=False, favourite=True, constellation=6),
     Wish("2.6", "Kamisato Ayato", "2022-04-09", benched=False, five_star=True),
-    Wish("2.4", "Yun Jin", "2022-04-09"),
-    Wish("2.3", "Gorou", "2022-12-10"),
-    Wish("2.3", "Arataki Itto", "2022-06-22", favourite=True, five_star=True),
-    Wish("2.2", "Thoma", "2022-02-22", benched=False),
+    Wish("2.4", "Yun Jin", "2022-04-09", constellation=6),
+    Wish("2.3", "Gorou", "2022-12-10", constellation=3),
+    Wish("2.3", "Arataki Itto", "2022-06-22", favourite=True, five_star=True, constellation=1),
+    Wish("2.2", "Thoma", "2022-02-22", benched=False, constellation=6),
     Wish("2.1", "Sangonomiya Kokomi", "2023-07-26", pity=43, benched=False, favourite=True, five_star=True),
     Wish("2.1", "Raiden Shogun", "2023-01-07", five_star=True),
-    Wish("2.1", "Kujou Sara", "2022-04-01"),
-    Wish("2.0", "Sayu", "2022-04-21", favourite=True),
+    Wish("2.1", "Kujou Sara", "2022-04-01", constellation=5),
+    Wish("2.0", "Sayu", "2022-04-21", favourite=True, constellation=5),
     Wish("2.0", "Kamisato Ayaka", "2022-05-20", benched=False, five_star=True),
     Wish("1.6", "Kaedehara Kazuha", "2023-06-26", pity=45, benched=False, five_star=True),
-    Wish("1.5", "Yanfei", "2022-05-31"),
-    Wish("1.4", "Rosaria", "2022-05-08"),
+    Wish("1.5", "Yanfei", "2022-05-31", constellation=2),
+    Wish("1.4", "Rosaria", "2022-05-08", constellation=6),
     Wish("1.3", "Xiao", "2023-02-03", benched=False, five_star=True),
     Wish("1.2", "Ganyu", "2022-09-09", five_star=True),
     Wish("1.1", "Zhongli", "2022-08-24", benched=False, five_star=True),
-    Wish("1.1", "Xinyan", "2022-06-13"),
-    Wish("1.1", "Diona", "2022-08-24"),
-    Wish("1.0", "Xingqiu", "2022-04-17", benched=False),
-    Wish("1.0", "Xiangling", "2022-02-05", benched=False),
+    Wish("1.1", "Xinyan", "2022-06-13", constellation=6),
+    Wish("1.1", "Diona", "2022-08-24", constellation=6),
+    Wish("1.0", "Xingqiu", "2022-04-17", benched=False, constellation=6),
+    Wish("1.0", "Xiangling", "2022-02-05", benched=False, constellation=6),
     Wish("1.0", "Venti", "2022-10-14", five_star=True),
-    Wish("1.0", "Sucrose", "2022-03-31", benched=False, favourite=True),
-    Wish("1.0", "Razor", "2022-04-24"),
-    Wish("1.0", "Qiqi", "2022-04-21", benched=False, favourite=True, five_star=True),
-    Wish("1.0", "Noelle", "2022-02-03"),
-    Wish("1.0", "Ningguang", "2022-05-21"),
+    Wish("1.0", "Sucrose", "2022-03-31", benched=False, favourite=True, constellation=1),
+    Wish("1.0", "Razor", "2022-04-24", constellation=6),
+    Wish("1.0", "Qiqi", "2022-04-21", benched=False, favourite=True, five_star=True, constellation=3),
+    Wish("1.0", "Noelle", "2022-02-03", constellation=6),
+    Wish("1.0", "Ningguang", "2022-05-21", constellation=6),
     Wish("1.0", "Mona", "2023-02-03", five_star=True),
-    Wish("1.0", "Lisa", "2022-02-03"),
-    Wish("1.0", "Keqing", "2023-10-01", five_star=True),
-    Wish("1.0", "Kaeya", "2022-02-03"),
-    Wish("1.0", "Jean", "2022-05-13", five_star=True),
-    Wish("1.0", "Fischl", "2022-08-02", benched=False, favourite=True),
-    Wish("1.0", "Chongyun", "2022-11-02"),
-    Wish("1.0", "Bennett", "2022-05-08", benched=False),
-    Wish("1.0", "Beidou", "2022-02-07", benched=False, favourite=True),
-    Wish("1.0", "Barbara", "2022-02-13"),
-    Wish("1.0", "Amber", "2022-02-03"),
+    Wish("1.0", "Lisa", "2022-02-03", constellation=3),
+    Wish("1.0", "Keqing", "2023-10-01", five_star=True, constellation=1),
+    Wish("1.0", "Kaeya", "2022-02-03", constellation=1),
+    Wish("1.0", "Jean", "2022-05-13", five_star=True, constellation=1),
+    Wish("1.0", "Fischl", "2022-08-02", benched=False, favourite=True, constellation=5),
+    Wish("1.0", "Chongyun", "2022-11-02", constellation=3),
+    Wish("1.0", "Bennett", "2022-05-08", benched=False, constellation=6),
+    Wish("1.0", "Beidou", "2022-02-07", benched=False, favourite=True, constellation=6),
+    Wish("1.0", "Barbara", "2022-02-13", constellation=6),
+    Wish("1.0", "Amber", "2022-02-03", constellation=4),
 ], key=lambda x: (x.date, x.name), reverse=True)
 
 assert all(char.date is not None for char in CHARACTERS)
@@ -970,6 +972,15 @@ CHARACTERS_REGION = {
     "Zhongli": Region.LIYUE,
 }
 
+STANDARD_CHARACTERS = {
+    "Dehya",
+    "Jean",
+    "Keqing",
+    "Qiqi",
+    "Tighnari",
+    "Yumemizuki Mizuki",
+}
+
 
 class Version:
     def __init__(self, major: int, minor: int, start: str):
@@ -1038,15 +1049,8 @@ VERSIONS = sorted((
     Version(1, 0, "2020-09-28"),
 ))
 
-def bag(iterable):
-    b = {}
-    for (k, v) in iterable:
-        if k not in b:
-            b[k] = []
-        b[k].append(v)
-    return b
-
 # TODO: turn into table
+print("Weapon and element combination that I don't use::")
 got = set((c.weapon, c.element) for c in CHARACTERS if not c.benched)
 
 for element in Element:
@@ -1054,6 +1058,24 @@ for element in Element:
         if (weapon, element) in got:
             continue
         print(f"{element} {weapon}:", ', '.join(c.name for c in CHARACTERS if c.benched and c.weapon == weapon and c.element == element))
+
+print()
+print(f"Avg constellation: {sum(c.constellation for c in CHARACTERS) / len(CHARACTERS):.2f}")
+non_benched_4_stars = [c for c in CHARACTERS if not c.five_star and not c.benched]
+print(f"Avg cons among all 4*: {sum(c.constellation for c in CHARACTERS if not c.benched) / sum(1 for c in CHARACTERS if not c.benched):.2f}")
+print(f"Avg cons among non-benched 4*: {sum(c.constellation for c in non_benched_4_stars) / len(non_benched_4_stars):.2f}")
+
+non_std_5_stars_with_cons = sum(1 for c in CHARACTERS if c.five_star and c.constellation > 0 and c.name not in STANDARD_CHARACTERS)
+non_std_5_stars = sum(1 for c in CHARACTERS if c.five_star and c.name not in STANDARD_CHARACTERS)
+
+print(f"Non-standard 5* with constellation: {non_std_5_stars_with_cons} of {non_std_5_stars} ({non_std_5_stars_with_cons / non_std_5_stars * 100:.2f}%)")
+for c in sorted(CHARACTERS, key=lambda c: (6 - c.constellation, c.name)):
+    if c.five_star and c.constellation > 0 and c.name not in STANDARD_CHARACTERS:
+        print(f"- C{c.constellation} {c.name}")
+
+non_std_5_stars_with_cons_nb = sum(1 for c in CHARACTERS if c.five_star and c.constellation > 0 and c.name not in STANDARD_CHARACTERS and not c.benched)
+non_std_5_stars_nb = sum(1 for c in CHARACTERS if c.five_star and c.name not in STANDARD_CHARACTERS and not c.benched)
+print(f"Non-standard non-benched 5* with constellation: {non_std_5_stars_with_cons_nb} of {non_std_5_stars_nb} ({non_std_5_stars_with_cons_nb / non_std_5_stars_nb * 100:.2f}%)")
 
 if __name__ == "__main__":
     main()
