@@ -593,7 +593,7 @@ PAGE = """<!DOCTYPE html>
 
 CHARACTERS = sorted([
     Wish("5.5", "Iansan", "2025-03-26"),
-    Wish("5.3", "Lan Yan", "2025-01-21", constellation=5),
+    Wish("5.3", "Lan Yan", "2025-01-21", constellation=6, benched=False),
     Wish("5.3", 'Citlali', '2025-01-01', benched=False, favourite=True, five_star=True),
     Wish("5.2", 'Ororon', '2024-11-21', benched=False, favourite=True, constellation=3),
     Wish("5.2", 'Chasca', '2024-11-21', benched=False, five_star=True, constellation=2),
