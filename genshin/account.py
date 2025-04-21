@@ -2,6 +2,7 @@ import typing
 from datetime import datetime, timedelta
 import enum
 import collections
+import math
 
 # TODO: Show pity
 
@@ -33,6 +34,7 @@ def write_account_page():
             five_star_weapons=generate_five_star_weapons(),
             characters=generate_characters(),
             characters_count=len(CHARACTERS),
+            weapons_count=len(FIVE_STAR_WEAPONS),
             elements=''.join(generate_elements()),
             weapons=''.join(generate_weapons()),
             regions=''.join(generate_regions()),
@@ -198,8 +200,22 @@ def generate_characters() -> str:
     )
 
     usage = 100 * sum(1 for g in grouped.values() for c in g if not c.benched) / sum(len(g) for g in grouped)
+
+    avg_wish_date_nb = datetime.fromtimestamp(sum(c.date.timestamp() for c in CHARACTERS if not c.benched) / sum(1 for c in CHARACTERS if not c.benched))
+    avg_wish_date = datetime.fromtimestamp(sum(c.date.timestamp() for c in CHARACTERS) / len(CHARACTERS))
+    avg_wish_version_nb = next(v for v in reversed(VERSIONS) if avg_wish_date_nb > v.start)
+    avg_wish_version = next(v for v in reversed(VERSIONS) if avg_wish_date > v.start)
+
+    time_between_chars = [(curr.date - next.date).days for (curr, next) in zip(CHARACTERS, CHARACTERS[1:])]
+    avg_time_between_chars = math.floor(sum(time_between_chars) / len(CHARACTERS))
+    max_time_between_chars = max(time_between_chars)
+
+
     return f"""
         <h2>Characters ({usage:.0f}% used)</h2>
+        <p>Average wish date for my used characters is <time datetime="{avg_wish_date_nb}">{avg_wish_date_nb.date()}</time> which happened in version {avg_wish_version_nb}.
+        For all characters it's <time datetime="{avg_wish_date}">{avg_wish_date.date()}</a> (version {avg_wish_version}).
+        On average I get new character every {avg_time_between_chars} days (max {max_time_between_chars} days).</p>
         <p>⭐ - favourite characters (by design/gameplay/personality)</p>
         <div style="display: grid; grid-template-columns: 1fr 1fr; border-style: solid; border-width: 1px 0 0 1px">
             {characters}
@@ -538,7 +554,7 @@ PAGE = """<!DOCTYPE html>
 		<main id="page" class="glass">
 		<h1>My Genshin account</h1>
 		<p>
-			Currently I have {characters_count} characters and a few 5 star weapons.
+			Currently I have {characters_count} characters and {weapons_count} 5 star weapons.
 			You can find more information about some of the builds on my <a href="https://akasha.cv/profile/739467452">akasha profile</a>.
         </p>
         <p>
@@ -646,7 +662,7 @@ CHARACTERS = sorted([
     Wish("1.4", "Rosaria", "2022-05-08", constellation=6),
     Wish("1.3", "Xiao", "2023-02-03", benched=False, five_star=True),
     Wish("1.2", "Ganyu", "2022-09-09", five_star=True),
-    Wish("1.1", "Zhongli", "2022-08-24", benched=False, five_star=True),
+    Wish("1.1", "Zhongli", "2022-08-24", five_star=True),
     Wish("1.1", "Xinyan", "2022-06-13", constellation=6),
     Wish("1.1", "Diona", "2022-08-24", constellation=6),
     Wish("1.0", "Xingqiu", "2022-04-17", benched=False, constellation=6),
@@ -1076,6 +1092,7 @@ for c in sorted(CHARACTERS, key=lambda c: (6 - c.constellation, c.name)):
 non_std_5_stars_with_cons_nb = sum(1 for c in CHARACTERS if c.five_star and c.constellation > 0 and c.name not in STANDARD_CHARACTERS and not c.benched)
 non_std_5_stars_nb = sum(1 for c in CHARACTERS if c.five_star and c.name not in STANDARD_CHARACTERS and not c.benched)
 print(f"Non-standard non-benched 5* with constellation: {non_std_5_stars_with_cons_nb} of {non_std_5_stars_nb} ({non_std_5_stars_with_cons_nb / non_std_5_stars_nb * 100:.2f}%)")
+
 
 if __name__ == "__main__":
     main()
