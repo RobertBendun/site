@@ -648,7 +648,7 @@ CHARACTERS = sorted([
     Wish("2.7", "Yelan", "2022-06-05", benched=False, favourite=True, five_star=True),
     Wish("2.7", "Kuki Shinobu", "2022-09-28", benched=False, favourite=True, constellation=6),
     Wish("2.6", "Kamisato Ayato", "2022-04-09", benched=False, five_star=True),
-    Wish("2.4", "Yun Jin", "2022-04-09", constellation=6),
+    Wish("2.4", "Yun Jin", "2022-04-09", constellation=6, benched=False),
     Wish("2.3", "Gorou", "2022-12-10", constellation=3),
     Wish("2.3", "Arataki Itto", "2022-06-22", favourite=True, five_star=True, constellation=1),
     Wish("2.2", "Thoma", "2022-02-22", benched=False, constellation=6),
