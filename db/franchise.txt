@@ -1,0 +1,413 @@
+last-update = 2025-05-02
+
+# ----------------------------------------------------------------------------
+# Partially watched
+# ----------------------------------------------------------------------------
+
+[Alien]
+- [x] Alien (1979)
+- [x] Aliens (1986)
+- [x] Alien 3 (1992)
+- [x] Alien Ressurection (1997)
+- [ ] Alien vs Predator (2004)
+- [ ] Alien vs Predator: Requiem (2007)
+- [ ] Prometheus (2012)
+- [ ] Alien: Covenant (2017)
+- [x] Alien: Romulus (2024)
+
+[Scream]
+- [x] Scream (1996)
+- [x] Scream 2 (1997)
+- [ ] Scream 3 (2000)
+- [ ] Scream 4 (2011)
+- [ ] Scream (2022)
+- [ ] Scream VI (2023)
+
+[Rambo]
+- [x] First Blood (1982)
+- [x] Rambo: First Blood Part II (1985)
+- [ ] Rambo III (1988)
+- [ ] Rambo (2008)
+- [ ] Rambo: Last Blood (2019)
+
+[Mad Max]
+- [ ] Mad Max (1979)
+- [ ] Mad Max 2 (1981)
+- [ ] Mad Max Beyond Thunderdome (1985)
+- [x] Mad Max: Fury Road (2015)
+- [x] Furiosa: A Mad Max Saga (2024)
+
+[Marvel Cinematic Universe]
+- [x] Iron Man (2008)
+- [x] The Incredible Hulk (2008)
+- [x] Iron Man 2 (2010)
+- [x] Thor (2011)
+- [x] Captain America: The First Avenger (2011)
+- [x] The Avengers (2012)
+- [x] Iron Man 3 (2013)
+- [x] Thor: The Dark World (2013)
+- [ ] Agents of S.H.I.E.L.D (2013-2020)
+- [x] Captain America: The Winter Soldier (2014)
+- [x] Guardians of the Galaxy (2014)
+- [x] Avengers: Age of Ultron (2015)
+- [x] Ant-Man (2015)
+- [x] Agent Carter (2015-2016)
+- [x] Daredevil (2015-2018)
+- [x] Jessica Jones (2015-2019)
+- [x] Captain America: Civil War (2016)
+- [x] Doctor Strange (2016)
+- [x] Luke Cage (2016-2018)
+- [x] Guardians of the Galaxy Vol. 2 (2017)
+- [x] Spider-Man: Homecoming (2017)
+- [ ] Inhumans (2017)
+- [ ] The Punisher (2017-2019)
+- [x] Thor: Ragnarok (2017)
+- [x] Iron Fist (2017-2018)
+- [x] The Defenders (2017)
+- [x] Black Panther (2018)
+- [x] Avengers: Infinity War (2018)
+- [x] Ant-Man and the Wasp (2018)
+- [ ] Runaways (2018-2019)
+- [ ] Cloak & Dagger (2018-2019)
+- [x] Captain Marvel (2019)
+- [x] Avengers: Endgame (2019)
+- [x] Spider-Man: Far From Home
+- [x] Black Widow (2021)
+- [x] Shang-Chi and the Legend of the Ten Rings (2021)
+- [x] Eternals (2021)
+- [x] Loki (2021-2023)
+- [x] What If...? (2021-2024)
+- [x] Hawkeye (2021)
+- [x] The Falcon and the Winter Soldier (2021)
+- [x] Spider-Man: No Way Home (2021)
+- [x] WandaVision (2021)
+- [x] Doctor Strange in the Multiverse of Madness (2022)
+- [x] Thor: Love and Thunder (2022)
+- [x] Black Panther: Wakanda Forever (2022)
+- [x] Moon Knight (2022)
+- [x] Ms. Marvel (2022)
+- [x] She-Hulk: Attorney at Law (2022)
+- [x] Ant-Man and the Wasp: Quantumania (2023)
+- [x] Guardians of the Galaxy Vol. 3 (2023)
+- [x] The Marvels (2023)
+- [x] Secret Invasion (2023)
+- [x] Agatha All Along (2024)
+- [x] Deadpool & Wolverine (2024)
+- [ ] Echo (2024)
+- [ ] Captain America: Brave New World (2025)
+- [ ] Your Friendly Neighborhood Spider-Man (2025)
+- [ ] Thunderbolts* (2025)
+- [ ] Daredevil: Born Again (2025)
+
+[Toy Story]
+- [x] Toy Story (1995)
+- [x] Toy Story 2 (1999)
+- [x] Toy Story 3 (2010)
+- [ ] Toy Story 4 (2019)
+
+[Godzilla]
+# all non-american godzillas
+- [ ] Shin Godzilla (2016)
+- [x] Godzilla Minus One (2023)
+# american godzillas
+- [ ] Godzilla (1998)
+- [x] Godzilla (2014)
+- [x] Godzilla: King of Monsters (2019)
+- [x] Godzilla vs. Kong (2021)
+- [x] Godzilla x Kong: The New Empire (2024)
+
+[James Bond]
+- [ ] Dr. No (1962)
+- [ ] From Russia with Love (1963)
+- [ ] Goldfinger (1964)
+- [ ] Thunderball (1965)
+- [ ] You Only Live Twice (1967)
+- [ ] On Her Majesty's Secret Service (1969)
+- [ ] Diamonds are Forever (1971)
+- [ ] Live and Let Die (1973)
+- [ ] The Man with the Golden Gun (1974)
+- [ ] The Spy Who Loved Me (1977)
+- [ ] Moonraker (1979)
+- [ ] For Your Eyes Only (1981)
+- [ ] Octopussy (1983)
+- [ ] A View to a Kill (1985)
+- [ ] The Living Daylights (1987)
+- [ ] License to Kill (1989)
+- [ ] GoldenEye (1995)
+- [ ] Tommorow Never Dies (1997)
+- [ ] The World is Not Enough (1999)
+- [ ] Die Another Day (2002)
+- [x] Casino Royale (2006)
+- [x] Quantum of Solace (2008)
+- [x] Skyfall (2012)
+- [x] Spectre (2015)
+- [x] No Time to Die (2021)
+
+[Superman]
+- [ ] Superman (1978)
+- [ ] Superman II (1980)
+- [ ] Superman III (1983)
+- [ ] Supergirl (1984)
+- [ ] Superman IV: The Quest for Peace (1987)
+- [ ] Superman Returns (2006)
+- [ ] Superman II: The Richard Donner Cut
+- [x] Man of Steel (2013)
+- [x] Batman v Superman: Dawn of Justice (2016)
+- [x] Justice League (2017)
+- [x] Zack Snyder's Justice League (2021)
+
+[Star Wars]
+- [ ] A New Hope (1977)
+- [ ] The Empire Strikes Back (1980)
+- [ ] Return of the Jedi (1983)
+- [ ] The Phantom Menace (1999)
+- [ ] Attack of the Clones (2002)
+- [ ] Revenge of the Sith (2005)
+- [x] The Force Awakens (2015)
+- [ ] Rogue One: A Star Wars Story (2016)
+- [x] The Last Jedi (2017)
+- [ ] Solo: A Star Wars Story (2018)
+- [x] The Rise of Skywalker (2019)
+- [x] The Mandalorian (2019-2023)
+- [ ] The Book of Boba Fett (2021-2022)
+- [ ] Obi-Wan Kenobi (2022)
+- [x] Andor (2022)
+- [x] Ahsoka (2023)
+- [x] The Acolyte (2024)
+- [ ] Skeleton Crew (2024-2025)
+
+[Back to the Future]
+- [x] Back to the Future (1985)
+- [x] Back to the Future Part II (1989)
+- [ ] Back to the Future Part III (1990)
+
+[Terminator]
+- [ ] The Terminator (1984)
+- [ ] Terminator 2: Judgement Day (1991)
+- [ ] Terminator 3: Rise of the Machines (2003)
+- [x] Terminator Salvation (2009)
+- [x] Terminator Genisys (2015)
+- [ ] Terminator: Dark Fate (2019)
+
+[Man in Black]
+- [x] Man in Black (1997)
+- [x] Man in Black II (2002)
+- [x] Man in Black 3 (2012)
+- [x] Man in Black: International (2019)
+
+[Batman]
+- [ ] Batman (1966)
+- [ ] Batman (1989)
+- [ ] Batman Returns (1992)
+- [ ] Batman Forever (1995)
+- [ ] Batman & Robin (1997)
+- [x] The Lego Batman Movie (2017)
+- [x] Batman Begins (2005)
+- [x] The Dark Knight (2008)
+- [x] The Dark Knight Rises (2012)
+- [x] Batman v Superman: Dawn of Justice (2016)
+- [x] Justice League (2017)
+- [x] Zack Snyder's Justice League (2021)
+- [ ] The Flash (2023)
+- [x] The Batman (2022)
+
+[The Conjuring Universe]
+- [x] The Conjuring (2013)
+- [ ] Annabelle (2014)
+- [x] The Conjuring 2 (2016)
+- [ ] Annabelle: Creation (2017)
+- [ ] The Nun (2018)
+- [ ] Annabelle Comes Home (2019)
+- [ ] The Conjuring: The Devil Made Me Do It (2021)
+- [ ] The Nun II (2023)
+
+[Mission Impossible]
+- [x] Mission: Impossible (1996)
+- [x] Mission: Impossible 2 (2000)
+- [ ] Mission: Impossible III (2006)
+- [x] Mission: Impossible - Ghost Protocol (2011)
+- [x] Mission: Impossible - Rogue Nation (2015)
+- [x] Mission: Impossible - Fallout (2018)
+- [x] Mission: Impossible - Dead Reckoning Part One (2023)
+
+[Matrix]
+- [x] The Matrix (1999)
+- [x] The Matrix Reloaded (2003)
+- [x] The Matrix Revolutions (2003)
+- [ ] The Animatrix (2003)
+- [x] The Matrix Ressurrections (2021)
+
+[Charlie's Angels]
+- [ ] Charlie's Angels (1976-1981)
+- [x] Charlie's Angels (2000)
+- [x] Charlie's Angels: Full Throttle (2003)
+- [ ] Charlie's Angels (2011)
+- [x] Charlie's Angels (2019)
+
+[Ocean's]
+- [ ] Ocean's 11 (1960)
+- [x] Ocean's Eleven (2001)
+- [ ] Ocean's Twelve (2004)
+- [ ] Ocean's Thirteen (2007)
+- [x] Ocean's 8 (2018)
+
+[Arrowverse]
+- [x] Arrow (2012-2020)
+- [x] The Flash (2014-2023)
+- [x] Supergirl (2015-2021)
+- [x] Legends of Tommorow (2016-2021)
+- [x] Back Lightning (2018-2021)
+- [ ] Batwoman (2019-2021)
+
+[The Hunger Games]
+- [x] The Hunger Games (2012)
+- [x] The Hunger Games: Catching Fire (2013)
+- [ ] The Hunger Games: Mockingjay - Part 1 (2014)
+- [ ] The Hunger Games: Mockingjay - Part 2 (2015)
+- [ ] The Hunger Games: The Ballad of Songbirds and Snakes (2023)
+
+[Twilight]
+- [x] Twilight (2008)
+- [ ] The Twilight Saga: New Moon (2009)
+- [ ] The Twilight Saga: Eclipse (2010)
+- [ ] The Twilight Saga: Breaking Dawn Part 1 (2011)
+- [ ] The Twilight Saga: Breaking Dawn Part 2 (2012)
+
+[Indiana Jones]
+- [x] Raiders of the Lost Ark (1981)
+- [ ] Indiana Jones and the Tample of Doom (1984)
+- [x] Indiana Jones and the Last Crusade (1989)
+- [x] Indiana Jones and the Kingdom of the Crystal Skull (2008)
+- [x] Indiana Jones and the Dial of Destiny (2023)
+
+[Middle Earth]
+- [ ] The Lord of the Rings: The Fellowship of the Ring (2001)
+- [ ] The Lord of the Rings: The Two Towers (2002)
+- [ ] The Lord of the Rings: The Return of the King (2003)
+- [x] The Hobbit: An Unexpected Journey (2012)
+- [x] The Hobbit: The Desolation of Smaug (2013)
+- [x] The Hobbit: The Battle of the Five Armies (2014)
+
+[DC Extended Universe]
+- [x] Man of Steel (2013)
+- [x] Batman v Superman: Dawn of Justice (2016)
+- [x] Suicide Squad (2016)
+- [x] Wonder Woman (2017)
+- [x] Justice League (2017)
+- [x] Aquaman (2018)
+- [x] Shazam! (2019)
+- [x] Birds of Pray (2020)
+- [x] Wonder Woman 1984 (2020)
+- [x] Zack Snyder's Justice League (2021)
+- [x] The Suicide Squad (2021)
+- [x] Black Adam (2022)
+- [x] Shazam! Fury of the Gods (2023)
+- [ ] The Flash (2023)
+- [ ] Blue Beetle (2023)
+- [ ] Aquaman and the Lost Kingdom (2023)
+
+[Sony's Spider-Man Universe]
+- [x] Venom (2018)
+- [x] Venom: Let There Be Carnage (2021)
+- [ ] Morbius (2022)
+- [ ] Madame Web (2024)
+- [ ] Venom: The Last Dance (2024)
+- [ ] Kraven the Hunter (2024)
+
+# ----------------------------------------------------------------------------
+# Not watched
+# ----------------------------------------------------------------------------
+
+# [Die Hard]
+# [Evil Dead]
+# [Jason Bourne]
+# [Jurrasic Park]
+# [Planet of the Apes]
+# [Rocky]
+# [Bourne]
+# [Predator]
+# [Ghostbusters]
+
+# ----------------------------------------------------------------------------
+# Fully watched
+# ----------------------------------------------------------------------------
+
+[Spider-Man]
+- [x] Spider-Man (2002)
+- [x] Spider-Man 2 (2004)
+- [x] Spider-Man 3 (2007)
+- [x] The Amazing Spider Man (2012)
+- [x] The Amazing Spider Man 2 (2014)
+- [x] Spider-Man: Homecoming (2017)
+- [x] Spider-Man: Far From Home (2019)
+- [x] Spider-Man: No Way Home (2021)
+
+
+[Fast & Furious]
+- [x] The Fast and the Furious (2001)
+- [x] 2 Fast 2 Furious (2003)
+- [x] The Fast and the Furious: Tokyo Drift (2006)
+- [x] Fast & Furious (2009)
+- [x] Fast Five (2011)
+- [x] Fast & Furious 6 (2013)
+- [x] Furious 7 (2015)
+- [x] The Fate of the Furious (2017)
+- [x] F9 (2021)
+- [x] Fast X (2023)
+
+[John Wick]
+- [x] John Wick (2014)
+- [x] John Wick: Chapter 2 (2017)
+- [x] John Wick: Chapter 3 - Parabellum (2019)
+- [x] John Wick: Chapter 4 (2023)
+
+[Transformers]
+- [x] Transformers (2007)
+- [x] Transformers: Revenge of the Fallen (2009)
+- [x] Transformers: Dark of the Moon (2011)
+- [x] Transformers: Age of Extinction (2014)
+- [x] Transformers: The Last Knight (2017)
+- [x] Bumblebee (2018)
+- [x] Transformers:  Rise of the Beasts (2023)
+
+[Descendants]
+- [x] Descendants (2015)
+- [x] Descendants 2 (2017)
+- [x] Descendants 3 (2019)
+- [x] Descendants: The Rise of Red (2024)
+
+[Madagascar]
+- [x] Madagascar (2005)
+- [x] Madagascar: Escape 2 Africa (2008)
+- [x] Madagascar 3: Europe's Most Wanted (2012)
+- [x] Penguins of Madagascar (2014)
+
+
+[Pirates of the Caribbean]
+- [x] Pirates of the Caribbean: The Curse of the Black Pearl (2003)
+- [x] Pirates of the Caribbean: Dead Man's Chest (2006)
+- [x] Pirates of the Caribbean: At World's End (2007)
+- [x] Pirates of the Caribbean: On Stranger Tides (2011)
+- [x] Pirates of the Caribbean: Dead Man Tell No Tales (2017)
+
+[X-Man]
+- [x] X-Men (2000)
+- [x] X2 (2003)
+- [x] X-Men: The Last Stand (2006)
+- [x] X-Men Origins: Wolverine (2009)
+- [x] X-Men: First Class (2011)
+- [x] The Wolverine (2013)
+- [x] X-Men: Days of Future Past (2014)
+- [x] X-Men: Apocalypse (2016)
+- [x] Deadpool (2016)
+- [x] Deadpool 2 (2018)
+- [x] Logan (2017)
+- [x] Legion (2017-2019)
+- [x] Dark Phoenix (2019)
+- [x] The New Mutants (2020)
+
+[Beverly Hills Cop]
+- [x] Beverly Hills Cop (1984)
+- [x] Beverly Hills Cop II (1987)
+- [x] Beverly Hills Cop III (1994)
+- [x] Beverly Hills Cop: Axel F (2024)
