@@ -608,6 +608,7 @@ PAGE = """<!DOCTYPE html>
 """
 
 CHARACTERS = sorted([
+    Wish("5.6", "Escoffier", "2025-05-07", benched=False, five_star=True),
     Wish("5.5", "Iansan", "2025-03-26"),
     Wish("5.3", "Lan Yan", "2025-01-21", constellation=6, benched=False),
     Wish("5.3", 'Citlali', '2025-01-01', benched=False, favourite=True, five_star=True),
@@ -689,6 +690,8 @@ CHARACTERS = sorted([
 assert all(char.date is not None for char in CHARACTERS)
 
 FIVE_STAR_WEAPONS = sorted([
+    Wish("0.0", "Symphonist of Scents", weapon=True, weapon_type=WeaponType.POLEARM),
+    Wish("0.0", "Verdict", weapon=True, weapon_type=WeaponType.CLAYMORE),
     Wish("0.0", "Aquila Favonia", weapon=True, weapon_type=WeaponType.SWORD),
     Wish("0.0", "Crimson Moon's Semblance", pity=67, weapon=True, weapon_type=WeaponType.POLEARM),
     Wish("0.0", "Skyward Harp", weapon=True, weapon_type=WeaponType.BOW),
@@ -699,6 +702,7 @@ FIVE_STAR_WEAPONS = sorted([
 ], key=lambda x: (WEAPON_ORDER.index(x.weapon_type), x.name))
 
 CHARACTERS_ELEMENT = {
+    "Escoffier": Element.CRYO,
     "Iansan": Element.ELECTRO,
     "Albedo": Element.GEO,
     "Alhaitham": Element.DENDRO,
@@ -795,6 +799,7 @@ CHARACTERS_ELEMENT = {
 }
 
 CHARACTERS_WEAPON = {
+"Escoffier": WeaponType.POLEARM,
 "Iansan": WeaponType.POLEARM,
 "Keqing": WeaponType.SWORD,
 "Albedo": WeaponType.SWORD,
@@ -894,6 +899,7 @@ CHARACTERS_WEAPON = {
 
 
 CHARACTERS_REGION = {
+        "Escoffier": Region.FONTAINE,
         "Iansan": Region.NATLAN,
         "Lan Yan": Region.LIYUE,
     "Albedo": Region.MONDSTADT,
@@ -1023,6 +1029,7 @@ class Version:
 # on https://genshin-impact.fandom.com/wiki/Version
 
 VERSIONS = sorted((
+    Version(5, 6, "2025-05-07"),
     Version(5, 5, "2025-03-26"),
     Version(5, 4, "2025-02-12"),
     Version(5, 3, "2025-01-01"),
