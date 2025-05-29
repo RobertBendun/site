@@ -47,6 +47,9 @@
 
 			<code style="word-wrap:wrap">awk '/&lt;body[^&gt;]*&gt;/,/&lt;\/body&gt;/' | sed "s/&lt;[^&gt;]*&gt;//g" | wc -w</code>
 
+			<h3>Injecting width and height using Perl and ImageMagick</h3>
+
+			<code style="word-wrap: wrap">perl -ne 'print /^(.*img.*)src="([^"]+)"(.*)$/ ? "$1src=\"$2\" ".`magick $2 -print "width=%w height=%h" /dev/null`."$3\n" : "$_"' -i index.html</code>
 
 			<h3>Visualizing output of <code>uniq -c</code></h3>
 

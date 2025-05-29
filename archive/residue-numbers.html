@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Residue Number System | Diana's Lab</title>
+		<meta property="og:title"          content="Residue Number System" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+		<link rel="stylesheet" href="/common.css" />
+		<link rel="stylesheet" href="/tiers.css">
+<style>
+.clock {
+	font-size: 1.3em;
+}
+</style>
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble">bendun.cc</a>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>Residue Number System</h1>
+
+			<p><time datetime="2025-04-26T01:22:47+02:00">2025-04-26</time></p>
+
+			<p>Yet another number system, this one is quite funky.
+			In <a target="_blank" href="https://en.wikipedia.org/wiki/Residue_number_system">Residue number systems</a>
+			numbers are represented by the string of the number modulo various primes.
+			For example 4 in (2,3) residue number system is written as 01<sub>2,3</sub> and 5<sub>10</sub> = 12<sub>2,3</sub>.
+			The largest possible number that one can represent in residue number system defined by some numbers the is <a href="https://en.wikipedia.org/wiki/Least_common_multiple">least common multiple</a> of those numbers.
+			When they are primes, it's just their product (since lcm of primes is always their product).</p>
+
+			<h2>Clock</h2>
+
+			<p>As with all number system, the best demonstraction is to show digital (or analog) clocks.
+			I will slightly inefficient residue number system - for hours 6 and 8, for minutes and seconds 10 and 12.
+			They ware chosen for one simple reason - their lcm matches the maximum value of slot that they fill: lcm(6,8) = 24, lcm(10,12) = 60.</p>
+			<p>Since we need 12 digits, I will use the convention of <a href="https://en.wikipedia.org/wiki/Duodecimal">dozenal</a>.</p>
+
+			<div>
+				<div class="clock traditional">01:36:55<sub>usual</sub></div>
+				<div class="clock residue681012">11:60:17<sub>residue68(1012)<sup>2</sup></sub></div>
+			</div>
+		</main>
+		<script>
+const rns6_8 = [];
+const rns10_12 = [];
+
+for (let i = 0; i < 24; ++i) {
+	rns6_8.push(`${i % 6}${i%8}`);
+}
+
+for (let i = 0; i < 60; ++i) {
+	let d = i%12;
+	if (d == 10) d = "↊";
+	if (d == 11) d = "↋";
+	rns10_12.push(`${i % 10}${d}`);
+}
+
+
+function now_trad_rns() {
+	const now = new Date();
+	const h = now.getHours();
+	const m = now.getMinutes();
+	const s = now.getSeconds();
+
+	const ht = h < 10 ? "0" + h : h;
+	const mt = m < 10 ? "0" + m : m;
+	const st = s < 10 ? "0" + s : s;
+
+	const hr = rns6_8[h];
+	const mr = rns10_12[m];
+	const sr = rns10_12[s];
+
+	const trad = `${ht}:${mt}:${st}`;
+	const resi = `${hr}:${mr}:${sr}`;
+	let secs = `${h * 60 * 60 + m * 60 + s}`;
+	secs = secs.padStart(5, '0');
+
+	for (const el of document.querySelectorAll('.traditional')) {
+		el.innerHTML = `${trad}<sub>usual</sub>`;
+	}
+	for (const el of document.querySelectorAll('.residue681012')) {
+		el.innerHTML = `${resi}<sub>residue68(1012)<sup>2</sup></sub>`;
+	}
+	for (const el of document.querySelectorAll('.since-midnight')) {
+		el.innerHTML = `${secs}<sub>seconds since midnight</sub>`;
+	}
+}
+
+now_trad_rns();
+setInterval(now_trad_rns, 1000);
+		</script>
+	</body>
+</html>
+
+

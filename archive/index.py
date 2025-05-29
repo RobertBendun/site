@@ -178,6 +178,8 @@ class Tags:
 
 
 POSTS = sorted([
+    Post(path="what-i-watched-in-april-2025.html", name="What I Watched in April"),
+    Post(path="residue-numbers.html", name="Residue Number System"),
     Post(path="what-i-watched-in-march-2025.html", name="What I Watched in March"),
     Post(path="oneliners.html", name="One-liners I often use"),
     Post(path="a-reason-to-use-bool-in-c.html", name="TIL: A Reason To Use bool in C"),
