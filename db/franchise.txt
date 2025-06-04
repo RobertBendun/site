@@ -96,7 +96,7 @@ last-update = 2025-05-02
 - [ ] Echo (2024)
 - [ ] Captain America: Brave New World (2025)
 - [ ] Your Friendly Neighborhood Spider-Man (2025)
-- [ ] Thunderbolts* (2025)
+- [x] Thunderbolts* (2025)
 - [ ] Daredevil: Born Again (2025)
 
 [Toy Story]
