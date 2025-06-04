@@ -178,6 +178,7 @@ class Tags:
 
 
 POSTS = sorted([
+    Post(path="week-with-java.html", name="Week with Java"),
     Post(path="what-i-watched-in-april-2025.html", name="What I Watched in April"),
     Post(path="residue-numbers.html", name="Residue Number System"),
     Post(path="what-i-watched-in-march-2025.html", name="What I Watched in March"),

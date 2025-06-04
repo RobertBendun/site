@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Week with Java | Diana's Lab</title>
+		<meta property="og:title"          content="Week with Java" />
+		<meta property="og:type"           content="article" />
+		<meta property="og:article:author" content="Diana Bendun" />
+		<link rel="stylesheet" href="/common.css" />
+	</head>
+	<body>
+		<header>
+			<a href="/" class="hover-scramble">bendun.cc</a>
+			<nav class="roots">
+				<ul>
+					<li><a href="/archive">Archive</a></li>
+					<li><a href="/cinema">Cinema</a></li>
+					<li><a href="https://github.com/RobertBendun">Github</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="page" class="glass">
+			<h1>Week with Java</h1>
+
+			<p><time datetime="2025-05-26T21:59:30+02:00">2025-05-26</time></p>
+
+			<p>On 1995-05-23 we got Java 1.0_alpha.
+			30 years later I got to help with security audit of Java codebase, solidifying my thoughts on this language.
+			I've knew Java for a few years now but there is nothing like a week of staring at someone else's code to evaluate your opinions.</p>
+
+			<p>My main takeaway is reinforcement of my love for immutability marking.
+			I dare to say it, it's one of main features that I love about languages like C, C++, Rust, Go and Haskell.
+			Language with implicit reference semantics lack proper notation for (deep) immutability, which makes any reasoning about the codebase at least twice as hard as it should be.</p>
+
+			<p>Languages like Java (with <code>final var</code>) or JavaScript (with <code>const</code>) have this weird construction that prevents one to reassign variable inside a function body.
+			While useful for global context (in JavaScript) and useful for class instance context (in Java) it's still only a part of needed solution.</p>
+
+			<p>Arguing for immutability feels somewhat outdated - we are few years after the functional programming craze of late 2010s.</p>
+
+
+			<hr>
+
+			<p>What do you mean that there isn't <code>isPositive()</code> for <a target="_blank" href="https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html"><code>java.time.Duration</code></a>?!
+
+
+			<h2>Java Virtual Machine</h2>
+
+			<p>Going back to Java reignited my interested in what's going under the hood.
+			Beeing one of the oldest commonly used virtual machines out there (beaten only by Erlang I think) it has few interesting quirks and features.
+			I'm exploring it in one of my projects - <a target="_blank" href="https://github.com/RobertBendun/hava">a Java dissasembler</a> (I don't remember why it's called Hava - name suggests Java but in Haskell but it's written in Rust).</p>
+
+			<ul>
+				<li>Function signatures are <a target="_blank" href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.3.3">just strings with special syntax within them.</a></li>
+				<li>There are special opcodes for loading first, second, third and fourth local variables. Other local variables are loaded by general load local variable instruction that embeds an integer.</li>
+				<li>You cannot reference variables dynamically (like in C by taking address of a variable). In the bytecode the concept of lvalue doesn't exists.</li>
+				<li>Java has only 8 types in the bytecode: byte, char (UTF-16 code point), float, double, short, int, long, reference</li>
+				<li><code>javac</code> is generally not a optimizing compiler.
+					It has some very basic techniques like constant folding but only for expressions.
+					From what I've seen things like unused variables or inlinling arithmetic across variables are not optimized out even when they don't have side effects.
+					Note that this is just bytecode optimization - JIT compiler that would compile this code on target machine possibly has a lot of various optimizations.</li>
+				<li>class format is optimized for interning, possibly reducing final size - for example if two methods have the same signature then it can be shared between them.</li>
+			</ul>
+		</main>
+	</body>
+</html>
+
