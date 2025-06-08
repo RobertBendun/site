@@ -229,6 +229,7 @@ last-update = 2025-05-02
 - [x] Mission: Impossible - Rogue Nation (2015)
 - [x] Mission: Impossible - Fallout (2018)
 - [x] Mission: Impossible - Dead Reckoning Part One (2023)
+- [x] Mission: Impossible - The Final Reckoning (2025)
 
 [Matrix]
 - [x] The Matrix (1999)
