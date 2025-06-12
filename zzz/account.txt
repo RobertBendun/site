@@ -1,0 +1,27 @@
+== My owned characters
+
+They are checked if built
+
+- [ ] S Harumasa
+- [x] S Astra Yao
+- [x] S Burnice
+- [x] S Lycaon
+- [x] S Miabi
+- [x] S Vivian
+- [x] S Yixuan
+
+- [ ] A Anby
+- [ ] A Anton
+- [ ] A Ben
+- [ ] A Billy
+- [ ] A Corin
+- [ ] A Grace
+- [ ] A Nekomata
+- [ ] A Nicole
+- [ ] A Pan Yinju
+- [ ] A Seth
+- [x] A Lucy
+- [x] A Piper
+- [x] A Pulchra
+- [x] A Sokaku
+
