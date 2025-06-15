@@ -21,7 +21,7 @@ body {
 	width: @out(sitcoms.size() * 5 + 4);@rem;
 	grid-template-columns: 4rem repeat(@out(sitcoms.size());@, 5rem);
 }
-header, p {
+header, p, section {
 	max-width: 90ch;
 	margin-inline: auto
 }
@@ -44,7 +44,7 @@ a, a:visited, a:link, a:hover {
 			</blockquote>
 		</header>
 
-		<section id="timeline">
+		<section id="timeline" style="max-width: none">
 			<div>
 				<div style="grid-column: 1/@out(sitcoms.size() + 2);@; grid-row: 9/19; background-color: #282828"></div>
 				<div style="grid-column: 1/@out(sitcoms.size() + 2);@; grid-row: 29/@out(years_count+4);@; background-color: #282828"></div>
@@ -83,5 +83,30 @@ a, a:visited, a:link, a:hover {
 
 
 		<p>@out(shows_with_musical_episodes.size());@ sitcoms had musical episodes: @out(shows_with_musical_episodes_list);@.</p>
+
+		<section>
+			<h2>Networks</h2>
+
+			<table>
+				<tbody>
+					@for (auto const& [network, shows] : networks) {@
+					<tr>
+						<th>
+							@out(network);@<br>
+							<span style="font-style: italic">(@out(shows.size());@)</span>
+						</th>
+						<td>
+							<ul>
+								@for (auto const& show : shows) {@
+									<li>@out(show);@</li>
+								@}@
+							</ul>
+						</td>
+					</tr>
+					@}@
+				</tbody>
+			</table>
+		</section>
+
 	</body>
 </html>

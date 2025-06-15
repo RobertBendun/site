@@ -18,10 +18,10 @@ body {
 	justify-content: center;
 	margin-inline: auto;
 	display: grid;
-	width: 99rem;
-	grid-template-columns: 4rem repeat(19, 5rem);
+	width: 104rem;
+	grid-template-columns: 4rem repeat(20, 5rem);
 }
-header, p {
+header, p, section {
 	max-width: 90ch;
 	margin-inline: auto
 }
@@ -44,10 +44,10 @@ a, a:visited, a:link, a:hover {
 			</blockquote>
 		</header>
 
-		<section id="timeline">
+		<section id="timeline" style="max-width: none">
 			<div>
-				<div style="grid-column: 1/21; grid-row: 9/19; background-color: #282828"></div>
-				<div style="grid-column: 1/21; grid-row: 29/35; background-color: #282828"></div>
+				<div style="grid-column: 1/22; grid-row: 9/19; background-color: #282828"></div>
+				<div style="grid-column: 1/22; grid-row: 29/35; background-color: #282828"></div>
 
 				
 					<div style="position: sticky; background-color: #0003; left: 0; grid-column: 1; grid-row: 3">1994</div>
@@ -114,7 +114,7 @@ a, a:visited, a:link, a:hover {
 				
 					<div style="position: sticky; background-color: #0003; left: 0; grid-column: 1; grid-row: 34">2025</div>
 				
-				<div style="border-right: 1px dotted; grid-row: 1/35; grid-column: 20"></div>
+				<div style="border-right: 1px dotted; grid-row: 1/35; grid-column: 21"></div>
 				
 					
 					<div style="border-left: 1px dotted; grid-row: 1/35; grid-column: 2"></div>
@@ -705,13 +705,16 @@ a, a:visited, a:link, a:hover {
 				
 					
 					<div style="border-left: 1px dotted; grid-row: 1/35; grid-column: 15"></div>
-					<div style="grid-column: 15; grid-row: 2;">⭐⭐⭐</div>
+					<div style="grid-column: 15; grid-row: 2;">⭐⭐</div>
 					<!-- TODO: Title font size should be calculated from the longest word in the title -->
-					<div style="font-size: 0.8rem; grid-row: 1; grid-column: 15">The Good Place</div>
+					<div style="font-size: 0.8rem; grid-row: 1; grid-column: 15">Fresh Off the Boat</div>
 					
 					
 
 					<!-- TODO: Use more granular seasons data -->
+					
+						
+						<div style="grid-column: 15; grid-row: 24; background-color: #b8bb26"></div>
 					
 						
 						<div style="grid-column: 15; grid-row: 25; background-color: #b8bb26"></div>
@@ -729,18 +732,27 @@ a, a:visited, a:link, a:hover {
 						<div style="grid-column: 15; grid-row: 29; background-color: #b8bb26"></div>
 					
 
-					<div style="font-size: 0.8rem; grid-column: 15; grid-row: 35; border-bottom: 1px solid">4 seasons</div>
-				<div style="font-size: 0.8rem; grid-column: 15; grid-row: 36">finished in 2022</div>
+					<div style="font-size: 0.8rem; grid-column: 15; grid-row: 35; border-bottom: 1px solid">6 seasons</div>
+				<div style="font-size: 0.8rem; grid-column: 15; grid-row: 36">stopped at season 1 in 2025</div>
 				
 					
 					<div style="border-left: 1px dotted; grid-row: 1/35; grid-column: 16"></div>
-					<div style="grid-column: 16; grid-row: 2;">⭐</div>
+					<div style="grid-column: 16; grid-row: 2;">⭐⭐⭐</div>
 					<!-- TODO: Title font size should be calculated from the longest word in the title -->
-					<div style="font-size: 0.8rem; grid-row: 1; grid-column: 16">What We Do in the Shadows</div>
+					<div style="font-size: 0.8rem; grid-row: 1; grid-column: 16">The Good Place</div>
 					
 					
 
 					<!-- TODO: Use more granular seasons data -->
+					
+						
+						<div style="grid-column: 16; grid-row: 25; background-color: #fabd2f"></div>
+					
+						
+						<div style="grid-column: 16; grid-row: 26; background-color: #fabd2f"></div>
+					
+						
+						<div style="grid-column: 16; grid-row: 27; background-color: #fabd2f"></div>
 					
 						
 						<div style="grid-column: 16; grid-row: 28; background-color: #fabd2f"></div>
@@ -748,31 +760,22 @@ a, a:visited, a:link, a:hover {
 						
 						<div style="grid-column: 16; grid-row: 29; background-color: #fabd2f"></div>
 					
-						
-						<div style="grid-column: 16; grid-row: 30; background-color: #fabd2f"></div>
-					
-						
-						<div style="grid-column: 16; grid-row: 31; background-color: #fabd2f"></div>
-					
-						
-						<div style="grid-column: 16; grid-row: 32; background-color: #fabd2f"></div>
-					
-						
-						<div style="grid-column: 16; grid-row: 33; background-color: #fabd2f"></div>
-					
 
-					<div style="font-size: 0.8rem; grid-column: 16; grid-row: 35; border-bottom: 1px solid">6 seasons</div>
-				<div style="font-size: 0.8rem; grid-column: 16; grid-row: 36">stopped at season 1 in 2022</div>
+					<div style="font-size: 0.8rem; grid-column: 16; grid-row: 35; border-bottom: 1px solid">4 seasons</div>
+				<div style="font-size: 0.8rem; grid-column: 16; grid-row: 36">finished in 2022</div>
 				
 					
 					<div style="border-left: 1px dotted; grid-row: 1/35; grid-column: 17"></div>
-					<div style="grid-column: 17; grid-row: 2;">🚮</div>
+					<div style="grid-column: 17; grid-row: 2;">⭐</div>
 					<!-- TODO: Title font size should be calculated from the longest word in the title -->
-					<div style="font-size: 0.8rem; grid-row: 1; grid-column: 17">Space Force</div>
+					<div style="font-size: 0.8rem; grid-row: 1; grid-column: 17">What We Do in the Shadows</div>
 					
 					
 
 					<!-- TODO: Use more granular seasons data -->
+					
+						
+						<div style="grid-column: 17; grid-row: 28; background-color: #83a598"></div>
 					
 						
 						<div style="grid-column: 17; grid-row: 29; background-color: #83a598"></div>
@@ -783,19 +786,28 @@ a, a:visited, a:link, a:hover {
 						
 						<div style="grid-column: 17; grid-row: 31; background-color: #83a598"></div>
 					
+						
+						<div style="grid-column: 17; grid-row: 32; background-color: #83a598"></div>
+					
+						
+						<div style="grid-column: 17; grid-row: 33; background-color: #83a598"></div>
+					
 
-					<div style="font-size: 0.8rem; grid-column: 17; grid-row: 35; border-bottom: 1px solid">2 seasons</div>
-				<div style="font-size: 0.8rem; grid-column: 17; grid-row: 36">stopped at season 1 in 2024</div>
+					<div style="font-size: 0.8rem; grid-column: 17; grid-row: 35; border-bottom: 1px solid">6 seasons</div>
+				<div style="font-size: 0.8rem; grid-column: 17; grid-row: 36">stopped at season 1 in 2022</div>
 				
 					
 					<div style="border-left: 1px dotted; grid-row: 1/35; grid-column: 18"></div>
-					<div style="grid-column: 18; grid-row: 2;">⭐⭐⭐</div>
+					<div style="grid-column: 18; grid-row: 2;">🚮</div>
 					<!-- TODO: Title font size should be calculated from the longest word in the title -->
-					<div style="font-size: 0.8rem; grid-row: 1; grid-column: 18">Inside Job</div>
+					<div style="font-size: 0.8rem; grid-row: 1; grid-column: 18">Space Force</div>
 					
 					
 
 					<!-- TODO: Use more granular seasons data -->
+					
+						
+						<div style="grid-column: 18; grid-row: 29; background-color: #d3869b"></div>
 					
 						
 						<div style="grid-column: 18; grid-row: 30; background-color: #d3869b"></div>
@@ -805,13 +817,13 @@ a, a:visited, a:link, a:hover {
 					
 
 					<div style="font-size: 0.8rem; grid-column: 18; grid-row: 35; border-bottom: 1px solid">2 seasons</div>
-				<div style="font-size: 0.8rem; grid-column: 18; grid-row: 36">finished in 2022</div>
+				<div style="font-size: 0.8rem; grid-column: 18; grid-row: 36">stopped at season 1 in 2024</div>
 				
 					
 					<div style="border-left: 1px dotted; grid-row: 1/35; grid-column: 19"></div>
 					<div style="grid-column: 19; grid-row: 2;">⭐⭐⭐</div>
 					<!-- TODO: Title font size should be calculated from the longest word in the title -->
-					<div style="font-size: 0.8rem; grid-row: 1; grid-column: 19">Abbott Elementary</div>
+					<div style="font-size: 0.8rem; grid-row: 1; grid-column: 19">Inside Job</div>
 					
 					
 
@@ -823,35 +835,55 @@ a, a:visited, a:link, a:hover {
 						
 						<div style="grid-column: 19; grid-row: 31; background-color: #8ec07c"></div>
 					
-						
-						<div style="grid-column: 19; grid-row: 32; background-color: #8ec07c"></div>
-					
-						
-						<div style="grid-column: 19; grid-row: 33; background-color: #8ec07c"></div>
-					
-						
-						<div style="grid-column: 19; grid-row: 34; background-color: #8ec07c"></div>
-					
 
-					<div style="font-size: 0.8rem; grid-column: 19; grid-row: 35; border-bottom: 1px solid">4 seasons</div>
-				<div style="font-size: 0.8rem; grid-column: 19; grid-row: 36">stopped at season 2 in 2025</div>
+					<div style="font-size: 0.8rem; grid-column: 19; grid-row: 35; border-bottom: 1px solid">2 seasons</div>
+				<div style="font-size: 0.8rem; grid-column: 19; grid-row: 36">finished in 2022</div>
 				
 					
 					<div style="border-left: 1px dotted; grid-row: 1/35; grid-column: 20"></div>
-					<div style="grid-column: 20; grid-row: 2;">🚮</div>
+					<div style="grid-column: 20; grid-row: 2;">⭐⭐⭐</div>
 					<!-- TODO: Title font size should be calculated from the longest word in the title -->
-					<div style="font-size: 0.8rem; grid-row: 1; grid-column: 20">Blockbuster</div>
+					<div style="font-size: 0.8rem; grid-row: 1; grid-column: 20">Abbott Elementary</div>
 					
 					
 
 					<!-- TODO: Use more granular seasons data -->
 					
 						
+						<div style="grid-column: 20; grid-row: 30; background-color: #928374"></div>
+					
+						
 						<div style="grid-column: 20; grid-row: 31; background-color: #928374"></div>
 					
+						
+						<div style="grid-column: 20; grid-row: 32; background-color: #928374"></div>
+					
+						
+						<div style="grid-column: 20; grid-row: 33; background-color: #928374"></div>
+					
+						
+						<div style="grid-column: 20; grid-row: 34; background-color: #928374"></div>
+					
 
-					<div style="font-size: 0.8rem; grid-column: 20; grid-row: 35; border-bottom: 1px solid">1 season</div>
-				<div style="font-size: 0.8rem; grid-column: 20; grid-row: 36">finished in 2024</div>
+					<div style="font-size: 0.8rem; grid-column: 20; grid-row: 35; border-bottom: 1px solid">4 seasons</div>
+				<div style="font-size: 0.8rem; grid-column: 20; grid-row: 36">stopped at season 2 in 2025</div>
+				
+					
+					<div style="border-left: 1px dotted; grid-row: 1/35; grid-column: 21"></div>
+					<div style="grid-column: 21; grid-row: 2;">🚮</div>
+					<!-- TODO: Title font size should be calculated from the longest word in the title -->
+					<div style="font-size: 0.8rem; grid-row: 1; grid-column: 21">Blockbuster</div>
+					
+					
+
+					<!-- TODO: Use more granular seasons data -->
+					
+						
+						<div style="grid-column: 21; grid-row: 31; background-color: #fe8019"></div>
+					
+
+					<div style="font-size: 0.8rem; grid-column: 21; grid-row: 35; border-bottom: 1px solid">1 season</div>
+				<div style="font-size: 0.8rem; grid-column: 21; grid-row: 36">finished in 2024</div>
 				
 			</div>
 		</section>
@@ -861,7 +893,7 @@ a, a:visited, a:link, a:hover {
 		
 			In 2024 I have watched 41 seasons across 9 shows.
 		
-			In 2025 I have watched 6 seasons across 2 shows.
+			In 2025 I have watched 7 seasons across 3 shows.
 		
 		</p>
 
@@ -869,5 +901,182 @@ a, a:visited, a:link, a:hover {
 
 
 		<p>3 sitcoms had musical episodes: It's Always Sunny in Philadelphia, Psych and Community.</p>
+
+		<section>
+			<h2>Networks</h2>
+
+			<table>
+				<tbody>
+					
+					<tr>
+						<th>
+							ABC<br>
+							<span style="font-style: italic">(2)</span>
+						</th>
+						<td>
+							<ul>
+								
+									<li>Abbott Elementary</li>
+								
+									<li>Fresh Off the Boat</li>
+								
+							</ul>
+						</td>
+					</tr>
+					
+					<tr>
+						<th>
+							Adult Swim<br>
+							<span style="font-style: italic">(1)</span>
+						</th>
+						<td>
+							<ul>
+								
+									<li>Rick and Morty</li>
+								
+							</ul>
+						</td>
+					</tr>
+					
+					<tr>
+						<th>
+							CBS<br>
+							<span style="font-style: italic">(2)</span>
+						</th>
+						<td>
+							<ul>
+								
+									<li>Big Bang Theory</li>
+								
+									<li>How I Met Your Mother</li>
+								
+							</ul>
+						</td>
+					</tr>
+					
+					<tr>
+						<th>
+							FX<br>
+							<span style="font-style: italic">(3)</span>
+						</th>
+						<td>
+							<ul>
+								
+									<li>Archer</li>
+								
+									<li>It's Always Sunny in Philadelphia</li>
+								
+									<li>What We Do in the Shadows</li>
+								
+							</ul>
+						</td>
+					</tr>
+					
+					<tr>
+						<th>
+							FXX<br>
+							<span style="font-style: italic">(2)</span>
+						</th>
+						<td>
+							<ul>
+								
+									<li>Archer</li>
+								
+									<li>It's Always Sunny in Philadelphia</li>
+								
+							</ul>
+						</td>
+					</tr>
+					
+					<tr>
+						<th>
+							Fox<br>
+							<span style="font-style: italic">(1)</span>
+						</th>
+						<td>
+							<ul>
+								
+									<li>Brooklyn Nine-Nine</li>
+								
+							</ul>
+						</td>
+					</tr>
+					
+					<tr>
+						<th>
+							HBO<br>
+							<span style="font-style: italic">(1)</span>
+						</th>
+						<td>
+							<ul>
+								
+									<li>Silicon Valley</li>
+								
+							</ul>
+						</td>
+					</tr>
+					
+					<tr>
+						<th>
+							NBC<br>
+							<span style="font-style: italic">(6)</span>
+						</th>
+						<td>
+							<ul>
+								
+									<li>Brooklyn Nine-Nine</li>
+								
+									<li>Community</li>
+								
+									<li>Friends</li>
+								
+									<li>Parks and Recreation</li>
+								
+									<li>The Good Place</li>
+								
+									<li>The Office</li>
+								
+							</ul>
+						</td>
+					</tr>
+					
+					<tr>
+						<th>
+							Netflix<br>
+							<span style="font-style: italic">(4)</span>
+						</th>
+						<td>
+							<ul>
+								
+									<li>Blockbuster</li>
+								
+									<li>BoJack Horseman</li>
+								
+									<li>Inside Job</li>
+								
+									<li>Space Force</li>
+								
+							</ul>
+						</td>
+					</tr>
+					
+					<tr>
+						<th>
+							USA<br>
+							<span style="font-style: italic">(1)</span>
+						</th>
+						<td>
+							<ul>
+								
+									<li>Psych</li>
+								
+							</ul>
+						</td>
+					</tr>
+					
+				</tbody>
+			</table>
+		</section>
+
 	</body>
 </html>

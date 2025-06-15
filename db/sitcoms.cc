@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cctype>
 #include <cstring>
+#include <set>
 #include <fstream>
 #include <set>
 #include <sys/queue.h>
@@ -58,13 +59,14 @@ static_assert(std::ranges::forward_range<inclusive_range<int>>);
 
 using Seasons = std::vector<inclusive_range<std::chrono::year>>;
 using Watched = std::map<std::size_t, Date>;
+using Networks = std::vector<std::string>;
 
 struct Series
 {
 	std::string path;
 	std::string_view title;
 	std::string_view review;
-	std::string_view network;
+	Networks networks;
 
 	Watched watched;
 	Seasons seasons;
@@ -198,6 +200,31 @@ Watched parse_watched_declaration(std::string_view s) {
 	return watched;
 }
 
+std::string_view trim(std::string_view s)
+{
+	while (s.size() && isspace(s.front())) s.remove_prefix(1);
+	while (s.size() && isspace(s.back())) s.remove_suffix(1);
+	return s;
+}
+
+Networks parse_networks_declaration(std::string_view s)
+{
+	Networks networks;
+
+	while (s.size()) {
+		auto const split = s.find(',');
+		if (split == std::string_view::npos) {
+			networks.emplace_back(trim(s));
+			s = {};
+		} else {
+			networks.emplace_back(trim(s.substr(0, split)));
+			s.remove_prefix(split + 1);
+		}
+	}
+
+	return networks;
+}
+
 Series Series::from_file(char const* path)
 {
 	Series series;
@@ -237,7 +264,7 @@ Series Series::from_file(char const* path)
 		}
 		else if (key == "watched") { series.watched = parse_watched_declaration(m->value); }
 		else if (key == "seasons") { series.seasons = parse_seasons_declaration(m->value); }
-		else if (key == "network") { series.network = m->value; }
+		else if (key == "network") { series.networks = parse_networks_declaration(m->value); }
 		else if (key == "musical-episode") { series.musical_episode = true; }
 		else if (key == "score") {
 			auto [p, ec] = std::from_chars(m->value, m->value + std::strlen(m->value), series.score);
@@ -390,6 +417,14 @@ int main(int, char **argv)
 			}
 			shows_with_musical_episodes_list += x;
 		}
+
+	std::map<std::string, std::set<std::string>> networks;
+
+	for (auto const& show : sitcoms) {
+		for (auto network : show->networks) {
+			networks[network].insert(std::string(show->title));
+		}
+	}
 
 
 #include "sitcoms.hh"

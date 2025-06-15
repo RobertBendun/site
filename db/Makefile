@@ -11,7 +11,7 @@ title.basics.tsv: title.basics.tsv.gz
 decades: decades.cc title.basics.tsv.gz
 	$(CXX) $(CXXFLAGS) -o $@ $<
 
-sitcoms.html: sitcoms
+sitcoms.html: sitcoms $(wildcard series/*.md)
 	./sitcoms
 
 %.hh: %.hh.tt tt
