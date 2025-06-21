@@ -393,7 +393,7 @@ int main()
 
 	using MovieSet = std::set<Movie, decltype([](Movie const& a, Movie const& b) {
 		if (auto cmp = b.score <=> a.score; cmp == 0) {
-			return (a.title <=> b.title) < 0;
+			return std::tie(a.year, a.title) < std::tie(b.year, b.title);
 		} else {
 			return cmp < 0;
 		}
