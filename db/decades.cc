@@ -116,6 +116,7 @@ enum class Tag : unsigned long long
 	Tom_Cruise = 1 << 5,
 	Tim_Burton = 1 << 6,
 	Guy_Ritchie = 1 << 7,
+	Keanu_Reeves = 1 << 8,
 };
 
 constexpr Tag operator|(Tag lhs, Tag rhs)
@@ -134,6 +135,7 @@ std::ostream& operator<<(std::ostream& os, Tag tag)
 	case Tag::Tom_Cruise: return os << "Tom Cruise";
 	case Tag::Tim_Burton: return os << "Tim Burton";
 	case Tag::Guy_Ritchie: return os << "Guy Ritchie";
+	case Tag::Keanu_Reeves: return os << "Keanu Reeves";
 
 
 	case Tag::None:;
@@ -197,12 +199,14 @@ struct Movie
 constinit auto MOVIES = std::array {
 	Movie { .title = "12 Monkeys", .year = 1995 },
 	Movie { .title = "A View to a Kill", .year = 1985, .tag = Tag::Bond },
+	Movie { .title = "A Walk in the Clouds", .year = 1995, .tag = Tag::Keanu_Reeves },
 	Movie { .title = "A Working Man", .year = 2025, .score = 2, .tag = Tag::Jason_Statham },
 	Movie { .title = "After Hours", .year = 1985 },
 	Movie { .title = "Ant-Man", .year = 2015, .score = 4, .tag = Tag::Comic_Book },
 	Movie { .title = "Avengers: Age of Ultron", .year = 2015, .score = 5, .tag = Tag::Comic_Book },
 	Movie { .title = "Back to the Future", .year = 1985, .score = 9 },
 	Movie { .title = "Bad Boys", .year = 1995 },
+	Movie { .title = "Ballerina", .year = 2025, .tag = Tag::Keanu_Reeves },
 	Movie { .title = "Batman Begins", .year = 2005, .score = 7, .tag = Tag::Comic_Book },
 	Movie { .title = "Batman Forever", .year = 1995, .tag = Tag::Comic_Book | Tag::Tim_Burton },
 	Movie { .title = "Black Bag", .year = 2025 },
@@ -211,7 +215,7 @@ constinit auto MOVIES = std::array {
 	Movie { .title = "Charlie and the Chocolate Factory", .year = 2005, .score = 2 },
 	Movie { .title = "Chicken Little", .year = 2005 },
 	Movie { .title = "Cinderella", .year = 2015 },
-	Movie { .title = "Constantine", .year = 2005, .score = 9, .tag = Tag::Comic_Book },
+	Movie { .title = "Constantine", .year = 2005, .score = 9, .tag = Tag::Comic_Book | Tag::Keanu_Reeves },
 	Movie { .title = "Corpse Bride", .year = 2005, .tag = Tag::Tim_Burton },
 	Movie { .title = "Creed", .year = 2015 },
 	Movie { .title = "Day of the Dead", .year = 1985 },
@@ -230,11 +234,12 @@ constinit auto MOVIES = std::array {
 	Movie { .title = "How to Train Your Dragon", .year = 2025, .score = 7 },
 	Movie { .title = "Inside Out", .year = 2015, .score = 8 },
 	Movie { .title = "Jaws", .year = 1975 },
-	Movie { .title = "Johnny Mnemonic", .year = 1995 },
+	Movie { .title = "Johnny Mnemonic", .year = 1995, .tag = Tag::Keanu_Reeves },
 	Movie { .title = "Judge Dredd", .year = 1995, .tag = Tag::Comic_Book },
 	Movie { .title = "Jumanji", .year = 1995 },
 	Movie { .title = "King Kong", .year = 2005 },
 	Movie { .title = "Kiss Kiss Bang Bang", .year = 2005 },
+	Movie { .title = "Knock Knock", .year = 2015, .tag = Tag::Keanu_Reeves },
 	Movie { .title = "La haine", .year = 1995 },
 	Movie { .title = "Lassie", .year = 2005 },
 	Movie { .title = "Legend", .year = 1985, .tag = Tag::Tom_Cruise },
