@@ -104,60 +104,147 @@ struct Title_Basics
 	}
 };
 
+enum class Tag : unsigned long long
+{
+	None = 0,
+
+	Bond = 1 << 0,
+	Transporter = 1 << 1,
+	Comic_Book = 1 << 2,
+	Jason_Statham = 1 << 3,
+	Mad_Max = 1 << 4,
+	Tom_Cruise = 1 << 5,
+	Tim_Burton = 1 << 6,
+	Guy_Ritchie = 1 << 7,
+};
+
+constexpr Tag operator|(Tag lhs, Tag rhs)
+{
+	return Tag(std::to_underlying(lhs) | std::to_underlying(rhs));
+}
+
+std::ostream& operator<<(std::ostream& os, Tag tag)
+{
+	switch (tag) {
+	case Tag::Bond: return os << "James Bond";
+	case Tag::Transporter: return os << "Transporter";
+	case Tag::Comic_Book: return os << "Comic Book Adaptations";
+	case Tag::Jason_Statham: return os << "Jason Statham";
+	case Tag::Mad_Max: return os << "Mad Max";
+	case Tag::Tom_Cruise: return os << "Tom Cruise";
+	case Tag::Tim_Burton: return os << "Tim Burton";
+	case Tag::Guy_Ritchie: return os << "Guy Ritchie";
+
+
+	case Tag::None:;
+	}
+
+	assert(0 && "unreachable");
+}
+
+template<typename T>
+struct Bit_Iterator
+{
+	using value_type = Tag;
+	using difference_type = std::ptrdiff_t;
+
+	Tag value;
+
+	value_type operator*() const
+	{
+		return Tag(std::bit_floor(std::to_underlying(value)));
+	}
+
+	Bit_Iterator& operator++()
+	{
+		auto bits = std::to_underlying(value);
+		value = Tag(~std::bit_floor(bits) & bits);
+		return *this;
+	}
+
+	Bit_Iterator operator++(int)
+	{
+		auto copy = *this;
+		++*this;
+		return copy;
+	}
+
+	bool operator==(Bit_Iterator const&) const = default;
+};
+
+Bit_Iterator<Tag> begin(Tag value)
+{
+	return { .value = value };
+}
+
+Bit_Iterator<Tag> end(Tag)
+{
+	return { .value = Tag::None };
+}
+
+static_assert(std::input_iterator<Bit_Iterator<Tag>>);
+static_assert(std::ranges::input_range<Tag>);
+
 struct Movie
 {
 	std::string_view title;
 	unsigned year;
 	std::optional<Title_Basics> imdb_info = {};
 	std::optional<int> score = std::nullopt;
+	Tag tag = Tag::None;
 };
 
 constinit auto MOVIES = std::array {
 	Movie { .title = "12 Monkeys", .year = 1995 },
-	Movie { .title = "A View to a Kill", .year = 1985 },
-	Movie { .title = "A Working Man", .year = 2025, .score = 2 },
+	Movie { .title = "A View to a Kill", .year = 1985, .tag = Tag::Bond },
+	Movie { .title = "A Working Man", .year = 2025, .score = 2, .tag = Tag::Jason_Statham },
 	Movie { .title = "After Hours", .year = 1985 },
-	Movie { .title = "Ant-Man", .year = 2015, .score = 4 },
-	Movie { .title = "Avengers: Age of Ultron", .year = 2015, .score = 5 },
+	Movie { .title = "Ant-Man", .year = 2015, .score = 4, .tag = Tag::Comic_Book },
+	Movie { .title = "Avengers: Age of Ultron", .year = 2015, .score = 5, .tag = Tag::Comic_Book },
 	Movie { .title = "Back to the Future", .year = 1985, .score = 9 },
 	Movie { .title = "Bad Boys", .year = 1995 },
-	Movie { .title = "Batman Begins", .year = 2005, .score = 7 },
-	Movie { .title = "Batman Forever", .year = 1995 },
+	Movie { .title = "Batman Begins", .year = 2005, .score = 7, .tag = Tag::Comic_Book },
+	Movie { .title = "Batman Forever", .year = 1995, .tag = Tag::Comic_Book | Tag::Tim_Burton },
 	Movie { .title = "Black Bag", .year = 2025 },
-	Movie { .title = "Captain America: Brave New World", .year = 2025 },
+	Movie { .title = "Captain America: Brave New World", .year = 2025, .tag = Tag::Comic_Book },
+	Movie { .title = "Chaos", .year = 2015, .tag = Tag::Jason_Statham },
 	Movie { .title = "Charlie and the Chocolate Factory", .year = 2005, .score = 2 },
 	Movie { .title = "Chicken Little", .year = 2005 },
 	Movie { .title = "Cinderella", .year = 2015 },
-	Movie { .title = "Constantine", .year = 2005, .score = 9 },
-	Movie { .title = "Corpse Bride", .year = 2005 },
+	Movie { .title = "Constantine", .year = 2005, .score = 9, .tag = Tag::Comic_Book },
+	Movie { .title = "Corpse Bride", .year = 2005, .tag = Tag::Tim_Burton },
 	Movie { .title = "Creed", .year = 2015 },
 	Movie { .title = "Day of the Dead", .year = 1985 },
 	Movie { .title = "Death Race 2000", .year = 1975 },
 	Movie { .title = "Descendants", .year = 2015, .score = 7 },
 	Movie { .title = "Desperado", .year = 1995 },
 	Movie { .title = "Dog Day Afternoon", .year = 1975 },
-	Movie { .title = "Elektra", .year = 2005 },
-	Movie { .title = "Fantastic Four", .year = 2005 },
-	Movie { .title = "Fantastic Four", .year = 2015 },
+	Movie { .title = "Elektra", .year = 2005, .tag = Tag::Comic_Book },
+	Movie { .title = "Fantastic Four", .year = 2005, .tag = Tag::Comic_Book },
+	Movie { .title = "Fantastic Four", .year = 2015, .tag = Tag::Comic_Book },
+	Movie { .title = "Fountain of Youth", .year = 2025, .tag = Tag::Guy_Ritchie },
 	Movie { .title = "Furious 7", .year = 2015, .score = 10 },
 	Movie { .title = "Ghost in the Shell", .year = 1995 },
-	Movie { .title = "GoldenEye", .year = 1995 },
+	Movie { .title = "GoldenEye", .year = 1995, .tag = Tag::Bond },
 	Movie { .title = "Hackers", .year = 1995 },
+	Movie { .title = "How to Train Your Dragon", .year = 2025, .score = 7 },
 	Movie { .title = "Inside Out", .year = 2015, .score = 8 },
 	Movie { .title = "Jaws", .year = 1975 },
 	Movie { .title = "Johnny Mnemonic", .year = 1995 },
-	Movie { .title = "Judge Dredd", .year = 1995 },
+	Movie { .title = "Judge Dredd", .year = 1995, .tag = Tag::Comic_Book },
 	Movie { .title = "Jumanji", .year = 1995 },
 	Movie { .title = "King Kong", .year = 2005 },
 	Movie { .title = "Kiss Kiss Bang Bang", .year = 2005 },
 	Movie { .title = "La haine", .year = 1995 },
 	Movie { .title = "Lassie", .year = 2005 },
-	Movie { .title = "Mad Max Beyond Thunderdome", .year = 1985 },
-	Movie { .title = "Mad Max: Fury Road", .year = 2015, .score = 10 },
+	Movie { .title = "Legend", .year = 1985, .tag = Tag::Tom_Cruise },
+	Movie { .title = "London", .year = 2005, .tag = Tag::Jason_Statham },
+	Movie { .title = "Mad Max Beyond Thunderdome", .year = 1985, .tag = Tag::Mad_Max },
+	Movie { .title = "Mad Max: Fury Road", .year = 2015, .score = 10, .tag = Tag::Mad_Max },
 	Movie { .title = "Madagascar", .year = 2005 },
 	Movie { .title = "Mickey 17", .year = 2025 },
-	Movie { .title = "Mission: Impossible - Rogue Nation", .year = 2015 },
-	Movie { .title = "Mission: Impossible - The Final Reckoning", .year = 2025, .score = 3 },
+	Movie { .title = "Mission: Impossible - Rogue Nation", .year = 2015, .tag = Tag::Tom_Cruise },
+	Movie { .title = "Mission: Impossible - The Final Reckoning", .year = 2025, .score = 3, .tag = Tag::Tom_Cruise },
 	Movie { .title = "Monty Python and the Holy Grail", .year = 1975, .score = 8 },
 	Movie { .title = "Mortal Kombat", .year = 1995 },
 	Movie { .title = "Mr. & Mrs. Smith", .year = 2005 },
@@ -166,13 +253,14 @@ constinit auto MOVIES = std::array {
 	Movie { .title = "Pride & Prejudice", .year = 2005 },
 	Movie { .title = "Rambo: First Blood Part II", .year = 1985, .score = 5 },
 	Movie { .title = "Re-Animator", .year = 1985 },
+	Movie { .title = "Revolver", .year = 2005, .tag = Tag::Jason_Statham | Tag::Guy_Ritchie },
 	Movie { .title = "Robots", .year = 2005 },
 	Movie { .title = "Shaun the Sheep Movie", .year = 2015 },
 	Movie { .title = "Sicario", .year = 2015 },
-	Movie { .title = "Sin City", .year = 2005 },
+	Movie { .title = "Sin City", .year = 2005, .tag = Tag::Comic_Book },
 	Movie { .title = "Sinners", .year = 2025, .score = 10 },
 	Movie { .title = "Snow White", .year = 2025, .score = 5 },
-	Movie { .title = "Spectre", .year = 2015 },
+	Movie { .title = "Spectre", .year = 2015, .tag = Tag::Bond },
 	Movie { .title = "Spotlight", .year = 2015 },
 	Movie { .title = "Spy", .year = 2015 },
 	Movie { .title = "Star Wars: Episode VII - The Force Awakens", .year = 2015, .score = 5 },
@@ -185,22 +273,23 @@ constinit auto MOVIES = std::array {
 	Movie { .title = "The Goonies", .year = 1985 },
 	Movie { .title = "The Hateful Eight", .year = 2015 },
 	Movie { .title = "The Incredibly True Adventure of Two Girls in Love", .year = 1995 },
-	Movie { .title = "The Man from U.N.C.L.E.", .year = 2015, .score = 9 },
+	Movie { .title = "The Man from U.N.C.L.E.", .year = 2015, .score = 9, .tag = Tag::Guy_Ritchie },
 	Movie { .title = "The Martian", .year = 2015 },
 	Movie { .title = "The Monkey", .year = 2025 },
 	Movie { .title = "The Phoenician Scheme", .year = 2025, .score = 8 },
 	Movie { .title = "The Return of the Living Dead", .year = 1985 },
 	Movie { .title = "The Rocky Horror Picture Show", .year = 1975 },
 	Movie { .title = "The Sound of Music", .year = 1965 },
-	Movie { .title = "The Transporter Refueled", .year = 2015, .score = 5 },
+	Movie { .title = "The Transporter Refueled", .year = 2015, .score = 5, .tag = Tag::Transporter },
 	Movie { .title = "The Witch", .year = 2015 },
 	Movie { .title = "The World's Fastest Indian", .year = 2005 },
-	Movie { .title = "Thunderball", .year = 1965 },
-	Movie { .title = "Thunderbolts*", .year = 2025, .score = 8 },
+	Movie { .title = "Thunderball", .year = 1965, .tag = Tag::Bond },
+	Movie { .title = "Thunderbolts*", .year = 2025, .score = 8, .tag = Tag::Comic_Book },
 	Movie { .title = "Toy Story", .year = 1995 },
-	Movie { .title = "Transporter 2", .year = 2005, .score = 7 },
+	Movie { .title = "Transporter 2", .year = 2005, .score = 7, .tag = Tag::Transporter },
 	Movie { .title = "Wallace & Gromit: The Curse of the Were-Rabbit", .year = 2005 },
-	Movie { .title = "War of the Worlds", .year = 2005 },
+	Movie { .title = "War of the Worlds", .year = 2005, .tag = Tag::Tom_Cruise },
+	Movie { .title = "Wild Card", .year = 2015, .tag = Tag::Jason_Statham },
 	Movie { .title = "xXx: State of the Union", .year = 2005, .score = 10 },
 	Movie { .title = "Æon Flux", .year = 2005 },
 };
@@ -297,15 +386,18 @@ int main()
 	auto const with_score_count = std::ranges::count_if(MOVIES, [](Movie m) { return m.score.has_value(); });
 	auto const completed = with_score_count / (double)MOVIES.size() * 100.0;
 
-	std::unordered_map<std::string_view, std::vector<Movie>> genres;
-	std::unordered_map<unsigned, unsigned> scores;
-	std::map<unsigned, std::set<Movie, decltype([](Movie const& a, Movie const& b) {
+	using MovieSet = std::set<Movie, decltype([](Movie const& a, Movie const& b) {
 		if (auto cmp = b.score <=> a.score; cmp == 0) {
 			return (a.title <=> b.title) < 0;
 		} else {
 			return cmp < 0;
 		}
-	})>> by_year;
+	})>;
+
+	std::unordered_map<std::string_view, std::vector<Movie>> genres;
+	std::unordered_map<unsigned, unsigned> scores;
+	std::map<unsigned, MovieSet> by_year;
+	std::unordered_map<Tag, MovieSet> by_tag;
 
 	for (auto const& movie : MOVIES) {
 		if (movie.imdb_info == std::nullopt) {
@@ -317,6 +409,10 @@ int main()
 
 		if (movie.score.has_value()) {
 			++scores[*movie.score];
+		}
+
+		for (auto tag : movie.tag) {
+			by_tag[tag].insert(movie);
 		}
 
 		for (auto genre : movie.imdb_info->genres) {
@@ -348,6 +444,13 @@ int main()
 			}
 		}
 	}
+
+	std::ofstream decades_output_file{"decades.html", std::ios::trunc|std::ios::out};
+	auto const out = [&decades_output_file](auto &&value) {
+		decades_output_file << value;
+	};
+
+	#include "decades.hh"
 
 	return 0;
 }

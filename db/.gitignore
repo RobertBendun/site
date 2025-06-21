@@ -3,6 +3,7 @@ gen
 nob
 nob.old
 sitcoms.hh
+decades.hh
 timeline.html
 tt
 .cache
@@ -11,3 +12,4 @@ series
 movies
 sitcoms
 title.basics*
+decades

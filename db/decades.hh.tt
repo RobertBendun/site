@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Decades: movies of xxx5 | Diana's Lab</title>
+<style>
+:root {
+	--fg: #fbf1c7;
+}
+body {
+	background-color: #1d2021;
+	color: var(--fg);
+}
+a, a:visited, a:link, a:hover {
+	color: #f6e5f6;
+}
+main, section {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 1ch;
+}
+.score {
+	display: inline-block;
+	width: 3ch;
+	text-align: center;
+}
+.list {
+	max-width: 40ch;
+}
+</style>
+	</head>
+	<body>
+		<header>
+			<p><a href="/">back to bendun.cc</a></p>
+			<h1>Decades(5)</h1>
+		</header>
+
+	<h2>By Year</h2>
+	<main>
+		@for (auto const& [year, movies] : by_year) {@
+			@auto const with_score_count = std::ranges::count_if(movies, [](Movie m) { return m.score.has_value(); });@
+			@auto const completed = with_score_count / (double)movies.size() * 100.0;@
+			<div class="list">
+				<h3>@out(year);@</h3>
+				<div style="width: 100%; border: 1px solid var(--fg);">
+					<div style="background-color: var(--fg); height: 1rem; width: @out(completed);@%"></div>
+				</div>
+				<ul>
+					@for (auto movie : movies) {@
+						<li>
+							<div class="score">@if (movie.score) out(*movie.score);@</div>
+							<a href="https://www.imdb.com/title/@out(movie.imdb_info->tconst);@">@out(movie.title);@</a>
+						</li>
+					@}@
+				</ul>
+			</div>
+		@}@
+	</main>
+
+	<h2>By Tags</h2>
+	<section>
+		@for (auto const& [tag, movies] : by_tag) {@
+			@if (tag == Tag::None) continue;@
+			@auto const with_score_count = std::ranges::count_if(movies, [](Movie m) { return m.score.has_value(); });@
+			@auto const completed = with_score_count / (double)movies.size() * 100.0;@
+			<div class="list">
+				<h3>@out(tag);@</h3>
+				<div style="width: 100%; border: 1px solid var(--fg);">
+					<div style="background-color: var(--fg); height: 1rem; width: @out(completed);@%"></div>
+				</div>
+				<ul>
+					@for (auto movie : movies) {@
+						<li>
+							<div class="score">@if (movie.score) out(*movie.score);@</div>
+							<a href="https://www.imdb.com/title/@out(movie.imdb_info->tconst);@">@out(movie.title);@</a>
+							(@out(movie.year);@)
+						</li>
+					@}@
+				</ul>
+			</div>
+		@}@
+	</section>
+
+	</body>
+</html>
