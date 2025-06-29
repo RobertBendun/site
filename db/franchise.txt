@@ -1,4 +1,4 @@
-last-update = 2025-05-02
+last-update = 2025-06-30
 
 # ----------------------------------------------------------------------------
 # Partially watched
@@ -94,10 +94,11 @@ last-update = 2025-05-02
 - [x] Agatha All Along (2024)
 - [x] Deadpool & Wolverine (2024)
 - [ ] Echo (2024)
-- [ ] Captain America: Brave New World (2025)
+- [x] Captain America: Brave New World (2025)
 - [ ] Your Friendly Neighborhood Spider-Man (2025)
 - [x] Thunderbolts* (2025)
 - [ ] Daredevil: Born Again (2025)
+- [ ] Ironheart (2025)
 
 [Toy Story]
 - [x] Toy Story (1995)

@@ -210,7 +210,7 @@ constinit auto MOVIES = std::array {
 	Movie { .title = "Batman Begins", .year = 2005, .score = 7, .tag = Tag::Comic_Book },
 	Movie { .title = "Batman Forever", .year = 1995, .tag = Tag::Comic_Book | Tag::Tim_Burton },
 	Movie { .title = "Black Bag", .year = 2025 },
-	Movie { .title = "Captain America: Brave New World", .year = 2025, .tag = Tag::Comic_Book },
+	Movie { .title = "Captain America: Brave New World", .year = 2025, .score = 4, .tag = Tag::Comic_Book },
 	Movie { .title = "Chaos", .year = 2015, .tag = Tag::Jason_Statham },
 	Movie { .title = "Charlie and the Chocolate Factory", .year = 2005, .score = 2 },
 	Movie { .title = "Chicken Little", .year = 2005 },
