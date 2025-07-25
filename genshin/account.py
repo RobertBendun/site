@@ -1030,6 +1030,8 @@ class Version:
 # on https://genshin-impact.fandom.com/wiki/Version
 
 VERSIONS = sorted((
+    Version(5, 8, "2025-07-30"),
+    Version(5, 7, "2025-06-18"),
     Version(5, 6, "2025-05-07"),
     Version(5, 5, "2025-03-26"),
     Version(5, 4, "2025-02-12"),
