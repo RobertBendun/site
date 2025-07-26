@@ -37,51 +37,55 @@ main, section {
 			<h1>Decades(5)</h1>
 		</header>
 
-	<h2>By Year</h2>
-	<main>
-		@for (auto const& [year, movies] : by_year) {@
-			@auto const with_score_count = std::ranges::count_if(movies, [](Movie m) { return m.score.has_value(); });@
-			@auto const completed = with_score_count / (double)movies.size() * 100.0;@
-			<div class="list">
-				<h3>@out(year);@</h3>
-				<div style="width: 100%; border: 1px solid var(--fg);">
-					<div style="background-color: var(--fg); height: 1rem; width: @out(completed);@%"></div>
-				</div>
-				<ul>
-					@for (auto movie : movies) {@
-						<li>
-							<div class="score">@if (movie.score) out(*movie.score);@</div>
-							<a href="https://www.imdb.com/title/@out(movie.imdb_info->tconst);@">@out(movie.title);@</a>
-						</li>
-					@}@
-				</ul>
-			</div>
-		@}@
-	</main>
+		<div style="width: 100%; border: 1px solid var(--fg);">
+			<div style="background-color: var(--fg); height: 1rem; width: @out(completed);@%"></div>
+		</div>
+		<div style="text-align:center">@out(with_score_count);@ movies watched out of @out(MOVIES.size());@</div>
 
-	<h2>By Tags</h2>
-	<section>
-		@for (auto const& [tag, movies] : by_tag) {@
-			@if (tag == Tag::None) continue;@
-			@auto const with_score_count = std::ranges::count_if(movies, [](Movie m) { return m.score.has_value(); });@
-			@auto const completed = with_score_count / (double)movies.size() * 100.0;@
-			<div class="list">
-				<h3>@out(tag);@</h3>
-				<div style="width: 100%; border: 1px solid var(--fg);">
-					<div style="background-color: var(--fg); height: 1rem; width: @out(completed);@%"></div>
+		<h2>By Year</h2>
+		<main>
+			@for (auto const& [year, movies] : by_year) {@
+				@auto const with_score_count = std::ranges::count_if(movies, [](Movie m) { return m.score.has_value(); });@
+				@auto const completed = with_score_count / (double)movies.size() * 100.0;@
+				<div class="list">
+					<h3>@out(year);@</h3>
+					<div style="width: 100%; border: 1px solid var(--fg);">
+						<div style="background-color: var(--fg); height: 1rem; width: @out(completed);@%"></div>
+					</div>
+					<ul>
+						@for (auto movie : movies) {@
+							<li>
+								<div class="score">@if (movie.score) out(*movie.score);@</div>
+								<a href="https://www.imdb.com/title/@out(movie.imdb_info->tconst);@">@out(movie.title);@</a>
+							</li>
+						@}@
+					</ul>
 				</div>
-				<ul>
-					@for (auto movie : movies) {@
-						<li>
-							<div class="score">@if (movie.score) out(*movie.score);@</div>
-							<a href="https://www.imdb.com/title/@out(movie.imdb_info->tconst);@">@out(movie.title);@</a>
-							(@out(movie.year);@)
-						</li>
-					@}@
-				</ul>
-			</div>
-		@}@
-	</section>
+			@}@
+		</main>
 
+		<h2>By Tags</h2>
+		<section>
+			@for (auto const& [tag, movies] : by_tag) {@
+				@if (tag == Tag::None) continue;@
+				@auto const with_score_count = std::ranges::count_if(movies, [](Movie m) { return m.score.has_value(); });@
+				@auto const completed = with_score_count / (double)movies.size() * 100.0;@
+				<div class="list">
+					<h3>@out(tag);@</h3>
+					<div style="width: 100%; border: 1px solid var(--fg);">
+						<div style="background-color: var(--fg); height: 1rem; width: @out(completed);@%"></div>
+					</div>
+					<ul>
+						@for (auto movie : movies) {@
+							<li>
+								<div class="score">@if (movie.score) out(*movie.score);@</div>
+								<a href="https://www.imdb.com/title/@out(movie.imdb_info->tconst);@">@out(movie.title);@</a>
+								(@out(movie.year);@)
+							</li>
+						@}@
+					</ul>
+				</div>
+			@}@
+		</section>
 	</body>
 </html>

@@ -11,12 +11,33 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <chrono>
+
+#include <fcntl.h>
+#include <sys/mman.h>
 
 // Sources for movies:
 // ...
 // https://editorial.rottentomatoes.com/guide/best-movies-1995/
 // https://editorial.rottentomatoes.com/guide/best-movies-2005/
 // ...
+//
+struct scope_timer
+{
+	std::string_view name;
+	std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
+	bool finished = false;
+
+	inline void finish()
+	{
+		if (finished) return;
+		auto time = std::chrono::steady_clock::now() - start;
+		std::println(stderr, "{} took {}s", name, std::chrono::duration_cast<std::chrono::duration<float>>(time));
+		finished = true;
+	}
+
+	inline ~scope_timer() { finish(); }
+};
 
 struct Comma_Separated_List
 {
@@ -206,7 +227,7 @@ constinit auto MOVIES = std::array {
 	Movie { .title = "Avengers: Age of Ultron", .year = 2015, .score = 5, .tag = Tag::Comic_Book },
 	Movie { .title = "Back to the Future", .year = 1985, .score = 9 },
 	Movie { .title = "Bad Boys", .year = 1995 },
-	Movie { .title = "Ballerina", .year = 2025, .tag = Tag::Keanu_Reeves },
+	Movie { .title = "Ballerina", .year = 2025, .score = 7, .tag = Tag::Keanu_Reeves },
 	Movie { .title = "Batman Begins", .year = 2005, .score = 7, .tag = Tag::Comic_Book },
 	Movie { .title = "Batman Forever", .year = 1995, .tag = Tag::Comic_Book | Tag::Tim_Burton },
 	Movie { .title = "Black Bag", .year = 2025 },
@@ -237,6 +258,8 @@ constinit auto MOVIES = std::array {
 	Movie { .title = "Johnny Mnemonic", .year = 1995, .tag = Tag::Keanu_Reeves },
 	Movie { .title = "Judge Dredd", .year = 1995, .tag = Tag::Comic_Book },
 	Movie { .title = "Jumanji", .year = 1995 },
+	Movie { .title = "Jurassic World", .year = 2015 },
+	Movie { .title = "Jurassic World: Rebirth", .year = 2025, .score = 6 },
 	Movie { .title = "King Kong", .year = 2005 },
 	Movie { .title = "Kiss Kiss Bang Bang", .year = 2005 },
 	Movie { .title = "Knock Knock", .year = 2015, .tag = Tag::Keanu_Reeves },
@@ -305,7 +328,7 @@ namespace tsv
 	{
 		inline std::string_view yield_cell(std::string_view &source)
 		{
-			auto next_start = source.find('\t');
+			auto const next_start = source.find('\t');
 
 			if (next_start == std::string_view::npos) {
 				return std::exchange(source, std::string_view{});
@@ -348,41 +371,54 @@ namespace tsv
 		target.value = source;
 	}
 
-	template<typename Entry>
-	std::vector<Entry> from_file(auto const& filename, bool skip_header = false)
+	struct mmaped_file : std::string_view
 	{
-		auto fsize = std::filesystem::file_size(filename);
+		int fd;
 
-		// Note that we leak memory on purpose here: then we can only operate on std::string_views and not std::strings
-		// leading to major performance gain
-		auto data = new char[fsize];
-		std::ifstream{filename}.read(data, fsize);
-	auto source = std::string_view(data, fsize);
-
-		std::vector<Entry> result;
-
-		while (source.size()) {
-			std::string_view line = source.substr(0, source.find('\n'));
-			source.remove_prefix(line.size()+1);
-
-			if (skip_header) {
-				skip_header = false;
-				continue;
-			}
-			std::apply([s = line](auto& ...refs) mutable { (parse(refs, details::yield_cell(s)), ...); }, result.emplace_back().as_tuple());
+		mmaped_file(char const* filename)
+		{
+			// Since this is a script and not a long running program we ignore deallocation for now
+			auto fsize = std::filesystem::file_size(filename);
+			fd = open(filename, O_RDONLY);
+			*static_cast<std::string_view*>(this) = { (char*)mmap(nullptr, fsize, PROT_READ, MAP_PRIVATE | MAP_POPULATE, fd, 0), fsize };
 		}
 
-		return result;
+		mmaped_file(mmaped_file const&) = delete;
+		mmaped_file(mmaped_file&&) = delete;
+		mmaped_file& operator=(mmaped_file const&) = delete;
+		mmaped_file& operator=(mmaped_file &&) = delete;
+	};
+
+	inline void skip_line(std::string_view &source)
+	{
+		auto newline = source.find('\n');
+		source.remove_prefix(newline == std::string_view::npos ? source.size() : newline + 1);
+	}
+
+	template<typename Entry>
+	inline bool next_line(std::string_view &source, Entry &entry)
+	{
+		if (source.empty()) return false;
+		std::string_view line = source.substr(0, source.find('\n'));
+		source.remove_prefix(line.size()+1);
+		std::apply([&line](auto& ...refs) { (parse(refs, details::yield_cell(line)), ...); }, entry.as_tuple());
+		return true;
 	}
 }
 
 int main()
 {
-	auto const data = tsv::from_file<Title_Basics>("title.basics.tsv", true);
+	tsv::mmaped_file file("title.basics.tsv");
 
-	for (Title_Basics const& entry : data) {
+	tsv::skip_line(file);
+
+	for (Title_Basics entry; tsv::next_line(file, entry);) {
+		if (entry.title_type != "movie" && entry.title_type != "tvMovie") {
+			continue;
+		}
+
 		for (Movie& movie : MOVIES) {
-			if ((entry.title_type == "movie" || entry.title_type == "tvMovie") && (entry.primary_title == movie.title || entry.original_title == movie.title) && entry.start_year == movie.year) {
+			if (entry.start_year == movie.year && (entry.primary_title == movie.title || entry.original_title == movie.title)) {
 				movie.imdb_info = entry;
 			}
 		}
@@ -426,6 +462,7 @@ int main()
 	}
 
 
+#if PRINT
 	std::print("{:.2f}% of {} movies = {} movies\n", completed, MOVIES.size(), with_score_count);
 
 	for (unsigned score = 1; score <= 10; ++score) {
@@ -449,6 +486,7 @@ int main()
 			}
 		}
 	}
+#endif
 
 	std::ofstream decades_output_file{"decades.html", std::ios::trunc|std::ios::out};
 	auto const out = [&decades_output_file](auto &&value) {

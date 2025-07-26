@@ -1,4 +1,4 @@
-CXXFLAGS+=-std=c++23 -Wall -Wextra -O2 -Werror=switch
+CXXFLAGS+=-std=c++23 -Wall -Wextra -O3 -flto -Werror=switch
 
 all: sitcoms.html decades.html
 
