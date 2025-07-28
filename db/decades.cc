@@ -292,6 +292,7 @@ constinit auto MOVIES = std::array {
 	Movie { .title = "Spotlight", .year = 2015 },
 	Movie { .title = "Spy", .year = 2015 },
 	Movie { .title = "Star Wars: Episode VII - The Force Awakens", .year = 2015, .score = 5 },
+	Movie { .title = "Superman", .year = 2025, .score = 10, .tag = Tag::Comic_Book },
 	Movie { .title = "Terminator Genisys", .year = 2015, .score = 2 },
 	Movie { .title = "Terror of Mechagodzilla", .year = 1975 },
 	Movie { .title = "The Amateur", .year = 2025 },

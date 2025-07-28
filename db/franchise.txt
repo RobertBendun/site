@@ -145,17 +145,18 @@ last-update = 2025-06-30
 - [x] No Time to Die (2021)
 
 [Superman]
-- [ ] Superman (1978)
-- [ ] Superman II (1980)
+- [x] Superman (1978)
+- [x] Superman II (1980)
 - [ ] Superman III (1983)
 - [ ] Supergirl (1984)
 - [ ] Superman IV: The Quest for Peace (1987)
 - [ ] Superman Returns (2006)
-- [ ] Superman II: The Richard Donner Cut
+- [ ] Superman II: The Richard Donner Cut (2006)
 - [x] Man of Steel (2013)
 - [x] Batman v Superman: Dawn of Justice (2016)
 - [x] Justice League (2017)
 - [x] Zack Snyder's Justice League (2021)
+- [x] Superman (2025)
 
 [Star Wars]
 - [ ] A New Hope (1977)
@@ -307,6 +308,7 @@ last-update = 2025-06-30
 - [ ] The Flash (2023)
 - [ ] Blue Beetle (2023)
 - [ ] Aquaman and the Lost Kingdom (2023)
+- [x] Superman (2025)
 
 [Sony's Spider-Man Universe]
 - [x] Venom (2018)
