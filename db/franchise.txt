@@ -375,7 +375,6 @@ last-update = 2025-06-30
 - [x] Spider-Man: Far From Home (2019)
 - [x] Spider-Man: No Way Home (2021)
 
-
 [Fast & Furious]
 - [x] The Fast and the Furious (2001)
 - [x] 2 Fast 2 Furious (2003)
@@ -393,6 +392,7 @@ last-update = 2025-06-30
 - [x] John Wick: Chapter 2 (2017)
 - [x] John Wick: Chapter 3 - Parabellum (2019)
 - [x] John Wick: Chapter 4 (2023)
+- [x] Ballerina (2025)
 
 [Transformers]
 - [x] Transformers (2007)
@@ -414,7 +414,6 @@ last-update = 2025-06-30
 - [x] Madagascar: Escape 2 Africa (2008)
 - [x] Madagascar 3: Europe's Most Wanted (2012)
 - [x] Penguins of Madagascar (2014)
-
 
 [Pirates of the Caribbean]
 - [x] Pirates of the Caribbean: The Curse of the Black Pearl (2003)
