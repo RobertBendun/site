@@ -15,6 +15,16 @@ last-update = 2025-06-30
 - [ ] Alien: Covenant (2017)
 - [x] Alien: Romulus (2024)
 
+[Predator]
+- [ ] Predator (1987)
+- [ ] Predator 2 (1990)
+- [ ] Alien vs Predator (2004)
+- [ ] Alien vs Predator: Requiem (2007)
+- [ ] Predators (2010)
+- [ ] The Predator (2018)
+- [ ] Prey (2022)
+- [ ] Predator: Badlands (2025)
+
 [Scream]
 - [x] Scream (1996)
 - [x] Scream 2 (1997)
@@ -98,7 +108,7 @@ last-update = 2025-06-30
 - [ ] Your Friendly Neighborhood Spider-Man (2025)
 - [x] Thunderbolts* (2025)
 - [ ] Daredevil: Born Again (2025)
-- [ ] Ironheart (2025)
+- [x] Ironheart (2025)
 
 [Toy Story]
 - [x] Toy Story (1995)
@@ -327,17 +337,28 @@ last-update = 2025-06-30
 - [ ] Jurassic World Dominion (2022)
 - [x] Jurassic World Rebirth (2025)
 
+[Tron]
+- [x] Tron (1982)
+- [x] Tron: Legacy (2010)
+- [ ] Tron: Uprising (2012-2013)
+- [x] Tron: Ares (2025)
+
+[Die Hard]
+- [x] Die Hard (1988)
+- [ ] Die Hard 2 (1990)
+- [ ] Die Hard with a Vengeance (1995)
+- [ ] Live Free or Die Hard (2007)
+- [ ] A Good Day to Die Hard (2013)
+
 # ----------------------------------------------------------------------------
 # Not watched
 # ----------------------------------------------------------------------------
 
-# [Die Hard]
 # [Evil Dead]
 # [Jason Bourne]
 # [Planet of the Apes]
 # [Rocky]
 # [Bourne]
-# [Predator]
 # [Ghostbusters]
 
 # ----------------------------------------------------------------------------
