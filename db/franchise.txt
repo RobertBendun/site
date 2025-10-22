@@ -1,4 +1,4 @@
-last-update = 2025-06-30
+last-update = 2025-10-22
 
 # ----------------------------------------------------------------------------
 # Partially watched
@@ -16,8 +16,8 @@ last-update = 2025-06-30
 - [x] Alien: Romulus (2024)
 
 [Predator]
-- [ ] Predator (1987)
-- [ ] Predator 2 (1990)
+- [x] Predator (1987)
+- [x] Predator 2 (1990)
 - [ ] Alien vs Predator (2004)
 - [ ] Alien vs Predator: Requiem (2007)
 - [ ] Predators (2010)
