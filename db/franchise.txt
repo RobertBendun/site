@@ -11,8 +11,8 @@ last-update = 2025-11-03
 - [x] Alien Ressurection (1997)
 - [x] Alien vs Predator (2004)
 - [x] Alien vs Predator: Requiem (2007)
-- [ ] Prometheus (2012)
-- [ ] Alien: Covenant (2017)
+- [x] Prometheus (2012)
+- [x] Alien: Covenant (2017)
 - [x] Alien: Romulus (2024)
 
 [Predator]
@@ -20,18 +20,19 @@ last-update = 2025-11-03
 - [x] Predator 2 (1990)
 - [x] Alien vs Predator (2004)
 - [x] Alien vs Predator: Requiem (2007)
-- [ ] Predators (2010)
-- [ ] The Predator (2018)
-- [ ] Prey (2022)
-- [ ] Predator: Badlands (2025)
+- [x] Predators (2010)
+- [x] The Predator (2018)
+- [x] Prey (2022)
+- [x] Predator: Badlands (2025)
 
 [Scream]
 - [x] Scream (1996)
 - [x] Scream 2 (1997)
-- [ ] Scream 3 (2000)
-- [ ] Scream 4 (2011)
-- [ ] Scream (2022)
-- [ ] Scream VI (2023)
+- [x] Scream 3 (2000)
+- [x] Scream 4 (2011)
+- [x] Scream (2022)
+- [x] Scream VI (2023)
+- [x] Scream 7 (2026)
 
 [Rambo]
 - [x] First Blood (1982)
@@ -105,16 +106,22 @@ last-update = 2025-11-03
 - [x] Deadpool & Wolverine (2024)
 - [ ] Echo (2024)
 - [x] Captain America: Brave New World (2025)
-- [ ] Your Friendly Neighborhood Spider-Man (2025)
+- [ ] Your Friendly Neighborhood Spider-Man (2025-)
 - [x] Thunderbolts* (2025)
 - [ ] Daredevil: Born Again (2025)
 - [x] Ironheart (2025)
+- [x] The Fantastic Four: First Steps (2025)
+- [x] Eyes of Wakanda (2025)
+- [ ] Marvel Zombies (2025-)
+- [ ] Wonder Man (2026)
+- [x] Spider-Man: Brand New Day (2026)
 
 [Toy Story]
 - [x] Toy Story (1995)
 - [x] Toy Story 2 (1999)
 - [x] Toy Story 3 (2010)
 - [ ] Toy Story 4 (2019)
+- [ ] Toy Story 5 (2026)
 
 [Godzilla]
 # all non-american godzillas
@@ -128,15 +135,15 @@ last-update = 2025-11-03
 - [x] Godzilla x Kong: The New Empire (2024)
 
 [James Bond]
-- [ ] Dr. No (1962)
-- [ ] From Russia with Love (1963)
+- [x] Dr. No (1962)
+- [x] From Russia with Love (1963)
 - [ ] Goldfinger (1964)
 - [ ] Thunderball (1965)
 - [ ] You Only Live Twice (1967)
 - [ ] On Her Majesty's Secret Service (1969)
 - [ ] Diamonds are Forever (1971)
 - [ ] Live and Let Die (1973)
-- [ ] The Man with the Golden Gun (1974)
+- [x] The Man with the Golden Gun (1974)
 - [ ] The Spy Who Loved Me (1977)
 - [ ] Moonraker (1979)
 - [ ] For Your Eyes Only (1981)
@@ -144,7 +151,7 @@ last-update = 2025-11-03
 - [ ] A View to a Kill (1985)
 - [ ] The Living Daylights (1987)
 - [ ] License to Kill (1989)
-- [ ] GoldenEye (1995)
+- [x] GoldenEye (1995)
 - [ ] Tommorow Never Dies (1997)
 - [ ] The World is Not Enough (1999)
 - [ ] Die Another Day (2002)
@@ -187,6 +194,9 @@ last-update = 2025-11-03
 - [x] Ahsoka (2023)
 - [x] The Acolyte (2024)
 - [ ] Skeleton Crew (2024-2025)
+- [ ] Maul – Shadow Lord (2026-)
+- [ ] Visions Presents (2026)
+- [ ] The Mandalorian and Grogu (2026)
 
 [Back to the Future]
 - [x] Back to the Future (1985)
@@ -210,18 +220,18 @@ last-update = 2025-11-03
 [Batman]
 - [ ] Batman (1966)
 - [ ] Batman (1989)
-- [ ] Batman Returns (1992)
+- [x] Batman Returns (1992)
 - [ ] Batman Forever (1995)
 - [ ] Batman & Robin (1997)
-- [x] The Lego Batman Movie (2017)
 - [x] Batman Begins (2005)
 - [x] The Dark Knight (2008)
 - [x] The Dark Knight Rises (2012)
 - [x] Batman v Superman: Dawn of Justice (2016)
 - [x] Justice League (2017)
+- [x] The Lego Batman Movie (2017)
 - [x] Zack Snyder's Justice League (2021)
-- [ ] The Flash (2023)
 - [x] The Batman (2022)
+- [ ] The Flash (2023)
 
 [The Conjuring Universe]
 - [x] The Conjuring (2013)
@@ -258,7 +268,7 @@ last-update = 2025-11-03
 - [x] Charlie's Angels (2019)
 
 [Ocean's]
-- [ ] Ocean's 11 (1960)
+- [x] Ocean's 11 (1960)
 - [x] Ocean's Eleven (2001)
 - [ ] Ocean's Twelve (2004)
 - [ ] Ocean's Thirteen (2007)
@@ -345,10 +355,21 @@ last-update = 2025-11-03
 
 [Die Hard]
 - [x] Die Hard (1988)
-- [ ] Die Hard 2 (1990)
+- [x] Die Hard 2 (1990)
 - [ ] Die Hard with a Vengeance (1995)
 - [ ] Live Free or Die Hard (2007)
 - [ ] A Good Day to Die Hard (2013)
+
+[Planet of the Apes]
+- [x] Planet of the Apes (1968)
+- [x] Beneath the Planet of the Apes (1970)
+- [x] Escape from the Planet of the Apes (1971)
+- [x] Conquest of the Planet of the Apes (1972)
+- [ ] Planet of the Apes (2001)
+- [x] Rise of the Planet of the Apes (2011)
+- [x] Dawn of the Planet of the Apes (2014)
+- [x] War for the Planet of the Apes (2017)
+- [x] Kingdom of the Planet of the Apes (2024)
 
 # ----------------------------------------------------------------------------
 # Not watched
@@ -356,7 +377,6 @@ last-update = 2025-11-03
 
 # [Evil Dead]
 # [Jason Bourne]
-# [Planet of the Apes]
 # [Rocky]
 # [Bourne]
 # [Ghostbusters]
