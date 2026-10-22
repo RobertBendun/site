@@ -16,59 +16,72 @@
 
 		<meta property="og:profile:first_name" content="Diana" />
 
-		<link rel="stylesheet" href="/common.css" />
-		<!-- https://developers.facebook.com/tools/debug -->
-<style>
-body {
-	min-height: 100vh;
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	font-size: 18px;
-	box-sizing: border-box;
-}
-main {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: 1em;
-}
-main > div {
-	max-width: 45ch;
-	padding: 1em;
-}
-main ul {
-	margin: 0;
-	padding: 0;
-	list-style-type: none;
+		<style>
+:root {
+	color-scheme: light dark;
 }
 
-@media only screen and (orientation: portrait) {
-	body {
-		padding: 2ex;
-	}
-	.site {
-		display: flex;
-		gap: 1ex;
-		justify-content: center;
-		flex-wrap: wrap;
-	}
-	main > div {
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	min-height: 100vh;
+	font-size: 18px;
+	line-height: 1.6;
+	font-family: system-ui, sans-serif;
+
+	align-items: center;
+	justify-content: center;
+}
+
+.nails {
+	font-size: 1.2rem;
+	display: grid;
+	grid-template-columns: max-content 5ch;
+	gap: 1ch;
+	align-items: center;
+
+	.color {
 		width: 100%;
-		text-align: center;
+		height: auto;
+		background-color: var(--color);
+		color: transparent;
 	}
 }
+
+nav  ul { list-style-type: none; }
+
+h1 {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	opacity: 0.5;
+	user-select: none;
+}
+
+		</style>
+
+		<!-- https://developers.facebook.com/tools/debug -->
+<style>
 </style>
 	</head>
 	<body>
-		<header>
-			<a href="/"><h1 class="hover-scramble">bendun.cc</h1></a>
-		</header>
+		<h1 id="dvd">diana</h1>
+
 		<main>
-			<div class="glass">
-				<h2>Site</h2>
-				<ul class="site">
-					<li><a href="/archive">Archive</a></li>
+			<aside class="nails">
+				<div class="intro">Current nails color:</div>
+				<div class="color" style="--color: #480433">burgundy wine</div>
+			</aside>
+
+			<nav>
+				<ul>
+					<li><a href="/archive">Blogposts (2024-2025)</a></li>
 					<li><a href="/bookmarks.html">Bookmarks</a></li>
 					<li><a href="/db/sitcoms.html">Sitcoms</a></li>
 					<li><a href="/genshin">Genshin</a></li>
@@ -76,29 +89,59 @@ main ul {
 					<li><a target="_blank" href="https://github.com/RobertBendun">Github</a></li>
 					<li><a href="/etc/guess.html">Tram Guess!</a></li>
 				</ul>
-			</div>
-			<div class="glass">
-				<h2>About</h2>
-				<p>When you love CSS and smol, indie web you have to have a website.
-				The next step is to make it <strong>silly</strong>.
-				</p>
-
-				<p>Note that I've been working in the background on a new version of this site for over a year now.
-				I should update it soon&trade;</p>
-
-				<p>Reach me via <a href="mailto:diana@bendun.cc">diana@bendun.cc</a></p>
-			</div>
-			<div class="glass">
-				<h2>Colophon</h2>
-				<ul>
-					<li>Written in neovim.</li>
-					<li>Some parts automated by <em>smol</em> scripts.</li>
-					<li><a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY_SA 4.0</a> by default.</li>
-					<li>Responsive.</li>
-					<li>No structural JavaScript.</li>
-					<li style="font-family: monospace; letter-spacing: 1ex">Purple</li>
-				</ul>
-			</div>
+			</nav>
 		</main>
+
+		<script>
+			let mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+			mediaQuery.addEventListener('change', () => {
+				mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+			});
+
+			const br = document.body.getBoundingClientRect();
+			const dr = dvd.getBoundingClientRect();
+			console.log(br, dr);
+
+			let dx = 2 * Math.round(Math.random()) - 1;
+			let dy = 2 * Math.round(Math.random()) - 1;
+
+			// Based on the finest source: https://wiki.tcl-lang.org/page/DVD+Logo+Screensaver
+			const colors = ['currentColor', 'purple', 'red', 'orange', 'magenta', 'yellow', 'green', 'blue', 'cyan'];
+
+			let ci = 0;
+
+			let prev = null;
+
+			!mediaQuery.matches && requestAnimationFrame(function draw(ts) {
+				if (prev === null) {
+					prev = ts;
+					return requestAnimationFrame(draw);
+				}
+				const dt = ts - prev;
+				prev = ts;
+
+				const br = document.body.getBoundingClientRect();
+				const dr = dvd.getBoundingClientRect();
+				const speed = Math.min(br.width, br.height) / 10;
+
+
+				let nx = dr.x + dx * dt/1000 * speed;
+				let ny = dr.y + dy * dt/1000 * speed;
+
+				if (nx < 0)                   { ci = (ci+1) % colors.length; dx = -dx; nx = 0; }
+				if (ny < 0)                   { ci = (ci+1) % colors.length; dy = -dy; ny = 0;  }
+				if (nx+dr.width  > br.width)  { ci = (ci+1) % colors.length; dx = -dx; nx = br.width - dr.width;  }
+				if (ny+dr.height > br.height) { ci = (ci+1) % colors.length; dy = -dy; ny = br.height - dr.height; }
+
+				const x = nx + dr.width/2 - br.width/2;
+				const y = ny + dr.height/2 - br.height/2;
+
+				dvd.style.color = colors[ci];
+				dvd.style.transform = `translate(-50%, -50%) translate(${x / br.width * 100}vw, ${y / br.height * 100}vh)`;
+
+				!mediaQuery.matches && requestAnimationFrame(draw);
+			});
+
+		</script>
 	</body>
 </html>

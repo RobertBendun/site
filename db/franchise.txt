@@ -14,6 +14,7 @@ last-update = 2025-11-03
 - [x] Prometheus (2012)
 - [x] Alien: Covenant (2017)
 - [x] Alien: Romulus (2024)
+- [ ] Alien: Earth (2025-)
 
 [Predator]
 - [x] Predator (1987)
@@ -394,6 +395,7 @@ last-update = 2025-11-03
 - [x] Spider-Man: Homecoming (2017)
 - [x] Spider-Man: Far From Home (2019)
 - [x] Spider-Man: No Way Home (2021)
+- [x] Spider-Man: Brand New Day (2026)
 
 [Fast & Furious]
 - [x] The Fast and the Furious (2001)
